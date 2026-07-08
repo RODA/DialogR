@@ -1,0 +1,16 @@
+{
+    "body": [
+        "DialogR is a desktop application for statistical analysis built on top of R. It combines guided, dialog-driven procedures with a live R console, a script editor, a workspace pane, and a data editor, making it possible to move seamlessly between point-and-click analysis and direct scripting in R.",
+        "It is designed as an incipient alternative to traditional statistical packages such as SPSS, while keeping users close to the actual R syntax and objects that power the analysis."
+    ],
+    "highlights": [
+        "Connects directly to the R runtime and keeps the analytical workflow close to real R syntax.",
+        "Provides dialogs for common statistical procedures and data preparation tasks.",
+        "Encourages transparent, reproducible workflows by building R commands with every click."
+    ],
+    "authorLabel": "Author:",
+    "authorName": "Adrian Dușa",
+    "authorUrl": "https://adriandusa.com",
+    "copyrightHolder": "RODA",
+    "copyrightStartYear": 2025
+}

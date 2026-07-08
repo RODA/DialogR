@@ -1,0 +1,146 @@
+[
+    {
+        "id": "Data",
+        "labelKey": "menu.root.data",
+        "label": "Data",
+        "type": "submenu",
+        "items": [
+            {
+                "id": "DialogRSortCases",
+                "labelKey": "menu.root.data.sortby",
+                "label": "Sort cases",
+                "type": "product-dialog",
+                "dialog": "sortby",
+                "capability": "DialogR.dialog.sortby"
+            },
+            {
+                "id": "DialogRSplitBy",
+                "labelKey": "menu.root.data.splitby",
+                "label": "Split by groups",
+                "type": "product-dialog",
+                "dialog": "splitby",
+                "capability": "DialogR.dialog.splitby"
+            },
+            {
+                "id": "DialogRSelect",
+                "labelKey": "menu.root.data.select",
+                "label": "Subset cases and variables",
+                "type": "product-dialog",
+                "dialog": "select",
+                "capability": "DialogR.dialog.select"
+            },
+            {
+                "id": "DialogRWeightBy",
+                "labelKey": "menu.root.data.weightby",
+                "label": "Apply frequency weighting",
+                "type": "product-dialog",
+                "dialog": "weightby",
+                "capability": "DialogR.dialog.weightby"
+            }
+        ]
+    },
+    {
+        "id": "Transform",
+        "labelKey": "menu.root.transform",
+        "label": "Transform",
+        "type": "submenu",
+        "items": [
+            {
+                "id": "DialogRRecode",
+                "labelKey": "menu.root.data.recode",
+                "label": "Recode variables",
+                "type": "product-dialog",
+                "dialog": "recode",
+                "capability": "DialogR.dialog.recode"
+            }
+        ]
+    },
+    {
+        "id": "Analyze",
+        "labelKey": "menu.root.analyze",
+        "label": "Analyze",
+        "type": "submenu",
+        "items": [
+            {
+                "id": "AnalyzeDescriptiveStatistics",
+                "labelKey": "menu.root.analyze.descriptive_statistics",
+                "label": "Descriptive statistics",
+                "type": "submenu",
+                "items": [
+                    {
+                        "id": "DialogRFrequencies",
+                        "labelKey": "menu.root.analyze.descriptive_statistics.frequencies",
+                        "label": "Frequency table",
+                        "type": "product-dialog",
+                        "dialog": "frequencies",
+                        "capability": "DialogR.dialog.frequencies"
+                    },
+                    {
+                        "id": "DialogRCrosstable",
+                        "labelKey": "menu.root.analyze.descriptive_statistics.crosstable",
+                        "label": "Contingency table",
+                        "type": "product-dialog",
+                        "dialog": "crosstable",
+                        "capability": "DialogR.dialog.crosstable"
+                    },
+                    {
+                        "id": "DialogRSummaries",
+                        "labelKey": "menu.root.analyze.descriptive_statistics.summaries",
+                        "label": "Numerical summaries",
+                        "type": "product-dialog",
+                        "dialog": "summaries",
+                        "capability": "DialogR.dialog.summaries"
+                    }
+                ]
+            },
+            {
+                "id": "AnalyzeCompareMeansAndProportions",
+                "labelKey": "menu.root.analyze.compare_means_and_proportions",
+                "label": "Compare means and proportions",
+                "type": "submenu",
+                "items": [
+                    {
+                        "id": "DialogROneSampleTTest",
+                        "labelKey": "menu.root.analyze.compare_means_and_proportions.onesamplettest",
+                        "label": "One-sample t-test",
+                        "type": "product-dialog",
+                        "dialog": "onesamplettest",
+                        "capability": "DialogR.dialog.onesamplettest"
+                    },
+                    {
+                        "id": "DialogRIndependentSamplesTTest",
+                        "labelKey": "menu.root.analyze.compare_means_and_proportions.independentsamplesttest",
+                        "label": "Independent samples t-test",
+                        "type": "product-dialog",
+                        "dialog": "independentsamplesttest",
+                        "capability": "DialogR.dialog.independentsamplesttest"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "Packages",
+        "labelKey": "menu.root.packages",
+        "label": "Packages",
+        "type": "submenu",
+        "items": [
+            {
+                "id": "DialogRInstallRequiredPackages",
+                "labelKey": "menu.root.packages.install_required_r_packages",
+                "label": "Install required R packages",
+                "type": "product-command",
+                "command": "DialogR.packages.installRequired",
+                "capability": "DialogR.packages.required"
+            },
+            {
+                "id": "DialogRUpdateRequiredPackages",
+                "labelKey": "menu.root.packages.update_dev_versions",
+                "label": "Update development versions",
+                "type": "product-command",
+                "command": "DialogR.packages.updateRequired",
+                "capability": "DialogR.packages.required"
+            }
+        ]
+    }
+]

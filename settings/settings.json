@@ -1,0 +1,79 @@
+{
+    "dependencies": [
+        "httpgd",
+        "jsonlite",
+        "askpass",
+        "later",
+        "digest",
+        "admisc",
+        "declared",
+        "DDIwR",
+        "statistics"
+    ],
+    "uiActionCommandVisibility": "hidden",
+    "runtimeStartup": {
+        "providerId": "r",
+        "autoStart": true,
+        "processLifecycle": true,
+        "restoreWorkspaceOnStart": true
+    },
+    "packageSources": {
+        "cran": [
+            "httpgd",
+            "jsonlite",
+            "askpass",
+            "later",
+            "digest",
+            "statistics"
+        ],
+        "runiverse": [
+            "admisc",
+            "declared"
+        ],
+        "both": [
+            "DDIwR"
+        ]
+    },
+    "dialogRuntimeRequirements": {
+        "frequencies": {
+            "rPackages": [
+                "admisc",
+                "declared"
+            ]
+        },
+        "summaries": {
+            "rPackages": [
+                "admisc",
+                "declared"
+            ]
+        },
+        "independentsamplesttest": {
+            "rPackages": [
+                "statistics"
+            ]
+        },
+        "crosstable": {
+            "rPackages": [
+                "admisc",
+                "declared"
+            ]
+        }
+    },
+    "webLaunch": {
+        "enabled": true,
+        "startPath": "/start",
+        "queryKey": "k",
+        "routePrefix": "/api/launch/",
+        "tokenPattern": "^[A-Za-z0-9-]+$",
+        "dataRootEnv": "DIALOGFORGE_LAUNCH_DATA_ROOT",
+        "defaultDataRoot": "/home/webr/launch-data",
+        "datasetResource": "dataset.rds",
+        "metadataResource": "metadata",
+        "datasetExtension": ".rds",
+        "metadataExtension": ".json",
+        "datasetName": "dataset"
+    },
+    "webEntrypoints": [
+        "/dialogr"
+    ]
+}

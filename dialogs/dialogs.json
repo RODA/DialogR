@@ -1,0 +1,127 @@
+[
+    {
+        "id": "select",
+        "label": "Subset cases and variables",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/select/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/select.json",
+        "sourceFile": "r/select/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "sortby",
+        "label": "Sort cases",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/sortby/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/sortby.json",
+        "sourceFile": "r/sortby/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "splitby",
+        "label": "Split by groups",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/splitby/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/splitby.json",
+        "sourceFile": "r/splitby/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "weightby",
+        "label": "Apply frequency weighting",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/weightby/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/weightby.json",
+        "sourceFile": "r/weightby/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "goto",
+        "label": "Go to...",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/goto/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/dialogs/goto.json",
+        "sourceFile": "r/goto/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "recode",
+        "label": "Recode variables",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/recode/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/recode.json",
+        "sourceFile": "r/recode/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "frequencies",
+        "label": "Frequency table",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/frequencies/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/frequencies.json",
+        "sourceFile": "r/frequencies/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            "admisc",
+            "declared"
+        ]
+    },
+    {
+        "id": "crosstable",
+        "label": "Contingency table",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/crosstable/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/crosstable.json",
+        "sourceFile": "r/crosstable/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            "admisc",
+            "declared"
+        ]
+    },
+    {
+        "id": "summaries",
+        "label": "Numerical summaries",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/summaries/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/summaries.json",
+        "sourceFile": "r/summaries/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            "admisc",
+            "declared"
+        ]
+    },
+    {
+        "id": "onesamplettest",
+        "label": "One-sample t-test",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/onesamplettest/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/onesamplettest.json",
+        "sourceFile": "r/onesamplettest/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "independentsamplesttest",
+        "label": "Independent samples t-test",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/independentsamplesttest/",
+        "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/independentsamplesttest.json",
+        "sourceFile": "r/independentsamplesttest/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            "statistics"
+        ]
+    }
+]
