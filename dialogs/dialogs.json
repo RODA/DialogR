@@ -57,7 +57,10 @@
         "sourceReference": "/Users/dusadrian/Documents/GitHub/DialogR/profile/dialogs/recode.json",
         "sourceFile": "r/recode/dialog.json",
         "status": "source-imported",
-        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            "admisc"
+        ]
     },
     {
         "id": "frequencies",

@@ -131,6 +131,7 @@ const assertRequiredScripts = function() {
     const packageJson = readJson(path.join(productRoot, "package.json"));
     const scripts = packageJson.scripts || {};
     const required = [
+        "start",
         "check",
         "build"
     ];
@@ -139,8 +140,21 @@ const assertRequiredScripts = function() {
     });
 
     if (missing.length > 0) {
-        fail("Missing product-owned build scripts: " + missing.join(", "));
+        fail("Missing product-owned development/build scripts: " + missing.join(", "));
     }
+
+    const startScript = fs.readFileSync(path.join(productRoot, "scripts/start-product.js"), "utf8");
+    [
+        "--forge-path",
+        "DIALOGFORGE_ROOT",
+        "\"dev:watch\"",
+        "\"--devtools\"",
+        "productRoot"
+    ].forEach((expected) => {
+        if (!startScript.includes(expected)) {
+            fail("scripts/start-product.js must preserve the product-owned development contract: " + expected);
+        }
+    });
 
     if (Object.values(scripts).some((script) => String(script || "").includes("--sign"))) {
         fail("Product build scripts must keep signing opt-in as an explicit caller argument.");

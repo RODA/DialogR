@@ -21,9 +21,20 @@ Use a sibling checkout by default:
 Then run commands from the DialogR repository:
 
 ```sh
+npm start
 npm run check
 npm run build
 npm run build -- --sign
+```
+
+`npm start` builds and launches DialogR in Electron development mode with
+DevTools open. It watches product files, restaging and restarting the
+application when they change. It uses the sibling DialogForge checkout by
+default. For another location, either set `DIALOGFORGE_ROOT` or pass it
+explicitly:
+
+```sh
+npm start -- --forge-path /path/to/DialogForge
 ```
 
 `npm run build` uses the current host OS. On macOS, the default build is

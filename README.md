@@ -9,6 +9,7 @@ somewhere else.
 
 | Command | Public arguments | What it does |
 | --- | --- | --- |
+| `npm start` | optional `-- --forge-path <path>` | Builds and starts DialogR in Electron development mode with DevTools open, then restages and restarts it when product files change. Uses the sibling `../DialogForge` checkout by default or `DIALOGFORGE_ROOT` when set. |
 | `npm run check` | none | Validates the DialogR product contribution and TypeScript sources. |
 | `npm run build` | macOS-only `--sign` | Runs `check`, then asks DialogForge to build/package DialogR for the current host OS. macOS builds are ad-hoc signed unless `--sign` is passed. |
 | `npm run check:build-ownership` | none | Checks that DialogR keeps its product-owned build scripts and release request workflow. |
