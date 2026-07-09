@@ -73,14 +73,14 @@ jobs:
       - name: Upload macOS artifact to release
         if: ${{ inputs.publish_release }}
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_UPLOAD_TOKEN != '' && secrets.RELEASE_UPLOAD_TOKEN || secrets.DIALOGFORGE_SIGNING_TOKEN }}
+          GH_TOKEN: ${{ secrets.PRODUCT_REPOSITORY_TOKEN }}
           RELEASE_TAG: ${{ inputs.release_tag }}
           RELEASE_REPOSITORY: ${{ inputs.release_repository }}
           OVERWRITE_RELEASE_ASSETS: ${{ inputs.overwrite_release_assets }}
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN:-}" ]; then
-            echo "DIALOGFORGE_SIGNING_TOKEN is required to upload release assets."
+            echo "PRODUCT_REPOSITORY_TOKEN is required to upload release assets."
             exit 1
           fi
 
