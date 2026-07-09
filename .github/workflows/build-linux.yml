@@ -16,12 +16,12 @@ on:
       release_tag:
         description: Release tag to upload artifacts to (used when publishing).
         required: false
-        default: drli
+        default: li
         type: string
       release_repository:
         description: Target release repository in owner/repo form (used when publishing).
         required: false
-        default: dusadrian/binaries
+        default: RODA/DialogR
         type: string
       overwrite_release_assets:
         description: Replace existing release assets with matching filenames (used when publishing).

@@ -26,22 +26,22 @@ on:
       linux_release_tag:
         description: Release tag for Linux Intel artifacts.
         required: false
-        default: drli
+        default: li
         type: string
       windows_release_tag:
         description: Release tag for Windows Intel artifacts.
         required: false
-        default: drwi
+        default: wi
         type: string
       macos_release_tag:
         description: Release tag for macOS Intel artifacts.
         required: false
-        default: drmi
+        default: mi
         type: string
       release_repository:
         description: Target release repository in owner/repo form (used when publishing).
         required: false
-        default: dusadrian/binaries
+        default: RODA/DialogR
         type: string
       overwrite_release_assets:
         description: Replace existing release assets with matching filenames (used when publishing).
