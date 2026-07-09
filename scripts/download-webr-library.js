@@ -4,7 +4,7 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
-const releaseRepository = "dusadrian/binaries";
+const releaseRepository = "RODA/DialogR";
 const productRoot = path.resolve(__dirname, "..");
 const libraryDir = path.join(productRoot, "library", "R");
 const assets = [

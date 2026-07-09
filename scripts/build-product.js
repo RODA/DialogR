@@ -6,11 +6,11 @@ const { spawnSync } = require("child_process");
 
 const productRoot = path.resolve(__dirname, "..");
 const macosIntelArgument = "--macos-intel";
-const updateReleaseRepository = "dusadrian/binaries";
+const updateReleaseRepository = "RODA/DialogR";
 const updateReleaseTags = {
-    linux: "drli",
-    windows: "drwi",
-    macosIntel: "drmi",
+    linux: "li",
+    windows: "wi",
+    macosIntel: "mi",
     macosSilicon: "drms"
 };
 

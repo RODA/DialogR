@@ -73,7 +73,7 @@
         "appId": "org.roda.dialogr",
         "defaultRuntimeProvider": "r",
         "autoUpdate": {
-            "releaseRepository": "dusadrian/binaries",
+            "releaseRepository": "RODA/DialogR",
             "releaseTag": "drms"
         },
         "runtimeProviders": [
@@ -82,7 +82,7 @@
             "webr"
         ],
         "webRPackageLibrary": {
-            "releaseTag": "drweb"
+            "releaseTag": "web"
         }
     }
 }

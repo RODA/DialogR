@@ -85,11 +85,11 @@ const assertAutoUpdatePolicy = function(packageJson) {
     const autoUpdate = (packageJson.product || {}).autoUpdate || {};
     const webRPackageLibrary = (packageJson.product || {}).webRPackageLibrary || {};
 
-    if (autoUpdate.releaseRepository !== "dusadrian/binaries"
+    if (autoUpdate.releaseRepository !== "RODA/DialogR"
         || autoUpdate.releaseTag !== "drms") {
         fail("package.json product.autoUpdate must default to the DialogR macOS Silicon release.");
     }
-    if (webRPackageLibrary.releaseTag !== "drweb") {
+    if (webRPackageLibrary.releaseTag !== "web") {
         fail("package.json product.webRPackageLibrary.releaseTag must point to the DialogR WebR VFS release.");
     }
 };
@@ -98,9 +98,9 @@ const assertBuildScriptReleaseTags = function(scripts) {
     const buildProduct = fs.readFileSync(path.join(productRoot, "scripts/build-product.js"), "utf8");
 
     [
-        "linux: \"drli\"",
-        "windows: \"drwi\"",
-        "macosIntel: \"drmi\"",
+        "linux: \"li\"",
+        "windows: \"wi\"",
+        "macosIntel: \"mi\"",
         "macosSilicon: \"drms\"",
         "injectAutoUpdatePolicy(packagePath, updateReleaseTag)",
         "fs.writeFileSync(packagePath, originalPackageJson)",
@@ -199,13 +199,13 @@ const assertWorkflows = function() {
     if (!releaseText.includes("sign-windows-product.yml")) {
         fail("Windows release request must call the DialogForge signing broker.");
     }
-    if (!linuxText.includes("default: drli")
-        || !windowsText.includes("default: drwi")
-        || !macosText.includes("default: drmi")
-        || !releaseText.includes("default: drwi")
-        || !buildText.includes("default: drli")
-        || !buildText.includes("default: drwi")
-        || !buildText.includes("default: drmi")) {
+    if (!linuxText.includes("default: li")
+        || !windowsText.includes("default: wi")
+        || !macosText.includes("default: mi")
+        || !releaseText.includes("default: wi")
+        || !buildText.includes("default: li")
+        || !buildText.includes("default: wi")
+        || !buildText.includes("default: mi")) {
         fail("GitHub release workflows must default to platform-specific DialogR release tags.");
     }
 
