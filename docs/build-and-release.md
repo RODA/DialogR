@@ -46,6 +46,12 @@ The compiled desktop application is staged in the product repository under
 `dist/`. Installers, update metadata, and other release artifacts are written
 under `build/output/`.
 
+Release repositories are inferred or optionally configured, but release tags are
+required product settings in `package.json > product.releaseTags`. In DialogR,
+the current values are `linuxIntel=li`, `windowsIntel=wi`, `macosIntel=mi`,
+`macosSilicon=drms`, and `webrVFS=web`. Treat these as repo-specific examples
+for this product; other products or forks can use different values.
+
 Set `DIALOGFORGE_ROOT` when DialogForge is not a sibling checkout.
 
 ## CI Builds

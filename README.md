@@ -30,6 +30,12 @@ caller has a valid signing identity. Without `--sign`, macOS artifacts are
 ad-hoc signed so the app bundle remains valid for local testing and updates,
 but they are not notarized for Gatekeeper.
 
+Release tag names are required product settings in
+`package.json > product.releaseTags`. For DialogR, the current values are
+`linuxIntel=li`, `windowsIntel=wi`, `macosIntel=mi`, `macosSilicon=drms`, and
+`webrVFS=web`. These names and values are product-specific examples for this
+repo and can differ across other products or user forks.
+
 ## Contributing Dialogs
 
 See [docs/adding-dialogs.md](docs/adding-dialogs.md) for the DialogR procedure

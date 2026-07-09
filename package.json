@@ -73,17 +73,17 @@
         "name": "DialogR",
         "appId": "org.roda.dialogr",
         "defaultRuntimeProvider": "r",
-        "autoUpdate": {
-            "releaseRepository": "RODA/DialogR",
-            "releaseTag": "ms"
+        "releaseTags": {
+            "linuxIntel": "li",
+            "windowsIntel": "wi",
+            "macosIntel": "mi",
+            "macosSilicon": "drms",
+            "webrVFS": "web"
         },
         "runtimeProviders": [
             "r",
             "server-r",
             "webr"
-        ],
-        "webRPackageLibrary": {
-            "releaseTag": "web"
-        }
+        ]
     }
 }

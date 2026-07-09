@@ -83,14 +83,17 @@ const assertLicenseMetadata = function(packageJson) {
 
 const assertAutoUpdatePolicy = function(packageJson) {
     const autoUpdate = (packageJson.product || {}).autoUpdate || {};
-    const webRPackageLibrary = (packageJson.product || {}).webRPackageLibrary || {};
+    const releaseTags = (packageJson.product || {}).releaseTags || {};
 
-    if (autoUpdate.releaseRepository !== "RODA/DialogR"
-        || autoUpdate.releaseTag !== "drms") {
-        fail("package.json product.autoUpdate must default to the DialogR macOS Silicon release.");
+    if (Object.prototype.hasOwnProperty.call(autoUpdate, "releaseTag")) {
+        fail("package.json product.autoUpdate must not pin a platform-specific releaseTag.");
     }
-    if (webRPackageLibrary.releaseTag !== "web") {
-        fail("package.json product.webRPackageLibrary.releaseTag must point to the DialogR WebR VFS release.");
+    if (releaseTags.linuxIntel !== "li"
+        || releaseTags.windowsIntel !== "wi"
+        || releaseTags.macosIntel !== "mi"
+        || releaseTags.macosSilicon !== "drms"
+        || releaseTags.webrVFS !== "web") {
+        fail("package.json product.releaseTags must define the DialogR release tags.");
     }
 };
 
@@ -98,10 +101,15 @@ const assertBuildScriptReleaseTags = function(scripts) {
     const buildProduct = fs.readFileSync(path.join(productRoot, "scripts/build-product.js"), "utf8");
 
     [
-        "linux: \"li\"",
-        "windows: \"wi\"",
-        "macosIntel: \"mi\"",
-        "macosSilicon: \"drms\"",
+        "linuxIntel",
+        "windowsIntel",
+        "macosIntel",
+        "macosSilicon",
+        "webrVFS",
+        "readRequiredReleaseTags(packagePath)",
+        "GITHUB_REPOSITORY",
+        "remote.origin.url",
+        "resolveReleaseRepository(packagePath)",
         "injectAutoUpdatePolicy(packagePath, updateReleaseTag)",
         "fs.writeFileSync(packagePath, originalPackageJson)",
         "cleanupBuildOutput(dialogForgeRoot, outputDir, platform, forceMacosIntel)",
@@ -166,6 +174,16 @@ const assertRequiredScripts = function() {
     assertLicenseMetadata(packageJson);
     assertAutoUpdatePolicy(packageJson);
     assertBuildScriptReleaseTags(scripts);
+
+    const webrLibraryScript = fs.readFileSync(path.join(productRoot, "scripts/download-webr-library.js"), "utf8");
+    [
+        'product.releaseTags.webrVFS',
+        'WebR package library lookup expects release tag "${configuredTag}"'
+    ].forEach((expected) => {
+        if (!webrLibraryScript.includes(expected)) {
+            fail("scripts/download-webr-library.js must read the configured WebR release tag: " + expected);
+        }
+    });
 
     const platformAliases = [
         "build:linux",

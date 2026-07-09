@@ -6,13 +6,6 @@ const { spawnSync } = require("child_process");
 
 const productRoot = path.resolve(__dirname, "..");
 const macosIntelArgument = "--macos-intel";
-const updateReleaseRepository = "RODA/DialogR";
-const updateReleaseTags = {
-    linux: "li",
-    windows: "wi",
-    macosIntel: "mi",
-    macosSilicon: "drms"
-};
 
 const npmInvocation = function(args) {
     const npmExecPath = String(process.env.npm_execpath || "").trim();
@@ -123,14 +116,45 @@ const requestedPlatform = function(args) {
     return "linux";
 };
 
-const updateReleaseTagForBuild = function(args, forceMacosIntel) {
+const readRequiredReleaseTags = function(packagePath) {
+    const packageJson = readJson(packagePath);
+    const releaseTags = packageJson.product && typeof packageJson.product === "object"
+        ? packageJson.product.releaseTags
+        : null;
+    const normalized = releaseTags && typeof releaseTags === "object"
+        ? {
+            linuxIntel: String(releaseTags.linuxIntel || "").trim(),
+            windowsIntel: String(releaseTags.windowsIntel || "").trim(),
+            macosIntel: String(releaseTags.macosIntel || "").trim(),
+            macosSilicon: String(releaseTags.macosSilicon || "").trim(),
+            webrVFS: String(releaseTags.webrVFS || "").trim()
+        }
+        : null;
+
+    if (!normalized
+        || !normalized.linuxIntel
+        || !normalized.windowsIntel
+        || !normalized.macosIntel
+        || !normalized.macosSilicon
+        || !normalized.webrVFS) {
+        throw new Error(
+            "Missing package.json product.releaseTags. Expected linuxIntel, windowsIntel, " +
+            "macosIntel, macosSilicon, and webrVFS."
+        );
+    }
+
+    return normalized;
+};
+
+const updateReleaseTagForBuild = function(packagePath, args, forceMacosIntel) {
+    const updateReleaseTags = readRequiredReleaseTags(packagePath);
     const platform = requestedPlatform(args);
 
     if (platform === "linux") {
-        return updateReleaseTags.linux;
+        return updateReleaseTags.linuxIntel;
     }
     if (platform === "windows") {
-        return updateReleaseTags.windows;
+        return updateReleaseTags.windowsIntel;
     }
     if (platform === "macos") {
         return forceMacosIntel
@@ -141,13 +165,71 @@ const updateReleaseTagForBuild = function(args, forceMacosIntel) {
     return updateReleaseTags.macosSilicon;
 };
 
+const parseGitHubRepository = function(remoteUrl) {
+    const trimmedUrl = String(remoteUrl || "").trim();
+    const match = trimmedUrl.match(
+        /github\.com[:/]([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i
+    );
+
+    if (!match) {
+        return "";
+    }
+
+    return `${match[1]}/${match[2]}`;
+};
+
+const readConfiguredReleaseRepository = function(packageJson) {
+    return String(packageJson.product?.autoUpdate?.releaseRepository || "").trim();
+};
+
+const inferReleaseRepositoryFromGit = function() {
+    const githubRepository = String(process.env.GITHUB_REPOSITORY || "").trim();
+    if (githubRepository) {
+        return githubRepository;
+    }
+
+    const result = spawnSync("git", ["config", "--get", "remote.origin.url"], {
+        cwd: productRoot,
+        env: process.env,
+        encoding: "utf8"
+    });
+
+    if (result.error || result.status !== 0) {
+        return "";
+    }
+
+    return parseGitHubRepository(result.stdout);
+};
+
+const resolveReleaseRepository = function(packagePath) {
+    const packageJson = readJson(packagePath);
+    const configuredRepository = readConfiguredReleaseRepository(packageJson);
+
+    if (configuredRepository) {
+        return configuredRepository;
+    }
+
+    const inferredRepository = inferReleaseRepositoryFromGit();
+
+    if (inferredRepository) {
+        return inferredRepository;
+    }
+
+    throw new Error(
+        "Could not resolve product.autoUpdate.releaseRepository. " +
+        "Set product.autoUpdate.releaseRepository in package.json or configure " +
+        "a GitHub remote.origin.url for this repository."
+    );
+};
+
 const injectAutoUpdatePolicy = function(packagePath, releaseTag) {
     const packageJson = readJson(packagePath);
+    const releaseRepository = resolveReleaseRepository(packagePath);
     packageJson.product = packageJson.product && typeof packageJson.product === "object"
         ? packageJson.product
         : {};
     packageJson.product.autoUpdate = {
-        releaseRepository: updateReleaseRepository,
+        releaseRepository,
         releaseTag
     };
 
@@ -261,7 +343,7 @@ const main = function() {
     });
     const packagePath = path.join(productRoot, "package.json");
     const originalPackageJson = fs.readFileSync(packagePath, "utf8");
-    const updateReleaseTag = updateReleaseTagForBuild(packagingArgs, forceMacosIntel);
+    const updateReleaseTag = updateReleaseTagForBuild(packagePath, packagingArgs, forceMacosIntel);
     const platform = requestedPlatform(packagingArgs);
     const outputDir = path.join(productRoot, "build/output");
 

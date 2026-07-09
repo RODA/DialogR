@@ -12,15 +12,19 @@ const assets = [
     "library.js.metadata"
 ];
 
-const readProductReleaseTag = function() {
+const readReleaseTag = function() {
     const packageJson = JSON.parse(
         fs.readFileSync(path.join(productRoot, "package.json"), "utf8")
     );
-    const product = packageJson.product || {};
-    const releaseTag = String(product.webRPackageLibrary?.releaseTag || "").trim();
+    const releaseTags = packageJson.product && typeof packageJson.product === "object"
+        ? packageJson.product.releaseTags
+        : null;
+    const releaseTag = String(releaseTags?.webrVFS || "").trim();
 
     if (!releaseTag) {
-        throw new Error("Missing package.json product.webRPackageLibrary.releaseTag.");
+        throw new Error(
+            "Missing package.json product.releaseTags.webrVFS."
+        );
     }
 
     return releaseTag;
@@ -157,7 +161,7 @@ const touchDownloadedAsset = function(targetPath, asset) {
 const main = async function() {
     fs.mkdirSync(libraryDir, { recursive: true });
     const force = process.argv.includes("--force");
-    const releaseTag = readProductReleaseTag();
+    const releaseTag = readReleaseTag();
     const releaseAssets = await readReleaseAssets(releaseTag);
 
     for (const assetName of assets) {
@@ -191,6 +195,17 @@ const main = async function() {
 };
 
 main().catch((error) => {
+    const configuredTag = (() => {
+        try {
+            return readReleaseTag();
+        }
+        catch {
+            return "(missing)";
+        }
+    })();
+    console.error(
+        `WebR package library lookup expects release tag "${configuredTag}" in ${releaseRepository}.`
+    );
     console.error(error instanceof Error ? error.message : String(error));
     process.exit(1);
 });
