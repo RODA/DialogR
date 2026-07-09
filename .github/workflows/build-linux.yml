@@ -30,7 +30,7 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   linux:
@@ -73,14 +73,20 @@ jobs:
       - name: Upload Linux artifact to release
         if: ${{ inputs.publish_release }}
         env:
-          GH_TOKEN: ${{ secrets.PRODUCT_REPOSITORY_TOKEN }}
+          PRODUCT_REPOSITORY_TOKEN: ${{ secrets.PRODUCT_REPOSITORY_TOKEN }}
           RELEASE_TAG: ${{ inputs.release_tag }}
           RELEASE_REPOSITORY: ${{ inputs.release_repository }}
           OVERWRITE_RELEASE_ASSETS: ${{ inputs.overwrite_release_assets }}
         run: |
           set -euo pipefail
+          if [ "$RELEASE_REPOSITORY" = "$GITHUB_REPOSITORY" ]; then
+            export GH_TOKEN='${{ github.token }}'
+          else
+            export GH_TOKEN="$PRODUCT_REPOSITORY_TOKEN"
+          fi
+
           if [ -z "${GH_TOKEN:-}" ]; then
-            echo "PRODUCT_REPOSITORY_TOKEN is required to upload release assets."
+            echo "PRODUCT_REPOSITORY_TOKEN is required to upload release assets outside $GITHUB_REPOSITORY."
             exit 1
           fi
 
