@@ -1,0 +1,7 @@
+/* DialogR-owned browser shell theme overrides. */
+:root {
+    --web-shell-transcript-input: #123f7a;
+    --web-shell-transcript-stderr: #9b1c1c;
+    --web-shell-caret: #111827;
+    --web-shell-progress: #589658;
+}

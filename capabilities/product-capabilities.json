@@ -1,0 +1,69 @@
+[
+    {
+        "capability": "DialogR.dialog.select",
+        "label": "Subset cases and variables",
+        "requiredRuntime": ["commands.invisible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.sortby",
+        "label": "Sort cases",
+        "requiredRuntime": ["commands.invisible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.splitby",
+        "label": "Split by groups",
+        "requiredRuntime": ["commands.invisible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.weightby",
+        "label": "Apply frequency weighting",
+        "requiredRuntime": ["commands.invisible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.goto",
+        "label": "Go to...",
+        "requiredRuntime": ["workspace.activeDataset", "tabular.read"],
+        "datasetNavigation": {
+            "goToDialog": "goto"
+        }
+    },
+    {
+        "capability": "DialogR.dialog.recode",
+        "label": "Recode variables",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.frequencies",
+        "label": "Frequency table",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read", "dependencies.packages"],
+        "rPackages": ["admisc", "declared"]
+    },
+    {
+        "capability": "DialogR.dialog.crosstable",
+        "label": "Contingency table",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.summaries",
+        "label": "Numerical summaries",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read", "dependencies.packages"],
+        "rPackages": ["admisc", "declared"]
+    },
+    {
+        "capability": "DialogR.dialog.onesamplettest",
+        "label": "One-sample t-test",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read"]
+    },
+    {
+        "capability": "DialogR.dialog.independentsamplesttest",
+        "label": "Independent samples t-test",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read", "dependencies.packages"],
+        "rPackages": ["statistics"]
+    },
+    {
+        "capability": "DialogR.packages.required",
+        "label": "Required DialogR package management",
+        "requiredRuntime": ["commands.visible", "dependencies.packages"],
+        "rPackages": ["httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics"]
+    }
+]

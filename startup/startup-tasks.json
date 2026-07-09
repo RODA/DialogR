@@ -1,0 +1,11 @@
+[
+    {
+        "id": "DialogR-packages",
+        "label": "Check DialogR runtime packages",
+        "owner": "products/DialogR",
+        "status": "implemented",
+        "requiredRuntime": ["dependencies.packages"],
+        "rPackages": ["httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics"],
+        "replacement": "Verify DialogR package availability through provider-neutral dependency checks."
+    }
+]
