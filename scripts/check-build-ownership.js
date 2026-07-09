@@ -138,6 +138,12 @@ const assertBuildScriptReleaseTags = function(scripts) {
 const assertRequiredScripts = function() {
     const packageJson = readJson(path.join(productRoot, "package.json"));
     const scripts = packageJson.scripts || {};
+    const macBuild = packageJson.build && packageJson.build.mac;
+
+    if (!macBuild
+        || macBuild.artifactName !== "${productName}-${version}-${arch}-mac.${ext}") {
+        fail("macOS update artifacts must include the architecture in their filename.");
+    }
     const required = [
         "start",
         "check",

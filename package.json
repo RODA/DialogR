@@ -28,6 +28,7 @@
             "LICENSE"
         ],
         "mac": {
+            "artifactName": "${productName}-${version}-${arch}-mac.${ext}",
             "extendInfo": {
                 "NSHumanReadableCopyright": "© 2025-2026 Adrian Dusa — Academic Non-Commercial License (see LICENSE file for details)."
             },
