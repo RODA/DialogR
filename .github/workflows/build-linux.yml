@@ -1,4 +1,4 @@
-name: Build DialogR Linux
+name: build Linux intel
 
 on:
   workflow_dispatch:
