@@ -75,7 +75,7 @@
         "defaultRuntimeProvider": "r",
         "autoUpdate": {
             "releaseRepository": "RODA/DialogR",
-            "releaseTag": "drms"
+            "releaseTag": "ms"
         },
         "runtimeProviders": [
             "r",
