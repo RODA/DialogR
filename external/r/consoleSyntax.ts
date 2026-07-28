@@ -35,6 +35,107 @@ const MAGENTA = "#AA0D91";
 const GREEN = "#0A7C3C";
 const CHILLI_PEPPER_RED = "#d31d1d";
 
+
+const loadConsoleMonacoAmd = async function(
+  win: MonacoRendererWindow,
+  loaderUrl: string,
+  vsUrl: string,
+  monacoBaseUrl: string,
+  workerMainUrl: string
+): Promise<typeof Monaco> {
+  const getAmdRequire = function(): MonacoAmdRequire | null {
+    const candidate = Reflect.get(win, 'require') as MonacoAmdRequire;
+
+    return typeof candidate?.config === 'function' ? candidate : null;
+  };
+  const head = document.head || document.documentElement;
+
+  await new Promise<void>((resolve, reject) => {
+    const existingReady = !!win.__dmMonacoLoaderReady && !!getAmdRequire();
+
+    if (existingReady) {
+      resolve();
+      return;
+    }
+
+    const existingScript = document.querySelector(
+      'script[data-dm-monaco-loader="1"]'
+    ) as HTMLScriptElement | null;
+
+    if (existingScript) {
+      const started = Date.now();
+      const poll = () => {
+        if (win.__dmMonacoLoaderReady && getAmdRequire()) {
+          resolve();
+          return;
+        }
+
+        if (Date.now() - started > 10000) {
+          reject(new Error('monaco-loader-timeout'));
+          return;
+        }
+
+        setTimeout(poll, 25);
+      };
+
+      poll();
+      return;
+    }
+
+    const script = document.createElement('script');
+
+    script.setAttribute('data-dm-monaco-loader', '1');
+    script.src = loaderUrl;
+    script.async = true;
+    script.onload = () => {
+      win.__dmMonacoLoaderReady = true;
+      resolve();
+    };
+    script.onerror = () => reject(new Error('monaco-loader-script-failed'));
+    head.appendChild(script);
+  });
+
+  const amdRequire = getAmdRequire();
+
+  if (!amdRequire) {
+    throw new Error('monaco-amd-require-unavailable');
+  }
+
+  win.MonacoEnvironment = {
+    globalAPI: true,
+    getWorkerUrl: () => {
+      const bootstrap = `
+self.MonacoEnvironment = { baseUrl: ${JSON.stringify(monacoBaseUrl)} };
+importScripts(${JSON.stringify(workerMainUrl)});
+`;
+
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(bootstrap)}`;
+    }
+  };
+
+  amdRequire.config({ paths: { vs: vsUrl } });
+
+  await new Promise<void>((resolve, reject) => {
+    try {
+      amdRequire(
+        ['vs/editor/editor.main'],
+        () => resolve(),
+        (error: unknown) => reject(error)
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+  const loaded = win.monaco || null;
+
+  if (!loaded) {
+    throw new Error('monaco-global-missing');
+  }
+
+  return loaded;
+};
+
 export const ensureConsoleTheme = (monaco: typeof Monaco) => {
   if (!monaco || consoleThemeRegistered) return;
   try {
@@ -74,11 +175,6 @@ export const ensureConsoleTheme = (monaco: typeof Monaco) => {
 };
 export const ensureConsoleMonacoLoaded = async (): Promise<typeof Monaco> => {
   const win = window as MonacoRendererWindow;
-  const getAmdRequire = function(): MonacoAmdRequire | null {
-    const candidate = Reflect.get(win, 'require') as MonacoAmdRequire;
-
-    return typeof candidate?.config === 'function' ? candidate : null;
-  };
   if (win.monaco?.editor) {
     monacoRef = win.monaco;
     win.__dmMonacoReady = true;
@@ -97,25 +193,39 @@ export const ensureConsoleMonacoLoaded = async (): Promise<typeof Monaco> => {
   if (monacoLoadPromise) return monacoLoadPromise;
 
   monacoLoadPromise = (async () => {
+    const nodeRequire = typeof require === 'function' ? require : null;
+
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const direct = require('monaco-editor') as typeof Monaco;
+      const direct = nodeRequire
+        ? nodeRequire('monaco-editor') as typeof Monaco
+        : null;
+
       if (direct && direct.editor) {
         monacoRef = direct;
         return monacoRef;
       }
     } catch {}
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const path = require('path');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const fs = require('fs');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { pathToFileURL } = require('url');
+    if (!nodeRequire) {
+      monacoRef = await loadConsoleMonacoAmd(
+        win,
+        '/monaco/vs/loader.js',
+        '/monaco/vs',
+        `${window.location.origin}/monaco/`,
+        `${window.location.origin}/monaco/vs/base/worker/workerMain.js`
+      );
+      win.__dmMonacoReady = true;
+
+      return monacoRef;
+    }
+
+    const path = nodeRequire('path') as typeof import('path');
+    const fs = nodeRequire('fs') as typeof import('fs');
+    const { pathToFileURL } = nodeRequire('url') as typeof import('url');
 
     let loaderPath = '';
     try {
-      loaderPath = require.resolve('monaco-editor/min/vs/loader.js');
+      loaderPath = nodeRequire.resolve('monaco-editor/min/vs/loader.js');
     } catch {}
     if (!loaderPath) {
       const candidateRoots = [
@@ -137,80 +247,19 @@ export const ensureConsoleMonacoLoaded = async (): Promise<typeof Monaco> => {
     const vsDir = path.dirname(loaderPath);
     const monacoMinDir = path.dirname(vsDir);
 
-    const head = document.head || document.documentElement;
-
-    await new Promise<void>((resolve, reject) => {
-      const existingReady = !!win.__dmMonacoLoaderReady && !!getAmdRequire();
-      if (existingReady) {
-        resolve();
-        return;
-      }
-      const existingScript = document.querySelector('script[data-dm-monaco-loader="1"]') as HTMLScriptElement | null;
-      if (existingScript) {
-        const started = Date.now();
-        const poll = () => {
-          if (win.__dmMonacoLoaderReady && getAmdRequire()) {
-            resolve();
-            return;
-          }
-          if (Date.now() - started > 10000) {
-            reject(new Error('monaco-loader-timeout'));
-            return;
-          }
-          setTimeout(poll, 25);
-        };
-        poll();
-        return;
-      }
-      const script = document.createElement('script');
-      script.setAttribute('data-dm-monaco-loader', '1');
-      script.src = pathToFileURL(loaderPath).toString();
-      script.async = true;
-      script.onload = () => {
-        win.__dmMonacoLoaderReady = true;
-        resolve();
-      };
-      script.onerror = () => reject(new Error('monaco-loader-script-failed'));
-      head.appendChild(script);
-    });
-
-    const amdRequire = getAmdRequire();
-    if (!amdRequire) {
-      throw new Error('monaco-amd-require-unavailable');
-    }
-
     const vsUrl = pathToFileURL(vsDir).toString().replace(/\/$/, '');
     const monacoBaseUrl = `${pathToFileURL(monacoMinDir).toString().replace(/\/$/, '')}/`;
     const workerMainUrl = pathToFileURL(path.join(vsDir, 'base', 'worker', 'workerMain.js')).toString();
 
-    win.MonacoEnvironment = {
-      globalAPI: true,
-      getWorkerUrl: () => {
-        const bootstrap = `
-self.MonacoEnvironment = { baseUrl: ${JSON.stringify(monacoBaseUrl)} };
-importScripts(${JSON.stringify(workerMainUrl)});
-`;
-        return `data:text/javascript;charset=utf-8,${encodeURIComponent(bootstrap)}`;
-      }
-    };
-
-    amdRequire.config({ paths: { vs: vsUrl } });
-
-    await new Promise<void>((resolve, reject) => {
-      try {
-        amdRequire(
-          ['vs/editor/editor.main'],
-          () => resolve(),
-          (error: unknown) => reject(error)
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-
-    monacoRef = win.monaco || null;
-    if (!monacoRef) throw new Error('monaco-global-missing');
+    monacoRef = await loadConsoleMonacoAmd(
+      win,
+      pathToFileURL(loaderPath).toString(),
+      vsUrl,
+      monacoBaseUrl,
+      workerMainUrl
+    );
     win.__dmMonacoReady = true;
+
     return monacoRef;
   })();
   win.__dmMonacoLoadPromise = monacoLoadPromise;

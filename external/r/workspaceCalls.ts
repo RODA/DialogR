@@ -44,11 +44,12 @@ export const registerWorkspaceCalls = function(
     });
 
     const baseBindObjects = options.api.bindObjects;
-    options.api.bindObjects = function(parameters) {
-        if (typeof baseBindObjects === "function") {
-            baseBindObjects(parameters);
-        }
 
+    if (typeof baseBindObjects === "function") {
+        return;
+    }
+
+    options.api.bindObjects = function(parameters) {
         const refresh = async function(): Promise<void> {
             await bindings.bindObjects(parameters);
         };
