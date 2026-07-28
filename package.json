@@ -19,7 +19,7 @@
         "@dialogforge/core": "file:../DialogForge/dist/sdk/core"
     },
     "name": "dialogr",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "description": "A dialog-driven desktop application for statistical analysis in R.",
     "author": "Adrian Dusa",
     "contributors": [
@@ -89,9 +89,26 @@
             "server-r",
             "webr"
         ],
-        "autoUpdate": {
-            "releaseRepository": "RODA/DialogR",
-            "releaseTag": "ms"
+        "webRPackageLibrary": {
+            "releaseRepository": "dusadrian/binaries",
+            "mountpoint": "/.dialogforge-library",
+            "recommendedPackages": [
+                "admisc",
+                "declared",
+                "DDIwR",
+                "knitr",
+                "evaluate",
+                "highr",
+                "xfun",
+                "yaml"
+            ],
+            "requiredForNativeHelpExamples": [
+                "knitr",
+                "evaluate",
+                "highr",
+                "xfun",
+                "yaml"
+            ]
         }
     }
 }
