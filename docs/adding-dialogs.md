@@ -78,12 +78,14 @@ Use this shape:
     "label": "Example dialog",
     "owner": "products/DialogR",
     "targetHome": "products/DialogR/dialogs/r/exampleDialog/",
-    "sourceReference": "DialogCreator package or source note",
     "sourceFile": "r/exampleDialog/dialog.json",
     "status": "source-imported",
     "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
 }
 ```
+
+`sourceFile` is the only path here that is resolved, and it is relative to the
+`dialogs/` directory.
 
 If the dialog requires packages directly, prefer defining them on the matching
 capability in `capabilities/product-capabilities.json`. Existing package-heavy

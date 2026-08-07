@@ -1,86 +1,106 @@
-let activeDataset = '';
-let allColumns = [];
+// Go to a variable or a case in the dataset editor.
+//
+// This dialog runs no command. It asks the host to move the dataset editor,
+// which is a host feature rather than part of the scripting API, so every
+// step goes through callExternal().
 
-const asText = (value) => String(value == null ? '' : value).trim();
-const currentMode = () => {
-    const selected = getSelected(vc_choice);
-    const mode = Array.isArray(selected) && selected.length ? asText(selected[0]).toLowerCase() : '';
-    return mode === 'case' ? 'case' : 'variable';
+let active_dataset = '';
+let all_variables = [];
+
+
+// --------------------------------------------------------------- the two modes
+
+const goingToCase = () => getSelected(vc_choice)[0] === 'Case';
+
+const showMode = () => {
+  // Each mode enables its own half of the dialog.
+  enable(label1, goingToCase());
+  enable(caseno, goingToCase());
+  enable(search, !goingToCase());
+  enable(c_variables, !goingToCase());
+
+  clearError(goingToCase() ? c_variables : caseno);
 };
-const applyMode = () => {
-    if (currentMode() === 'case') {
-        enable(label1);
-        enable(caseno);
-        disable(search);
-        disable(c_variables);
-        clearError(caseno);
-        return;
-    }
-    disable(label1);
-    disable(caseno);
-    enable(search);
-    enable(c_variables);
+
+// The search box narrows the list, keeping the current choice when it survives.
+const showVariables = () => {
+  const filter = String(getValue(search) || '').trim().toLowerCase();
+  const previous = getSelected(c_variables)[0] || '';
+
+  const matching = filter
+    ? all_variables.filter((name) => String(name).toLowerCase().includes(filter))
+    : all_variables.slice();
+
+  clearContent(c_variables);
+  setValue(c_variables, matching);
+
+  if (matching.length === 0) {
     clearError(c_variables);
-};
-const fillVariableList = () => {
-    const filter = asText(getValue(search)).toLowerCase();
-    const previousSelection = getSelected(c_variables);
-    const previousName = Array.isArray(previousSelection) && previousSelection.length ? asText(previousSelection[0]) : '';
-    const next = !filter
-        ? allColumns.slice()
-        : allColumns.filter((name) => String(name).toLowerCase().includes(filter));
-    clearContent(c_variables);
-    setValue(c_variables, next);
-    if (!next.length) {
-        clearError(c_variables);
-        return;
-    }
-    if (previousName && next.includes(previousName)) {
-        setSelected(c_variables, [previousName]);
-        return;
-    }
-    setSelected(c_variables, [next[0]]);
-};
-const initializeDialog = async () => {
-    const state = await getDatasetEditorState();
-    const context = await consumeGoToContext();
-    activeDataset = asText((context && context.datasetName) || (state && state.datasetName));
-    allColumns = activeDataset ? listColumns(activeDataset) : [];
-    const mode = asText(context && context.mode).toLowerCase() === 'case' ? 'Case' : 'Variable';
-    setSelected(vc_choice, [mode]);
-    fillVariableList();
-    applyMode();
-    if (currentMode() === 'case') {
-        setValue(caseno, '1');
-    }
+    return;
+  }
+
+  setSelected(c_variables, [matching.includes(previous) ? previous : matching[0]]);
 };
 
-onChange(vc_choice, applyMode);
+
+// ------------------------------------------------------------------- the data
+
+const openDialog = async () => {
+  const [state, context] = await Promise.all([
+    callExternal('getDatasetEditorState'),
+    callExternal('consumeGoToContext')
+  ]);
+
+  // The editor says which dataset is open, and may ask for a specific mode.
+  active_dataset = String(
+    (context && context.datasetName) || (state && state.datasetName) || ''
+  ).trim();
+
+  all_variables = active_dataset ? listColumns(active_dataset) : [];
+
+  const wanted = String((context && context.mode) || '').toLowerCase();
+  setSelected(vc_choice, [wanted === 'case' ? 'Case' : 'Variable']);
+
+  showVariables();
+  showMode();
+
+  if (goingToCase()) {
+    setValue(caseno, '1');
+  }
+};
+
+
+// --------------------------------------------------------- user interactions
+
+onChange(vc_choice, showMode);
+
 onChange(search, () => {
-    clearError(c_variables);
-    fillVariableList();
+  clearError(c_variables);
+  showVariables();
 });
 
 onClick(button1, async () => {
-    if (currentMode() === 'case') {
-        const raw = asText(getValue(caseno));
-        const parsed = Math.round(Number(raw || 1));
-        const caseNumber = Number.isFinite(parsed) ? Math.max(1, parsed) : 1;
-        clearError(caseno);
-        await gotoDatasetEditorCase(caseNumber);
-        closeDialog();
-        return;
-    }
+  if (goingToCase()) {
+    const wanted = Math.round(Number(getValue(caseno) || 1));
+    const caseNumber = Number.isFinite(wanted) ? Math.max(1, wanted) : 1;
 
-    const selected = getSelected(c_variables);
-    const variableName = Array.isArray(selected) && selected.length ? asText(selected[0]) : '';
-    if (!variableName) {
-        addError(c_variables, 'No variable selected');
-        return;
-    }
-    clearError(c_variables);
-    await gotoDatasetEditorVariable(variableName);
+    clearError(caseno);
+    await callExternal('gotoDatasetEditorCase', { caseNumber: caseNumber });
     closeDialog();
+    return;
+  }
+
+  const variableName = getSelected(c_variables)[0] || '';
+
+  if (!variableName) {
+    addError(c_variables, 'No variable selected');
+    return;
+  }
+
+  clearError(c_variables);
+  await callExternal('gotoDatasetEditorVariable', { variableName: variableName });
+  closeDialog();
 });
 
-void initializeDialog();
+
+void openDialog();

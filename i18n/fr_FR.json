@@ -279,6 +279,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Comparer les moyennes et les proportions",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "Test t à un échantillon",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "Test t pour échantillons indépendants",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "ANOVA à un facteur",
   "menu.root.data.sortby": "Trier les observations",
   "menu.root.data.splitby": "Diviser par groupes",
   "menu.root.data.select": "Sous-ensemble d’observations et de variables",

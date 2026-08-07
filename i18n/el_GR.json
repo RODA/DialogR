@@ -278,6 +278,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Σύγκριση μέσων τιμών και αναλογιών",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "t-test ενός δείγματος",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "t-test ανεξάρτητων δειγμάτων",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "Μονοπαραγοντική ANOVA",
   "menu.root.analyze.descriptive_statistics": "Περιγραφική στατιστική",
   "menu.root.analyze.descriptive_statistics.frequencies": "Πίνακας συχνοτήτων",
   "menu.root.analyze.descriptive_statistics.crosstable": "Πίνακας συνάφειας",

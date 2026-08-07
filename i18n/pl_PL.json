@@ -279,6 +279,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Porównaj średnie i proporcje",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "Test t dla jednej próby",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "Test t dla prób niezależnych",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "Jednoczynnikowa ANOVA",
   "menu.root.data.sortby": "Sortuj obserwacje",
   "menu.root.data.splitby": "Podziel według grup",
   "menu.root.data.select": "Podzbiór obserwacji i zmiennych",

@@ -1,25 +1,83 @@
+// Sort cases.
+//
+// The command itself is assembled by the host, which knows how a sort is
+// expressed for the current dataset. This dialog decides which variables take
+// part and in which order, then asks for the command to be rebuilt.
+
 let selected_dataset = '<dataset>';
 let all_variables = [];
 let sorting_variables = [];
-let selection_sync_in_progress = false;
+
+// Moving variables between the two lists changes their selection, which would
+// otherwise look like the user clicking. Set while the lists are refilled.
+let refilling_lists = false;
+
+
+// ---------------------------------------------------------------- the command
+
+const buildCommand = () => callExternal('buildSortByCommand', {
+  dataset: selected_dataset,
+  sorting: sorting_variables,
+  createNew: isChecked(cb_new),
+  datasetName: getValue(dsname)
+});
+
+const showCommand = async () => {
+  // The new dataset needs a name only when one is being created.
+  enable(dsname, isChecked(cb_new));
+
+  if (!isChecked(cb_new)) {
+    clearError(dsname);
+  }
+
+  updateSyntax(selected_dataset === '<dataset>' ? '' : await buildCommand());
+};
+
+// The button moves variables to the sorting list, or back out of it.
+const showButtonDirection = async () => callExternal('setSortByButtonDirection', {
+  direction: await callExternal('getSortByButtonDirection', {
+    choiceSelected: getSelected(c_sorting),
+    variableSelected: getSelected(c_variables)
+  })
+});
+
+
+// ------------------------------------------------------------------- the data
+
+const refillLists = async () => {
+  refilling_lists = true;
+
+  setValue(c_variables, await callExternal('getSortByAvailableVariables', {
+    variables: all_variables,
+    sorting: sorting_variables
+  }));
+  setValue(c_sorting, await callExternal('getSortByChoiceItems', {
+    sorting: sorting_variables
+  }));
+
+  refilling_lists = false;
+};
+
+enableSearch(c_datasets, c_variables);
 
 callExternal('rememberVariableSelections', {
   source: c_datasets,
   dependents: [c_variables, c_sorting]
 });
-enableSearch(c_datasets, c_variables);
+
 const objectBinding = bindObjects({
   dialog: 'sortby',
   datasets: c_datasets
 });
+
 disable(dsname);
 callExternal('setSortByButtonDirection', { direction: 'right' });
 
+
+// --------------------------------------------------------- user interactions
+
 onChange(c_datasets, async () => {
-  clearError(c_datasets);
-  clearError(c_variables);
-  clearError(c_sorting);
-  clearError(dsname);
+  clearError(c_datasets, c_variables, c_sorting, dsname);
   selected_dataset = getSelected(c_datasets)[0] || '<dataset>';
 
   if (selected_dataset === '<dataset>') {
@@ -37,88 +95,42 @@ onChange(c_datasets, async () => {
     variables: all_variables
   });
 
-  selection_sync_in_progress = true;
-  setValue(c_variables, await callExternal('getSortByAvailableVariables', {
-    variables: all_variables,
-    sorting: sorting_variables
-  }));
-  setValue(c_sorting, await callExternal('getSortByChoiceItems', {
-    sorting: sorting_variables
-  }));
-  selection_sync_in_progress = false;
-
-  callExternal('setSortByButtonDirection', {
-    direction: await callExternal('getSortByButtonDirection', {
-      choiceSelected: getSelected(c_sorting),
-      variableSelected: getSelected(c_variables)
-    })
-  });
-
-  updateSyntax(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
+  await refillLists();
+  await showButtonDirection();
+  await showCommand();
 });
 
+// Only one of the two lists holds a selection at a time.
 onChange(c_variables, async () => {
   clearError(c_variables);
-  if (selection_sync_in_progress) return;
-  selection_sync_in_progress = true;
+  if (refilling_lists) return;
+
+  refilling_lists = true;
   setSelected(c_sorting, []);
-  selection_sync_in_progress = false;
-  callExternal('setSortByButtonDirection', {
-    direction: await callExternal('getSortByButtonDirection', {
-      choiceSelected: getSelected(c_sorting),
-      variableSelected: getSelected(c_variables)
-    })
-  });
+  refilling_lists = false;
+
+  await showButtonDirection();
 });
 
 onChange(c_sorting, async () => {
   clearError(c_sorting);
-  if (selection_sync_in_progress) return;
+  if (refilling_lists) return;
+
   sorting_variables = getSelected(c_sorting);
-  selection_sync_in_progress = true;
+
+  refilling_lists = true;
   setSelected(c_variables, []);
-  selection_sync_in_progress = false;
-  callExternal('setSortByButtonDirection', {
-    direction: await callExternal('getSortByButtonDirection', {
-      choiceSelected: getSelected(c_sorting),
-      variableSelected: getSelected(c_variables)
-    })
-  });
-  updateSyntax(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
+  refilling_lists = false;
+
+  await showButtonDirection();
+  await showCommand();
 });
 
-onChange(cb_new, async () => {
-  if (isChecked(cb_new)) enable(dsname);
-  else {
-    disable(dsname);
-    clearError(dsname);
-  }
-  updateSyntax(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
-});
+onChange(cb_new, showCommand);
 
 onChange(dsname, async () => {
   clearError(dsname);
-  updateSyntax(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
+  await showCommand();
 });
 
 onClick(addremove, async () => {
@@ -137,34 +149,17 @@ onClick(addremove, async () => {
     return;
   }
 
-  selection_sync_in_progress = true;
-  setValue(c_variables, await callExternal('getSortByAvailableVariables', {
-    variables: all_variables,
-    sorting: sorting_variables
-  }));
-  setValue(c_sorting, await callExternal('getSortByChoiceItems', {
-    sorting: sorting_variables
-  }));
-  selection_sync_in_progress = false;
-
-  callExternal('setSortByButtonDirection', {
-    direction: await callExternal('getSortByButtonDirection', {
-      choiceSelected: getSelected(c_sorting),
-      variableSelected: getSelected(c_variables)
-    })
-  });
-
-  updateSyntax(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
+  await refillLists();
+  await showButtonDirection();
+  await showCommand();
 });
 
 onClick(b_run, async () => {
   selected_dataset = getSelected(c_datasets)[0] || '<dataset>';
-  if (getSelected(c_sorting).length > 0) sorting_variables = getSelected(c_sorting);
+
+  if (getSelected(c_sorting).length > 0) {
+    sorting_variables = getSelected(c_sorting);
+  }
 
   if (selected_dataset === '<dataset>') {
     addError(c_datasets, 'No dataset selected');
@@ -176,12 +171,7 @@ onClick(b_run, async () => {
     return;
   }
 
-  const result = await run(await callExternal('buildSortByCommand', {
-    dataset: selected_dataset,
-    sorting: sorting_variables,
-    createNew: isChecked(cb_new),
-    datasetName: getValue(dsname)
-  }));
+  const result = await run(await buildCommand());
 
   if (result && result.ok) {
     callExternal('refreshDatasetEditor', {
@@ -206,8 +196,16 @@ onClick(b_reset, () => {
   clearContent(c_variables, c_sorting);
   callExternal('setSortByButtonDirection', { direction: 'right' });
   updateSyntax('');
-  if (getSelected(c_datasets).length > 0) triggerChange(c_datasets);
+
+  if (getSelected(c_datasets).length > 0) {
+    triggerChange(c_datasets);
+  }
 });
 
-if (getSelected(c_datasets).length > 0) triggerChange(c_datasets);
-else updateSyntax('');
+
+// The dialog opens with whatever the host restored, or with an empty command.
+if (getSelected(c_datasets).length > 0) {
+  triggerChange(c_datasets);
+} else {
+  updateSyntax('');
+}

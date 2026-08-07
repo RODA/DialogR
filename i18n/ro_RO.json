@@ -279,6 +279,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Comparare medii și proporții",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "Test t pentru un singur eșantion",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "Test t pentru eșantioane independente",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "ANOVA unifactorială",
   "menu.root.data.sortby": "Sortare cazuri",
   "menu.root.data.splitby": "Separare pe grupuri",
   "menu.root.data.select": "Subseturi de cazuri și variabile",

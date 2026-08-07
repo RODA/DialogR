@@ -114,6 +114,14 @@
                         "type": "product-dialog",
                         "dialog": "independentsamplesttest",
                         "capability": "DialogR.dialog.independentsamplesttest"
+                    },
+                    {
+                        "id": "DialogROneWayANOVA",
+                        "labelKey": "menu.root.analyze.compare_means_and_proportions.anovahv",
+                        "label": "One-way ANOVA",
+                        "type": "product-dialog",
+                        "dialog": "anovahv",
+                        "capability": "DialogR.dialog.anovahv"
                     }
                 ]
             }

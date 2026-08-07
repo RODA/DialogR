@@ -61,6 +61,12 @@
         "rPackages": ["statistics"]
     },
     {
+        "capability": "DialogR.dialog.anovahv",
+        "label": "One-way ANOVA",
+        "requiredRuntime": ["commands.invisible", "commands.visible", "workspace.objects", "workspace.activeDataset", "tabular.read", "dependencies.packages"],
+        "rPackages": ["statistics"]
+    },
+    {
         "capability": "DialogR.packages.required",
         "label": "Required DialogR package management",
         "requiredRuntime": ["commands.visible", "dependencies.packages"],

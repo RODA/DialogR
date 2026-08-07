@@ -41,6 +41,23 @@ export const registerDatasetStateCalls = function(
         return;
     }
 
+    // A dataset carrying an active filter is referred to in generated commands
+    // by the subset() call that produces it, so dialogs can keep using
+    // getReference() without knowing about filters at all.
+    if (options.api.registerObjectReferenceResolver) {
+        options.api.registerObjectReferenceResolver(async (objectName) => {
+            const dataset = normalizeDatasetName(objectName);
+
+            if (!dataset) {
+                return "";
+            }
+
+            const state = await options.invoke("filter:getState", { dataset });
+
+            return normalizeFilterDatasetState(state).command || dataset;
+        });
+    }
+
     register("getSplitByState", async (parameters) => {
         const payload = asPayloadRecord(parameters);
         const dataset = normalizeDatasetName(payload.dataset);

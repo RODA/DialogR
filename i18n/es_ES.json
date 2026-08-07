@@ -279,6 +279,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Comparar medias y proporciones",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "Prueba t para una muestra",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "Prueba t para muestras independientes",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "ANOVA de un factor",
   "menu.root.data.sortby": "Ordenar casos",
   "menu.root.data.splitby": "Dividir por grupos",
   "menu.root.data.select": "Subconjunto de casos y variables",

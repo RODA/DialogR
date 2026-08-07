@@ -17,6 +17,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Compare means and proportions",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "One-sample t-test",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "Independent samples t-test",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "One-way ANOVA",
   "menu.root.packages": "Packages",
   "menu.root.packages.install_required_r_packages": "Install required R packages",
   "menu.root.packages.update_dev_versions": "Update development versions",

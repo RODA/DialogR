@@ -1,10 +1,20 @@
-// Independent samples t-test.
+// One-way ANOVA.
 //
 // The dialog builds a command like:
 //
 //   using(
 //     ess,
-//     t.testhv(F3_agea ~ F2_gndr)
+//     anovahv(F3_agea ~ F2_gndr)
+//   )
+//
+// and, when pairwise comparisons are asked for, a block of two statements:
+//
+//   using(
+//     ess,
+//     {
+//       anovahv(F3_agea ~ F2_gndr)
+//       pairwise.t.test(F3_agea, F2_gndr, p.adjust.method = "bonferroni")
+//     }
 //   )
 
 let selected_dataset = '<dataset>';
@@ -14,29 +24,15 @@ let selected_groupvar = '<variable>';
 
 // ---------------------------------------------------------------- the command
 
-const chosenAlternative = () => {
-  if (isChecked(r_left)) return 'less';
-  if (isChecked(r_right)) return 'greater';
-  return 'two.sided';
-};
-
 const confidenceLevel = () => {
   const percent = Number(getValue(input1)) || 95;
   return percent / 100;
 };
 
-const buildCommand = () => {
-  if (selected_dataset === '<dataset>') return '';
-  if (selected_testvar === '<variable>') return '';
-  if (selected_groupvar === '<variable>') return '';
-
+const anovaCall = () => {
   // Only the settings that differ from the R defaults are written out, so the
   // command stays as short as the user's choices allow.
   const args = [selected_testvar + ' ~ ' + selected_groupvar];
-
-  if (chosenAlternative() !== 'two.sided') {
-    args.push('alternative = "' + chosenAlternative() + '"');
-  }
 
   // The homogeneity test decides about equal variances on its own, so
   // var.equal is only written when the user answers that question directly.
@@ -48,16 +44,42 @@ const buildCommand = () => {
     args.push('conf.level = ' + confidenceLevel());
   }
 
-  return call('using', [
-    getReference(c_datasets),
-    't.testhv(' + args.join(', ') + ')'
-  ]);
+  return 'anovahv(' + args.join(', ') + ')';
+};
+
+// pairwise.t.test() takes the response and the groups as two separate
+// arguments, not as a formula.
+const pairwiseCall = () => {
+  const method = getValue(pam) || 'bonferroni';
+
+  return 'pairwise.t.test('
+    + selected_testvar + ', '
+    + selected_groupvar
+    + ', p.adjust.method = "' + method + '")';
+};
+
+const buildCommand = () => {
+  if (selected_dataset === '<dataset>') return '';
+  if (selected_testvar === '<variable>') return '';
+  if (selected_groupvar === '<variable>') return '';
+
+  // The test on its own is a single call. Adding the post-hoc comparisons
+  // turns it into a block, so both run against the same data.
+  const analysis = isChecked(pairwise)
+    ? block([anovaCall(), pairwiseCall()])
+    : anovaCall();
+
+  return call('using', [getReference(c_datasets), analysis]);
 };
 
 const showCommand = () => {
   // The Yes / No answer only applies when the homogeneity test is switched off.
   enable(r_yes, !isChecked(hvtest));
   enable(r_no, !isChecked(hvtest));
+
+  // The adjustment method only applies to the pairwise comparisons.
+  enable(pam, isChecked(pairwise));
+
   updateSyntax(buildCommand());
 };
 
@@ -78,7 +100,7 @@ callExternal('rememberVariableSelections', {
 });
 
 bindObjects({
-  dialog: 'independentsamplesttest',
+  dialog: 'anovahv',
   datasets: c_datasets
 });
 
@@ -125,9 +147,10 @@ onChange(input1, () => {
   showCommand();
 });
 
-onChange(alternative, showCommand);
 onChange(varequal, showCommand);
 onChange(hvtest, showCommand);
+onChange(pairwise, showCommand);
+onChange(pam, showCommand);
 
 onClick(b_run, () => {
   readSelections();
@@ -138,7 +161,7 @@ onClick(b_run, () => {
   }
 
   if (selected_testvar === '<variable>') {
-    addError(c_testvar, 'No test variable selected');
+    addError(c_testvar, 'No response variable selected');
     return;
   }
 
@@ -154,9 +177,10 @@ onClick(b_reset, () => {
   resetDialog();
   readSelections();
   setValue(input1, '95');
-  check(r_twosided);
-  check(r_no);
   check(hvtest);
+  check(r_no);
+  uncheck(pairwise);
+  setValue(pam, 'bonferroni');
   showCommand();
 });
 

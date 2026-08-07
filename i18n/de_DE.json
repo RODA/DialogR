@@ -279,6 +279,7 @@
   "menu.root.analyze.compare_means_and_proportions": "Mittelwerte und Anteile vergleichen",
   "menu.root.analyze.compare_means_and_proportions.onesamplettest": "Einstichproben-t-Test",
   "menu.root.analyze.compare_means_and_proportions.independentsamplesttest": "t-Test für unabhängige Stichproben",
+  "menu.root.analyze.compare_means_and_proportions.anovahv": "Einfaktorielle ANOVA",
   "menu.root.data.sortby": "Fälle sortieren",
   "menu.root.data.splitby": "Nach Gruppen aufteilen",
   "menu.root.data.select": "Fälle und Variablen auswählen",
