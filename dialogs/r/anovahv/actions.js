@@ -4,7 +4,7 @@
 //
 //   using(
 //     ess,
-//     anovahv(F3_agea ~ F2_gndr)
+//     anovahv(F3_agea ~ F2_gndr, numsum = TRUE)
 //   )
 //
 // and, when pairwise comparisons are asked for, a block of two statements:
@@ -12,7 +12,7 @@
 //   using(
 //     ess,
 //     {
-//       anovahv(F3_agea ~ F2_gndr)
+//       print(anovahv(F3_agea ~ F2_gndr, numsum = TRUE))
 //       pairwise.t.test(F3_agea, F2_gndr, p.adjust.method = "bonferroni")
 //     }
 //   )
@@ -20,6 +20,9 @@
 let selected_dataset = '<dataset>';
 let selected_testvar = '<variable>';
 let selected_groupvar = '<variable>';
+
+// Set by the Split by dialog for this dataset.
+let selected_split = [];
 
 
 // ---------------------------------------------------------------- the command
@@ -44,6 +47,10 @@ const anovaCall = () => {
     args.push('conf.level = ' + confidenceLevel());
   }
 
+  if (isChecked(numsum)) {
+    args.push('numsum = TRUE');
+  }
+
   return 'anovahv(' + args.join(', ') + ')';
 };
 
@@ -58,18 +65,30 @@ const pairwiseCall = () => {
     + ', p.adjust.method = "' + method + '")';
 };
 
+const splitByArgument = () => {
+  if (selected_split.length === 0) return '';
+  if (selected_split.length === 1) return 'split.by = ' + selected_split[0];
+
+  return 'split.by = c(' + selected_split.join(', ') + ')';
+};
+
 const buildCommand = () => {
   if (selected_dataset === '<dataset>') return '';
   if (selected_testvar === '<variable>') return '';
   if (selected_groupvar === '<variable>') return '';
 
   // The test on its own is a single call. Adding the post-hoc comparisons
-  // turns it into a block, so both run against the same data.
+  // turns it into a block. The first result must be printed explicitly because
+  // only the block's final expression is auto-printed by R.
   const analysis = isChecked(pairwise)
-    ? block([anovaCall(), pairwiseCall()])
+    ? block(['print(' + anovaCall() + ')', pairwiseCall()])
     : anovaCall();
 
-  return call('using', [getReference(c_datasets), analysis]);
+  return call('using', [
+    getReference(c_datasets),
+    analysis,
+    splitByArgument()
+  ]);
 };
 
 const showCommand = () => {
@@ -90,6 +109,21 @@ const readSelections = () => {
   selected_dataset = getSelected(c_datasets)[0] || '<dataset>';
   selected_testvar = getSelected(c_testvar)[0] || '<variable>';
   selected_groupvar = getSelected(c_groupvar)[0] || '<variable>';
+};
+
+const readDatasetState = async () => {
+  if (selected_dataset === '<dataset>') {
+    selected_split = [];
+    return;
+  }
+
+  const split_state = await callExternal('getSplitByState', {
+    dataset: selected_dataset
+  });
+
+  selected_split = split_state && Array.isArray(split_state.grouping)
+    ? split_state.grouping
+    : [];
 };
 
 enableSearch(c_testvar, c_groupvar);
@@ -115,9 +149,12 @@ onChange(c_datasets, async () => {
     selected_testvar = '<variable>';
     selected_groupvar = '<variable>';
     clearContent(c_testvar, c_groupvar);
+    await readDatasetState();
     showCommand();
     return;
   }
+
+  await readDatasetState();
 
   const variables = await callExternal('getDatasetVariablesForDialog', {
     dataset: selected_dataset
@@ -149,10 +186,11 @@ onChange(input1, () => {
 
 onChange(varequal, showCommand);
 onChange(hvtest, showCommand);
+onChange(numsum, showCommand);
 onChange(pairwise, showCommand);
 onChange(pam, showCommand);
 
-onClick(b_run, () => {
+onClick(b_run, async () => {
   readSelections();
 
   if (selected_dataset === '<dataset>') {
@@ -170,6 +208,7 @@ onClick(b_run, () => {
     return;
   }
 
+  await readDatasetState();
   run(buildCommand());
 });
 

@@ -19,6 +19,7 @@
             "en_US": {
                 "messages.noDatasetSelected": "No dataset selected",
                 "messages.noGroupVariableSelected": "No group variable selected",
+                "messages.noResponseVariableSelected": "No response variable selected",
                 "dialog.title": "One-way ANOVA",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Dataset",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Response variable",
@@ -32,12 +33,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "No",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Homogeneity of variance test",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Pairwise comparisons of means",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "No response variable selected"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "de_DE": {
                 "messages.noDatasetSelected": "Kein Datensatz ausgewählt",
                 "messages.noGroupVariableSelected": "Keine Gruppenvariable ausgewählt",
+                "messages.noResponseVariableSelected": "Keine Zielvariable ausgewählt",
                 "dialog.title": "Einfaktorielle ANOVA",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Datensatz",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Zielvariable",
@@ -51,12 +53,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "Nein",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test auf Varianzhomogenität",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Paarweise Mittelwertvergleiche",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "Keine Zielvariable ausgewählt"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "fr_FR": {
                 "messages.noDatasetSelected": "Aucun jeu de données sélectionné",
                 "messages.noGroupVariableSelected": "Aucune variable de groupe sélectionnée",
+                "messages.noResponseVariableSelected": "Aucune variable réponse sélectionnée",
                 "dialog.title": "ANOVA à un facteur",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Jeu de données",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Variable réponse",
@@ -70,12 +73,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "Non",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test d’homogénéité des variances",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparaisons deux à deux des moyennes",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "Aucune variable réponse sélectionnée"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "pl_PL": {
                 "messages.noDatasetSelected": "Nie wybrano zbioru danych",
                 "messages.noGroupVariableSelected": "Nie wybrano zmiennej grupującej",
+                "messages.noResponseVariableSelected": "Nie wybrano zmiennej zależnej",
                 "dialog.title": "Jednoczynnikowa ANOVA",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Zbiór danych",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Zmienna zależna",
@@ -89,12 +93,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "Nie",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test jednorodności wariancji",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Porównania parami średnich",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "Nie wybrano zmiennej zależnej"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "ro_RO": {
                 "messages.noDatasetSelected": "Niciun set de date selectat",
                 "messages.noGroupVariableSelected": "Nicio variabilă de grup selectată",
+                "messages.noResponseVariableSelected": "Nicio variabilă răspuns selectată",
                 "dialog.title": "ANOVA unifactorială",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Set de date",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Variabilă răspuns",
@@ -108,12 +113,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "Nu",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test de omogenitate a varianței",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparații perechi ale mediilor",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "Nicio variabilă răspuns selectată"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "el_GR": {
                 "messages.noDatasetSelected": "Δεν επιλέχθηκε σύνολο δεδομένων",
                 "messages.noGroupVariableSelected": "Δεν επιλέχθηκε μεταβλητή ομάδας",
+                "messages.noResponseVariableSelected": "Δεν επιλέχθηκε μεταβλητή απόκρισης",
                 "dialog.title": "Μονοπαραγοντική ANOVA",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Σύνολο δεδομένων",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Μεταβλητή απόκρισης",
@@ -127,12 +133,13 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "Όχι",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Έλεγχος ομοιογένειας διακυμάνσεων",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Ανά ζεύγη συγκρίσεις μέσων όρων",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "Δεν επιλέχθηκε μεταβλητή απόκρισης"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             },
             "es_ES": {
                 "messages.noDatasetSelected": "No se seleccionó ningún conjunto de datos",
                 "messages.noGroupVariableSelected": "No se seleccionó ninguna variable de grupo",
+                "messages.noResponseVariableSelected": "No se seleccionó ninguna variable de respuesta",
                 "dialog.title": "ANOVA de un factor",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Conjunto de datos",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Variable de respuesta",
@@ -146,8 +153,8 @@
                 "elements.2c109cf2-efe1-4149-812e-e1683faa7634.value": "No",
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Prueba de homogeneidad de varianzas",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparaciones por pares de medias",
-                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
-                "messages.noResponseVariableSelected": "No se seleccionó ninguna variable de respuesta"
+                "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
             }
         }
     },
@@ -503,7 +510,7 @@
             "type": "Checkbox",
             "nameid": "pairwise",
             "left": 27,
-            "top": 200,
+            "top": 225,
             "size": 14,
             "fill": true,
             "color": "#70a470",
@@ -519,7 +526,7 @@
             "type": "Label",
             "nameid": "label10",
             "left": 50,
-            "top": 200,
+            "top": 225,
             "maxWidth": 200,
             "lineClamp": 1,
             "fontColor": "#000000",
@@ -539,12 +546,48 @@
             "type": "Select",
             "nameid": "pam",
             "left": 52,
-            "top": 222,
+            "top": 247,
             "width": 120,
-            "value": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
+            "value": "bonferroni",
+            "dataValue": "bonferroni, BH, BY, fdr, holm, hochberg, hommel",
             "arrowColor": "#5b855b",
             "disabledColor": "#dedede",
             "isEnabled": false,
+            "isVisible": true,
+            "elementIds": ""
+        },
+        {
+            "id": "7f18f75f-73eb-4edd-b2be-f51284291e9c",
+            "type": "Checkbox",
+            "nameid": "numsum",
+            "left": 27,
+            "top": 200,
+            "size": 14,
+            "fill": true,
+            "color": "#70a470",
+            "borderColor": "#777777",
+            "disabledColor": "#dedede",
+            "isChecked": true,
+            "isEnabled": true,
+            "isVisible": true,
+            "elementIds": ""
+        },
+        {
+            "id": "0d7c2bdd-d007-48d8-946a-0ff70ebfa80c",
+            "type": "Label",
+            "nameid": "numsumlabel",
+            "left": 50,
+            "top": 200,
+            "maxWidth": 200,
+            "lineClamp": 1,
+            "fontColor": "#000000",
+            "value": "Numerical summaries",
+            "icon": "none",
+            "iconSize": 0,
+            "align": "left",
+            "valign": "top",
+            "rotate": 0,
+            "isEnabled": true,
             "isVisible": true,
             "elementIds": ""
         }
