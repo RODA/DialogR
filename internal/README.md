@@ -29,7 +29,9 @@ Actions:
 
 - `submit`: submit the product DMG with `xcrun notarytool submit`.
 - `history`: show the latest notarization submissions for the selected profile.
-- `staple`: staple the accepted ticket with `xcrun stapler staple`.
+- `staple`: staple and validate the app, rebuild the updater ZIP and blockmap,
+  refresh `latest-mac.yml`, staple and validate the DMG, and write final
+  SHA-256 and SHA-512 checksums.
 
 ## `deploy-web.sh`
 
