@@ -6,6 +6,8 @@
         "build": "node scripts/build-product.js",
         "check:build-ownership": "node scripts/check-build-ownership.js",
         "webr:library": "node scripts/download-webr-library.js",
+        "webr:manifest": "node scripts/generate-r-package-manifest.js",
+        "test:package-compatibility": "node scripts/test-r-package-compatibility.js",
         "verify:electron-dialog": "node tests/electron/verify-DialogR-dialog-window.js",
         "dev:web": "node scripts/run-dialogforge-web.js --replace-port",
         "build:web": "node scripts/run-dialogforge-web.js --build-only",
@@ -19,7 +21,7 @@
         "@dialogforge/core": "file:../DialogForge/dist/sdk/core"
     },
     "name": "dialogr",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "description": "A dialog-driven desktop application for statistical analysis in R.",
     "author": "Adrian Dusa",
     "contributors": [
@@ -90,7 +92,8 @@
             "webr"
         ],
         "webRPackageLibrary": {
-            "releaseRepository": "dusadrian/binaries",
+            "releaseRepository": "RODA/DialogR",
+            "releaseTag": "web",
             "mountpoint": "/.dialogforge-library",
             "recommendedPackages": [
                 "admisc",
