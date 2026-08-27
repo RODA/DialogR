@@ -10,6 +10,25 @@
         "DDIwR",
         "statistics"
     ],
+    "rPackageRequirements": [
+        {
+            "name": "admisc",
+            "minimumVersion": "0.41"
+        },
+        {
+            "name": "declared",
+            "minimumVersion": "0.27"
+        },
+        {
+            "name": "DDIwR",
+            "minimumVersion": "0.20"
+        },
+        {
+            "name": "statistics",
+            "minimumVersion": "0.14",
+            "minimumVersionExclusive": true
+        }
+    ],
     "uiActionCommandVisibility": "hidden",
     "runtimeStartup": {
         "providerId": "r",
@@ -23,39 +42,61 @@
             "jsonlite",
             "askpass",
             "later",
-            "digest",
-            "statistics"
+            "digest"
         ],
         "runiverse": [
             "admisc",
             "declared"
         ],
         "both": [
-            "DDIwR"
+            "DDIwR",
+            "statistics"
         ]
     },
     "dialogRuntimeRequirements": {
         "frequencies": {
             "rPackages": [
-                "admisc",
-                "declared"
+                {
+                    "name": "admisc",
+                    "minimumVersion": "0.41"
+                },
+                {
+                    "name": "declared",
+                    "minimumVersion": "0.27"
+                }
             ]
         },
         "summaries": {
             "rPackages": [
-                "admisc",
-                "declared"
+                {
+                    "name": "admisc",
+                    "minimumVersion": "0.41"
+                },
+                {
+                    "name": "declared",
+                    "minimumVersion": "0.27"
+                }
             ]
         },
         "independentsamplesttest": {
             "rPackages": [
-                "statistics"
+                {
+                    "name": "statistics",
+                    "minimumVersion": "0.14",
+                    "minimumVersionExclusive": true
+                }
             ]
         },
         "crosstable": {
             "rPackages": [
-                "admisc",
-                "declared"
+                {
+                    "name": "admisc",
+                    "minimumVersion": "0.41"
+                },
+                {
+                    "name": "declared",
+                    "minimumVersion": "0.27"
+                }
             ]
         }
     },

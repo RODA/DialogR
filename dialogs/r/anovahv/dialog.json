@@ -7,7 +7,14 @@
         "height": "330",
         "language": "en_US",
         "runtimeProvider": "R",
-        "fontSize": "12"
+        "fontSize": "12",
+        "rPackageRequirements": [
+            {
+                "name": "statistics",
+                "minimumVersion": "0.14",
+                "minimumVersionExclusive": true
+            }
+        ]
     },
     "syntax": {
         "command": "",

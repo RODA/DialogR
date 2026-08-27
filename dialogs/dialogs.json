@@ -17,8 +17,14 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "admisc",
-            "declared"
+            {
+                "name": "admisc",
+                "minimumVersion": "0.41"
+            },
+            {
+                "name": "declared",
+                "minimumVersion": "0.27"
+            }
         ]
     },
     {
@@ -30,8 +36,14 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "admisc",
-            "declared"
+            {
+                "name": "admisc",
+                "minimumVersion": "0.41"
+            },
+            {
+                "name": "declared",
+                "minimumVersion": "0.27"
+            }
         ]
     },
     {
@@ -52,7 +64,11 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "statistics"
+            {
+                "name": "statistics",
+                "minimumVersion": "0.14",
+                "minimumVersionExclusive": true
+            }
         ]
     },
     {
@@ -64,8 +80,14 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "admisc",
-            "declared"
+            {
+                "name": "admisc",
+                "minimumVersion": "0.41"
+            },
+            {
+                "name": "declared",
+                "minimumVersion": "0.27"
+            }
         ]
     },
     {
@@ -86,7 +108,11 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "statistics"
+            {
+                "name": "statistics",
+                "minimumVersion": "0.14",
+                "minimumVersionExclusive": true
+            }
         ]
     },
     {
@@ -98,7 +124,10 @@
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
         "rPackages": [
-            "admisc"
+            {
+                "name": "admisc",
+                "minimumVersion": "0.41"
+            }
         ]
     },
     {

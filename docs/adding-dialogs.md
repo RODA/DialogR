@@ -92,6 +92,50 @@ capability in `capabilities/product-capabilities.json`. Existing package-heavy
 dialogs, such as `frequencies` and `summaries`, declare their R package
 requirements there.
 
+Dialog package requirements are structured objects. When a dialog needs
+functionality introduced in a particular package release, declare the oldest
+compatible version directly in `rPackages`:
+
+```json
+{
+    "rPackages": [
+        {
+            "name": "statistics",
+            "minimumVersion": "0.14",
+            "minimumVersionExclusive": true
+        }
+    ]
+}
+```
+
+`minimumVersion` is optional when package presence is sufficient. String
+declarations are not part of the dialog metadata contract; DialogForge,
+DialogR, and DialogQCA use this structured format together.
+
+Set `minimumVersionExclusive` to `true` when the boundary is strict. Product
+settings also provide centrally maintained constraints that are applied when a
+dialog requests one of those packages, including dynamic dependencies.
+
+The same structured array belongs in the source dialog's
+`properties.rPackageRequirements`. DialogForge preserves source-owned
+requirements and merges them with the product registry, retaining the stricter
+boundary. In the Dialog Runtime Requirements window, authors can enter the
+same rule as `statistics > 0.14` or `admisc >= 0.41`.
+
+Use the oldest version known to provide the dialog's required behavior. Do not
+declare `latest`, and do not use the currently installed version unless it is
+also the genuine compatibility boundary. R versions are compared component by
+component, so `1.10.0` is newer than `1.9.9`, `1.0-10` is newer than `1.0-2`,
+and `1.0` is equivalent to `1.0.0`.
+
+DialogForge checks the requirements against the active R runtime. A missing or
+too-old package blocks execution and shows the required and installed versions.
+
+The WebR VFS download also regenerates
+`library/R/package-manifest.json` from the packaged `DESCRIPTION` files. Run
+`npm run webr:manifest` after replacing the local VFS pair without using the
+download command.
+
 ## Menu Placement
 
 DialogR menu entries live in:
