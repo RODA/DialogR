@@ -52,6 +52,9 @@ the current values are `linuxIntel=li`, `windowsIntel=wi`, `macosIntel=mi`,
 `macosSilicon=ms`, and `webrVFS=web`. Treat these as repo-specific examples
 for this product; other products or forks can use different values.
 
+DialogR's WebR VFS is owned by the `web` release in `RODA/DialogR`. Product
+builds and the `webr:library` command must use that release directly.
+
 Set `DIALOGFORGE_ROOT` when DialogForge is not a sibling checkout.
 
 ## CI Builds
