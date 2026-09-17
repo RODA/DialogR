@@ -29,11 +29,12 @@ Edit `scripts/manual/chapters.cjs`, then run
 `node scripts/manual/build-html.js` to regenerate the manual and optional R
 reference. Serving the generated website requires no build or dependencies.
 
-The illustrated examples use the author's local `~/ess9en.rds` (the available
-file is RDS, not RDA), with 1,846 Romanian ESS Round 9 cases and 345 variables.
-Analysis variables keep their `declared` classes, value labels, and missing
-definitions. The source dataset is not redistributed with this site. Examples
-are informed by `~/Descriptive.R` and `~/Inferential 2025-2026.R`.
+The illustrated examples use a locally prepared European Social Survey Round 9
+dataset for Romania, with 1,846 cases and 345 variables. Analysis variables
+keep their `declared` classes, value labels, and missing definitions. The source
+dataset is not redistributed with this site. Set `DIALOGR_MANUAL_DATA` to its
+local path when recapturing. Examples are informed by the accompanying
+descriptive and inferential teaching scripts.
 
 `scripts/manual/capture-screenshots.cjs` captures an isolated instance of the
 real Electron application using the sibling DialogForge Playwright/Electron

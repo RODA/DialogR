@@ -10,6 +10,7 @@ const { _electron } = require(path.join(forge, "node_modules/playwright"));
 const { findMainWindowPage } = require(path.join(forge, "tests/electron/product-launch"));
 const output = path.join(root, "docs/images/manual");
 const helpersOnly = process.env.DIALOGR_MANUAL_HELPERS_ONLY === "1";
+const captureIds = new Set(String(process.env.DIALOGR_MANUAL_CAPTURE_IDS || "").split(",").filter(Boolean));
 
 async function run() {
     fs.mkdirSync(output, { recursive: true });
@@ -28,6 +29,7 @@ async function run() {
         await main.waitForFunction(() => document.body.dataset.dialogForgeReady === "1", null, { timeout: 60000 });
         await main.waitForFunction(() => document.querySelector('#consoleTerminal [data-session-phase="ready"]'), null, { timeout: 60000 });
         const source = process.env.DIALOGR_MANUAL_DATA || path.join(os.homedir(), "ess9en.rds");
+        const displaySource = process.env.DIALOGR_MANUAL_DISPLAY_DATA || path.basename(source);
         const setup = 'library(declared); ess <- readRDS(' + JSON.stringify(source) + '); stopifnot(all(vapply(ess[c("B1_polintr", "B7_trstlgl", "F2_gndr", "F3_agea", "F14_domicil", "fweight")], inherits, logical(1), "declared")))';
         await main.evaluate(async command => {
             const view = document.getElementById("visibleCommandInput").dialogForgeConsoleInputView;
@@ -82,7 +84,8 @@ async function run() {
         };
         const manifest = [];
         for (const [id, controls] of Object.entries(selections)) {
-            if (helpersOnly && id !== "frequencies") continue;
+            if (captureIds.size && !captureIds.has(id)) continue;
+            if (!captureIds.size && helpersOnly && id !== "frequencies") continue;
             const pending = app.waitForEvent("window", { timeout: 15000 });
             const opened = await main.evaluate(id => window.dialogForge.openProductDialog(id), id);
             if (opened.status !== "opened") {
@@ -136,6 +139,10 @@ async function run() {
             }
             if (id === "import") {
                 await fill("input1", source);
+                await page.waitForTimeout(5000);
+                await page.locator('[data-control-name="input1"] textarea, [data-control-name="input1"] input').first().evaluate((input, filename) => {
+                    input.value = filename;
+                }, displaySource);
                 await fill("input2", "ess");
             }
             if (id === "frequencies") {
@@ -160,6 +167,10 @@ async function run() {
                 await page.mouse.move(5, 5);
             }
             await page.waitForTimeout(350);
+            await page.locator("#paper").evaluate(element => {
+                element.scrollTop = 0;
+                element.scrollLeft = 0;
+            });
             await page.locator("#paper").screenshot({ path: path.join(output, id + ".png") });
             manifest.push({ id, text: await page.locator("#paper").innerText() });
             console.log("Captured " + id);
