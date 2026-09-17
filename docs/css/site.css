@@ -37,7 +37,7 @@ p { margin: 0 0 18px; }
 .demo { background: white; border: 1px solid #c8d2db; border-radius: 12px; box-shadow: 0 24px 70px #263c5014; overflow: hidden; }
 .demo-top { padding: 16px 24px; background: var(--pale); display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; }
 .demo-body { padding: 28px; }
-.hero-dialog { display: block; width: 28.333em; max-width: 100%; height: auto; margin: 20px auto; }
+.hero-dialog { display: block; width: 340px; max-width: 100%; height: auto; margin: 20px auto; border: 1px solid #555d63; box-sizing: border-box; }
 .demo h3 { margin: 0 0 20px; }
 .demo label { display: block; font-size: 14px; margin: 16px 0; }
 .demo select { display: block; width: 100%; border: 1px solid #bcc8d1; background: white; border-radius: 4px; padding: 9px; margin-top: 7px; }
