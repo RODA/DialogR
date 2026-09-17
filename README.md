@@ -1,6 +1,12 @@
 # DialogR
 An R product for the DialogForge
 
+## Website and user manual
+
+The [product website](docs/index.html), [user manual](docs/usermanual.html), and
+[download and setup guide](docs/download.html) are in `docs/`. See
+[website maintenance](docs/website.md) for local preview and documentation sources.
+
 ## Public NPM Scripts
 
 Run these commands from the DialogR repository. DialogForge should normally be a
