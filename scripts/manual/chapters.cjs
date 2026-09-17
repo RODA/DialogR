@@ -53,6 +53,18 @@ module.exports = [
         "body": "<div class=\"callout\"><p><strong>Desktop: DialogR is a graphical layer on top of R.</strong> You are responsible for installing R itself and the necessary R packages. Installing DialogR alone does not provide the statistical runtime or the packages that perform its calculations and imports.</p><p><strong>WebR: R and the packages are supplied in the browser, but analysis is slower.</strong> You do not need to install R or its packages on your computer. The same dataset can be used; allow more time for the browser runtime, imports, and analyses.</p></div>\n            <h3>Complete desktop setup</h3><ol class=\"steps\"><li>Install <a href=\"https://cran.r-project.org/\">R</a> for your operating system.</li><li>Install the appropriate DialogR release from <a href=\"download.html\">Get DialogR</a> and start the application.</li><li>Confirm that DialogR is using your local R installation in the runtime settings.</li><li>Choose <strong>Packages → Install required R packages</strong>. Keep your internet connection available and wait for installation to finish.</li><li>If a dialog reports an old package, choose <strong>Packages → Update development versions</strong>. Read any installation error before trying again.</li></ol>\n            <h3>What the packages do</h3><div class=\"table-scroll\"><table><thead><tr><th>Package</th><th>What it supplies</th><th>Required version</th></tr></thead><tbody><tr><td>admisc</td><td>Working within datasets and recoding values.</td><td>0.41 or newer</td></tr><tr><td>declared</td><td>Labelled data, missing-value handling, tables, and summaries.</td><td>0.27 or newer</td></tr><tr><td>DDIwR</td><td>Importing data from other statistical software and Excel.</td><td>0.20 or newer</td></tr><tr><td>statistics</td><td>Independent-samples t-tests and one-way ANOVA with variance-homogeneity handling.</td><td>Newer than 0.14</td></tr></tbody></table></div>\n            <p>The setup workflow also installs supporting packages. They must be installed in the R installation used by DialogR. If Excel import reports a missing readxl package, that import dependency must be installed in the same R library. Further technical information is in the <a href=\"commands.html#packages\">optional package reference</a>.</p>"
     },
     {
+        "id": "languages",
+        "title": "Change the interface language",
+        "path": "Settings → General → Language",
+        "intro": "Work in English, German, Greek, Spanish, French, Polish, or Romanian. DialogR applies the change to the interface and every open dialog without restarting the application.",
+        "steps": [
+            "Open <strong>Settings</strong> and find <strong>General → Language</strong>.",
+            "Choose <strong>English</strong>, <strong>Deutsch</strong>, <strong>Ελληνικά</strong>, <strong>Español</strong>, <strong>Français</strong>, <strong>Polski</strong>, or <strong>Română</strong>.",
+            "Save the setting. Menus, editors, and open dialogs refresh immediately; there is no need to close or restart DialogR."
+        ],
+        "body": "<p>The language choice is kept for your next session. It changes the application interface, not variable names, value labels, or text stored in your dataset. Generated R commands also retain the function and variable names required by R.</p>"
+    },
+    {
         "id": "import",
         "title": "Import data",
         "path": "File → Import data",

@@ -23,6 +23,7 @@
 <a href="#finding-variables" data-chapter-link="finding-variables">Find and keep track of variables</a>
 <a href="#declared-values" data-chapter-link="declared-values">Labels and declared missing values</a>
 <a href="#packages" data-chapter-link="packages">Set up DialogR</a>
+<a href="#languages" data-chapter-link="languages">Change the interface language</a>
 <a href="#import" data-chapter-link="import">Import data</a>
 <a href="#dialog-reference" data-chapter-link="dialog-reference">Choose a task</a>
 <a href="#sortby" data-chapter-link="sortby">Sort cases</a>
@@ -41,13 +42,13 @@
 <a href="#commands" data-chapter-link="commands">Send a command to the syntax tab</a>
 <a href="#troubleshooting" data-chapter-link="troubleshooting">Troubleshooting and saving your work</a></div></aside><div class="manual-content" id="chapters"><p class="small search-status" role="status" id="search-status"></p><section id="getting-started" data-chapter>
     <h2>Your first analysis</h2>
-    
+
     <p>Follow a complete example with European Social Survey data: import a dataset, choose a variable, and produce a table that distinguishes valid responses from declared missing values. DialogR constructs the command for you.</p>
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/frequencies.png" data-enlarge aria-label="Enlarge screenshot: ESS political interest: the dataset and variable are selected, with Variable label enabled. Click Run."><img src="images/manual/frequencies.png" width="680" height="520" loading="lazy" alt="ESS political interest: the dataset and variable are selected, with Variable label enabled. Click Run."></a>
         <figcaption><span>Figure 1</span> ESS political interest: the dataset and variable are selected, with Variable label enabled. Click Run. <a href="images/manual/frequencies.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
-    
+
     <div class="callout"><p><strong>The dataset used in this guide.</strong> Screenshots use a prepared English-labelled <strong>European Social Survey Round 9 dataset for Romania</strong>, imported as <strong>ess</strong>. It contains 1,846 cases and 345 variables. The analysis variables retain their <strong>declared</strong> classes, labels, and missing-value definitions.</p><p>Use this prepared dataset if supplied with your course. You can also obtain data from the <a href="https://ess.sikt.no/">ESS Data Portal</a>; an original ESS download may have different variable names. The guide uses the prefixes in the prepared dataset, such as B1_polintr.</p></div><ol class="steps"><li><strong>Start DialogR.</strong> Complete <a href="#packages">desktop setup</a>, or wait for WebR to load.</li><li><strong>Choose File → Import data.</strong> Choose the European Social Survey Round 9 dataset for Romania, enter <strong>ess</strong> in <strong>Assign to</strong>, and click <strong>Import</strong>.</li><li><strong>Open the dataset editor.</strong> Explore the Data and Variables tabs. Keep the labels and missing-value definitions supplied with the file.</li><li><strong>Choose Analyze → Descriptive statistics → Frequency table.</strong> Select ess and <strong>B1_polintr</strong>, “How interested in politics”.</li><li><strong>Select Variable label and click Run.</strong> Leave Show values, Valid frequencies, and Observed only selected. No command needs to be typed.</li></ol>
     <div class="read-result"><h3>What to look for</h3><p>The four valid response categories contain 135, 380, 659, and 665 cases. Seven cases are labelled Refusal and treated as missing for the valid percentages. The overall total is 1,846; the valid total is 1,839. “Not at all interested” therefore represents 36.0% of all cases and 36.2% of valid responses.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 437px">
@@ -58,15 +59,15 @@
 
 <section id="from-spss" data-chapter>
     <h2>Get to know the data editor</h2>
-    
+
     <p>If you have used SPSS, the layout will be familiar. Switch between the observations themselves and the definitions of their variables.</p>
     <figure class="manual-figure" style="--screenshot-width: 900px">
         <a href="images/manual/data-view.png" data-enlarge aria-label="Enlarge screenshot: The ESS dataset in the Data editor. The bottom tabs switch between individual cases and variable definitions."><img src="images/manual/data-view.png" width="1800" height="1064" loading="lazy" alt="The ESS dataset in the Data editor. The bottom tabs switch between individual cases and variable definitions."></a>
         <figcaption><span>Figure 3</span> The ESS dataset in the Data editor. The bottom tabs switch between individual cases and variable definitions. <a href="images/manual/data-view.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
-    
+
     <h3>Work with the data</h3><p>Open ess from the workspace. The Data tab shows one respondent per row and one variable per column. Check the dataset name and dimensions at the top. The original file contains 1,846 rows and 345 columns; use the scrollbars or <a href="#goto">Go to</a> to reach a particular variable.</p>
-    
+
     <h3>Review the variables</h3><p>Click <strong>Variables</strong>. Rows now describe variables. Find <strong>B1_polintr</strong> to see its descriptive label and value definitions. The <strong>Values</strong> cell opens the editor for category labels and missing values.</p><figure class="manual-figure" style="--screenshot-width: 900px">
         <a href="images/manual/variable-view.png" data-enlarge aria-label="Enlarge screenshot: Variable view keeps names, types, labels, and value definitions together."><img src="images/manual/variable-view.png" width="1800" height="1064" loading="lazy" alt="Variable view keeps names, types, labels, and value definitions together."></a>
         <figcaption><span>Figure 4</span> Variable view keeps names, types, labels, and value definitions together. <a href="images/manual/variable-view.png" data-enlarge>Enlarge screenshot</a></figcaption>
@@ -75,15 +76,15 @@
 
 <section id="finding-variables" data-chapter>
     <h2>Find and keep track of variables</h2>
-    
+
     <p>Hundreds of variables need not mean hundreds of rows to search through. DialogR keeps selected variables pinned at the top of variable lists and lets you search within a list.</p>
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/selected-variables.png" data-enlarge aria-label="Enlarge screenshot: B1_polintr is selected and pinned at the top of the ESS variable list."><img src="images/manual/selected-variables.png" width="680" height="520" loading="lazy" alt="B1_polintr is selected and pinned at the top of the ESS variable list."></a>
         <figcaption><span>Figure 5</span> B1_polintr is selected and pinned at the top of the ESS variable list. <a href="images/manual/selected-variables.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
-    
+
     <h3>See what you have selected</h3><p>Selected variables move to the top of their container, so you can check your choices together without hunting through the dataset. Pinning changes the display of the list; it does not reorder the columns in your data.</p><h3>Search a variable list</h3><ol class="steps"><li>Move the mouse pointer over the variable list you want to search.</li><li>Press <strong>Ctrl + F</strong> on Windows or Linux, or <strong>Cmd + F</strong> on macOS. A search box appears above that list.</li><li>Type all or part of a variable name. For example, type <strong>trstlgl</strong> to find <strong>B7_trstlgl</strong>, trust in the legal system.</li><li>Select the variable you need. Press <strong>Escape</strong> to close the search and show the full list again.</li></ol>
-    
+
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/variable-search.png" data-enlarge aria-label="Enlarge screenshot: Search within the ESS variable list using part of a variable name."><img src="images/manual/variable-search.png" width="680" height="520" loading="lazy" alt="Search within the ESS variable list using part of a variable name."></a>
         <figcaption><span>Figure 6</span> Search within the ESS variable list using part of a variable name. <a href="images/manual/variable-search.png" data-enlarge>Enlarge screenshot</a></figcaption>
@@ -92,7 +93,7 @@
 
 <section id="declared-values" data-chapter>
     <h2>Labels and declared missing values</h2>
-    
+
     <p>DialogR uses the declared R package to solve a familiar problem in R: keeping several kinds of missing response distinct. Refusal, “don’t know”, and “not applicable” can each retain their own code and label while being treated as missing in supported calculations.</p>
     <figure class="manual-figure" style="--screenshot-width: 590px">
         <a href="images/manual/declared-missing.png" data-enlarge aria-label="Enlarge screenshot: Value definitions for ESS political interest. Refusal, Don’t know, and No answer have distinct labels and are marked as missing."><img src="images/manual/declared-missing.png" width="1180" height="860" loading="lazy" alt="Value definitions for ESS political interest. Refusal, Don’t know, and No answer have distinct labels and are marked as missing."></a>
@@ -109,16 +110,29 @@
 
 <section id="packages" data-chapter>
     <h2>Set up DialogR</h2>
-    
+
     <p>Choose desktop DialogR for local work, or WebR to start in a browser with the required packages already supplied.</p>
-    
-    
+
+
     <div class="callout"><p><strong>Desktop: DialogR is a graphical layer on top of R.</strong> You are responsible for installing R itself and the necessary R packages. Installing DialogR alone does not provide the statistical runtime or the packages that perform its calculations and imports.</p><p><strong>WebR: R and the packages are supplied in the browser, but analysis is slower.</strong> You do not need to install R or its packages on your computer. The same dataset can be used; allow more time for the browser runtime, imports, and analyses.</p></div>
             <h3>Complete desktop setup</h3><ol class="steps"><li>Install <a href="https://cran.r-project.org/">R</a> for your operating system.</li><li>Install the appropriate DialogR release from <a href="download.html">Get DialogR</a> and start the application.</li><li>Confirm that DialogR is using your local R installation in the runtime settings.</li><li>Choose <strong>Packages → Install required R packages</strong>. Keep your internet connection available and wait for installation to finish.</li><li>If a dialog reports an old package, choose <strong>Packages → Update development versions</strong>. Read any installation error before trying again.</li></ol>
             <h3>What the packages do</h3><div class="table-scroll"><table><thead><tr><th>Package</th><th>What it supplies</th><th>Required version</th></tr></thead><tbody><tr><td>admisc</td><td>Working within datasets and recoding values.</td><td>0.41 or newer</td></tr><tr><td>declared</td><td>Labelled data, missing-value handling, tables, and summaries.</td><td>0.27 or newer</td></tr><tr><td>DDIwR</td><td>Importing data from other statistical software and Excel.</td><td>0.20 or newer</td></tr><tr><td>statistics</td><td>Independent-samples t-tests and one-way ANOVA with variance-homogeneity handling.</td><td>Newer than 0.14</td></tr></tbody></table></div>
             <p>The setup workflow also installs supporting packages. They must be installed in the R installation used by DialogR. If Excel import reports a missing readxl package, that import dependency must be installed in the same R library. Further technical information is in the <a href="commands.html#packages">optional package reference</a>.</p>
-    
-    
+
+
+</section>
+
+<section id="languages" data-chapter>
+    <h2>Change the interface language</h2>
+    <p class="menu-path">Settings → General → Language</p>
+    <p>Work in English, German, Greek, Spanish, French, Polish, or Romanian. DialogR applies the change to the interface and every open dialog without restarting the application.</p>
+
+    <h3>To carry out this example</h3><ol class="steps"><li>Open <strong>Settings</strong> and find <strong>General → Language</strong>.</li>
+<li>Choose <strong>English</strong>, <strong>Deutsch</strong>, <strong>Ελληνικά</strong>, <strong>Español</strong>, <strong>Français</strong>, <strong>Polski</strong>, or <strong>Română</strong>.</li>
+<li>Save the setting. Menus, editors, and open dialogs refresh immediately; there is no need to close or restart DialogR.</li></ol>
+    <p>The language choice is kept for your next session. It changes the application interface, not variable names, value labels, or text stored in your dataset. Generated R commands also retain the function and variable names required by R.</p>
+
+
 </section>
 
 <section id="import" data-chapter>
@@ -136,18 +150,18 @@
     <h3>Supported files</h3><div class="table-scroll"><table><thead><tr><th>Source</th><th>File types</th></tr></thead><tbody><tr><td>SPSS</td><td>.sav, .zsav, .por</td></tr><tr><td>Stata</td><td>.dta</td></tr><tr><td>SAS</td><td>.sas7bdat, .xpt</td></tr><tr><td>Excel</td><td>.xls, .xlsx</td></tr><tr><td>Delimited text</td><td>.csv, .txt, .tsv, .tab, .dat</td></tr><tr><td>R dataset</td><td>.rds</td></tr></tbody></table></div>
             <h3>Prepare an Excel worksheet</h3><p>Put a single rectangular table on the first sheet. The first row should contain unique variable names, with one variable per column and one case per following row. Remove title rows, merged cells, subtotals, and blank rows within the table. Use consistent types of values in each column.</p><p>The dialog does not offer a sheet selector. Move the intended table to the first sheet, or save it as CSV. Optional DDIwR metadata sheets are described in the <a href="commands.html#excel-metadata">advanced import reference</a>.</p><h3>Check the import</h3><p>If text data appears in one column, check the separator. If accents look wrong, check the encoding. A value such as 99 is not automatically missing: check the file’s missing-value definitions.</p><p>In WebR, choose the file through the browser’s file picker. Save the files and results you need before closing the session.</p>
     <div class="read-result"><h3>What to look for</h3><p>The prepared ESS dataset appears as ess with 1,846 cases and 345 variables. Its declared variables retain the supplied labels and missing-value definitions. A CSV import cannot supply metadata that was not stored in the file.</p></div>
-    
+
 </section>
 
 <section id="dialog-reference" data-chapter>
     <h2>Choose a task</h2>
-    
+
     <p>Find the task you want to carry out, then follow its illustrated instructions. The menu names below match the application.</p>
-    
-    
+
+
     <div class="task-links"><a href="#sortby">Put cases in order <span>Sort cases →</span></a><a href="#splitby">Analyse groups separately <span>Split by groups →</span></a><a href="#select">Keep selected cases or columns <span>Subset cases and variables →</span></a><a href="#weightby">Use case frequencies <span>Apply frequency weighting →</span></a><a href="#recode">Combine or change values <span>Recode variables →</span></a><a href="#frequencies">Count responses <span>Frequency table →</span></a><a href="#crosstable">Compare two categorical variables <span>Contingency table →</span></a><a href="#summaries">Summarise numeric variables <span>Numerical summaries →</span></a><a href="#onesamplettest">Compare a mean with a value <span>One-sample t-test →</span></a><a href="#independentsamplesttest">Compare two independent groups <span>Independent samples t-test →</span></a><a href="#anovahv">Compare several group means <span>One-way ANOVA →</span></a><a href="#goto">Find a case or variable <span>Go to… →</span></a></div><p><strong>Run</strong> carries out an analysis. <strong>OK</strong> confirms a data-management choice. <strong>Reset</strong> restores dialog options; it does not undo a transformation already carried out.</p>
-    
-    
+
+
 </section>
 
 <section id="sortby" data-chapter>
@@ -164,7 +178,7 @@
 <li>Click <strong>OK</strong> and open ess_sorted to inspect the order.</li></ol>
     <h3>Sorting options</h3><p>You may choose several sorting variables. The first is the primary key; later variables break ties. Sorting follows ascending R order. Without the new-dataset option, DialogR replaces the original dataset with the sorted version.</p>
     <div class="read-result"><h3>What to look for</h3><p>The cases are ordered by age, from younger to older. The original ess dataset remains available. Sorting changes row order, not the variable labels or missing-value definitions.</p></div>
-    
+
 </section>
 
 <section id="splitby" data-chapter>
@@ -181,7 +195,7 @@
 <li>When finished, reopen Split by groups for ess and click <strong>Reset</strong> to clear grouping.</li></ol>
     <h3>Options and scope</h3><p>More than one grouping variable defines combinations of groups. Moving variables changes the stored grouping choice immediately. The dialog also records a sorting preference; use <a href="#sortby">Sort cases</a> when you need to explicitly reorder rows.</p><p>Grouping is used by frequency tables, contingency tables, numerical summaries, and one-way ANOVA. It is not used by the two t-test dialogs. See <a href="#dataset-state">Filters, groups, and weights</a>.</p>
     <div class="read-result"><h3>What to look for</h3><p>You receive a separate table for each observed gender category, with the category labels retained. The original data remain one dataset. Check the valid denominator within each group, particularly where declared missing responses occur.</p></div>
-    
+
 </section>
 
 <section id="select" data-chapter>
@@ -198,7 +212,7 @@
 <li>Click <strong>OK</strong> and inspect essf in the editor.</li></ol>
     <h3>Choose how to use the selection</h3><ul><li><strong>All cases:</strong> turns off the current filter.</li><li><strong>Filter out unselected cases:</strong> keeps the original data and restricts subsequent supported analyses.</li><li><strong>New dataset:</strong> saves the selected cases into a separate dataset.</li><li><strong>Delete unselected cases:</strong> replaces the original dataset with the selected cases.</li></ul><p>To retain only certain columns, clear <strong>all variables</strong> and select the columns you need. Include any analysis, grouping, or weight variables that later steps require.</p><p>This dialog’s condition field uses a short R expression. You do not need to write a whole command. More condition examples are in the <a href="commands.html#conditions">optional expression reference</a>.</p>
     <div class="read-result"><h3>What to look for</h3><p>The new dataset contains the selected respondents and retains the variables’ labels and declared missing-value definitions. The original ess remains available. Run a gender frequency table in essf to check the selection.</p></div>
-    
+
 </section>
 
 <section id="weightby" data-chapter>
@@ -215,7 +229,7 @@
 <li>Reopen the weighting dialog for ess and click <strong>Reset</strong> to stop weighting.</li></ol>
     <p>Changing the weighting list updates the setting immediately. Weighted tables and supported numerical summaries use it; the t-test and ANOVA dialogs do not.</p><p>Check that the variable is numeric and really represents frequencies. This option is not a complete survey design with clusters, strata, or design-based standard errors.</p><p>This file also contains design, post-stratification, population, and analysis weights. Those are not interchangeable with frequency weights. The example uses the existing fweight variable from the teaching file; it does not claim that this menu provides a complete ESS survey-design analysis.</p>
     <div class="read-result"><h3>What to look for</h3><p>Counts and percentages now use the supplied frequency weight. Missing responses remain identified by their declared codes and labels. The dataset still has 1,846 rows; weighting does not physically duplicate them.</p></div>
-    
+
 </section>
 
 <section id="recode" data-chapter>
@@ -233,7 +247,7 @@
 <li>Check both rules, then click <strong>Run</strong>.</li></ol>
     <h3>Other rule choices</h3><p>You can change a single value, a bounded range, missing values, or all remaining values. Replacements may be a new value, missing, or a copy of the original value. <strong>remove</strong> removes selected rules; <strong>clear</strong> empties the rule list.</p><p>Without the new-variable option, the original variable is overwritten. The operation affects the full dataset even when an analysis filter is active. These example boundaries assume ages in whole years.</p><p>The source variable declares 999 missing. Check the missing-value definition of the recoded result as well as its valid categories; do not turn a missing-age code into a genuine age group.</p>
     <div class="read-result"><h3>What to look for</h3><p>The new agerec variable identifies the two age groups. Run a frequency table to check the result, then give the new categories meaningful labels in Variables view. F3_agea remains available with its original label and declared “Not available” code.</p></div>
-    
+
 </section>
 
 <section id="frequencies" data-chapter>
@@ -368,25 +382,25 @@
     <h3>To carry out this example</h3><ol class="steps"><li>Open the dataset editor’s Go to dialog.</li>
 <li>Choose <strong>Variable</strong>, type part of a variable name in the search field, and select the matching variable. Or choose <strong>Case</strong> and enter a row number, starting from 1.</li>
 <li>Click <strong>Go</strong>.</li></ol>
-    
+
     <div class="read-result"><h3>What to look for</h3><p>The editor moves to that position. This is navigation only: it does not select a subset for analysis or change any values.</p></div>
-    
+
 </section>
 
 <section id="dataset-state" data-chapter>
     <h2>Filters, groups, and weights</h2>
-    
+
     <p>These settings stay with the selected dataset. They can explain why a result differs from a table you produced earlier.</p>
-    
-    
+
+
     <ul><li><strong>Filter:</strong> analyse only cases that meet a condition while retaining the original data.</li><li><strong>Split groups:</strong> repeat a supported analysis separately for each group.</li><li><strong>Frequency weight:</strong> let a row represent several occurrences in supported procedures.</li></ul><div class="table-scroll"><table><thead><tr><th>Procedure</th><th>Filter</th><th>Split groups</th><th>Frequency weight</th></tr></thead><tbody><tr><td>Frequency and contingency tables</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Numerical summaries</td><td>Yes</td><td>Yes</td><td>Supported measures</td></tr><tr><td>One-sample and independent-samples t-tests</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>One-way ANOVA</td><td>Yes</td><td>Yes</td><td>No</td></tr></tbody></table></div><h3>Return to all cases without grouping or weights</h3><ol class="steps"><li>In <strong>Subset cases and variables</strong>, select ess, choose <strong>All cases</strong>, and click <strong>OK</strong>.</li><li>In <strong>Split by groups</strong>, select the dataset and click <strong>Reset</strong>.</li><li>In <strong>Apply frequency weighting</strong>, select the dataset and click <strong>Reset</strong>.</li></ol><p>Removing a filter does not restore previously deleted cases. Recoding and sorting act on the underlying dataset rather than only the filtered view. Create a new subset first when a transformation should affect selected cases alone.</p>
-    
-    
+
+
 </section>
 
 <section id="commands" data-chapter>
     <h2>Send a command to the syntax tab</h2>
-    
+
     <p>Like SPSS’s Paste command to syntax workflow, DialogR lets you keep the command built from your dialog choices. You do not need to type it yourself.</p>
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/send-to-syntax.png" data-enlarge aria-label="Enlarge screenshot: Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor."><img src="images/manual/send-to-syntax.png" width="680" height="520" loading="lazy" alt="Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor."></a>
@@ -397,19 +411,19 @@
 <li>Click the <strong>right-hand icon</strong>, labelled <strong>Send to Script Editor</strong>.</li>
 <li>The generated command is inserted into the Script Editor (the syntax tab). Keep it with your other commands and save the script when you want to repeat the analysis later.</li></ol>
     <p>Sending a command to the editor does not run the analysis. Use <strong>Run</strong> in the dialog when you want results immediately. The left-hand action in the contextual menu, <strong>Copy</strong>, copies the command to the clipboard.</p><p>The generated command can help you keep a record, repeat an analysis, or gradually learn R. Reading it is optional. The subset dialog is an exception in that its condition field accepts a short expression, explained in that chapter.</p><p><a class="button" href="commands.html">Open the optional R reference →</a></p><p>The reference explains package relationships, command structure, and examples. It is separate from the step-by-step instructions so you can consult it when it is useful.</p>
-    
-    
+
+
 </section>
 
 <section id="troubleshooting" data-chapter>
     <h2>Troubleshooting and saving your work</h2>
-    
+
     <p>Start with the dialog’s message and the dataset settings. Most unexpected results can be traced to an input choice, missing value, or active filter, group, or weight.</p>
-    
-    
+
+
     <h3>A dialog cannot run</h3><p>Wait for the runtime to finish starting. Select a dataset and all required variables. If a package is missing or outdated, follow <a href="#packages">Set up DialogR</a>.</p><h3>Results differ from the example</h3><p>Use the prepared European Social Survey Round 9 dataset for Romania, then check the <a href="#dataset-state">filter, grouping, and weight settings</a>. Check declared missing-value definitions and confirm that you chose the same variable and did not change the original data.</p><h3>A variable is missing</h3><p>Select the correct dataset. A subset may have excluded the column you need. Check its name and type in the Variables view.</p><h3>WebR is slow</h3><p>Allow the browser runtime and package library to finish loading. WebR can use the same dataset as desktop DialogR; loading, importing, and analysing it will simply take longer. Use desktop DialogR when you prefer faster repeated work.</p><h3>Keep the original data</h3><p>Keep a copy of your input file. Use new-dataset and new-variable options for transformations when you want to preserve the originals. Save datasets or the workspace explicitly; do not rely on an open browser tab.</p><p>You may also keep generated commands in a script to repeat your work later. A script records instructions, not a copy of every dataset. For a reproducible problem, <a href="https://github.com/RODA/DialogR/issues">report an issue</a> with the dialog name, version, exact message, and a small non-confidential example.</p>
-    
-    
+
+
 </section></div></div>
     </main>
     <footer class="wrap"><div><a class="brand" href="index.html">DialogR</a><p class="small">By Adrian Dusa · Part of the <a href="https://www.roda.ro/">RODA</a> tools for research.</p></div><nav aria-label="Project links"><a href="https://github.com/RODA/DialogR">Source code</a><a href="https://github.com/RODA/DialogR/issues">Report an issue</a><a href="https://roda.github.io/DialogCreator/">DialogCreator ↗</a><a href="https://github.com/RODA/DialogR/blob/main/LICENSE">License</a></nav></footer>

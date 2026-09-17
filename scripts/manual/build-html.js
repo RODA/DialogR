@@ -64,7 +64,7 @@ const sections = chapters.map(chapter => `<section id="${chapter.id}" data-chapt
     ${expandFigures(chapter.body)}
     ${chapter.result ? `<div class="read-result"><h3>What to look for</h3><p>${chapter.result}</p></div>` : ""}
     ${expandFigures(chapter.after)}
-</section>`).join("\n\n");
+</section>`).join("\n\n").replace(/^[ \t]+$/gm, "");
 
 fs.writeFileSync(path.join(docs, "usermanual.html"), shell(
     "Illustrated user manual",

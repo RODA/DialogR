@@ -61,6 +61,9 @@ const base = process.env.DIALOGR_SITE_URL || "http://127.0.0.1:4186";
             await page.locator(`#${id}`).evaluate(element => element.scrollIntoView({ behavior: "instant" }));
             await page.screenshot({ path: `/tmp/dialogr-${id}.png` });
         }
+        await page.goto(`${base}/index.html#languages`);
+        await page.locator("#languages").evaluate(element => element.scrollIntoView({ behavior: "instant" }));
+        await page.screenshot({ path: "/tmp/dialogr-languages.png" });
         const noJS = await browser.newPage({ javaScriptEnabled: false });
         await noJS.goto(`${base}/usermanual.html#frequencies`);
         assert(await noJS.locator("#frequencies").isVisible());
