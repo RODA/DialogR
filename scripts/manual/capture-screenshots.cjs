@@ -28,7 +28,7 @@ async function run() {
         await mainWindow.evaluate(window => window.setSize(880, 720));
         await main.waitForFunction(() => document.body.dataset.dialogForgeReady === "1", null, { timeout: 60000 });
         await main.waitForFunction(() => document.querySelector('#consoleTerminal [data-session-phase="ready"]'), null, { timeout: 60000 });
-        const source = process.env.DIALOGR_MANUAL_DATA || path.join(os.homedir(), "ess9en.rds");
+        const source = process.env.DIALOGR_MANUAL_DATA || path.join(os.homedir(), "Downloads", "roda-ess9-v1-en.rds");
         const displaySource = process.env.DIALOGR_MANUAL_DISPLAY_DATA || path.basename(source);
         const setup = 'library(declared); ess <- readRDS(' + JSON.stringify(source) + '); stopifnot(all(vapply(ess[c("B1_polintr", "B7_trstlgl", "F2_gndr", "F3_agea", "F14_domicil", "fweight")], inherits, logical(1), "declared")))';
         await main.evaluate(async command => {

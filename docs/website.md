@@ -29,16 +29,18 @@ Edit `scripts/manual/chapters.cjs`, then run
 `node scripts/manual/build-html.js` to regenerate the manual and optional R
 reference. Serving the generated website requires no build or dependencies.
 
-The illustrated examples use a locally prepared European Social Survey Round 9
-dataset for Romania, with 1,846 cases and 345 variables. Analysis variables
-keep their `declared` classes, value labels, and missing definitions. The source
-dataset is not redistributed with this site. Set `DIALOGR_MANUAL_DATA` to its
-local path when recapturing. Examples are informed by the accompanying
-descriptive and inferential teaching scripts.
+The illustrated examples use the English R rendition of
+[European Social Survey, Round 9, Romania](https://roda.ro/studies/roda-ess9?lang=en)
+from the RODA catalogue. The downloaded file is `roda-ess9-v1-en.rds`, with
+1,846 cases and 343 source variables. Analysis variables keep their `declared`
+classes, value labels, and missing definitions. The source dataset is not
+redistributed with this site. Set `DIALOGR_MANUAL_DATA` to its local path when
+recapturing. Examples are informed by the accompanying descriptive and
+inferential teaching scripts.
 
 `scripts/manual/capture-screenshots.cjs` captures an isolated instance of the
 real Electron application using the sibling DialogForge Playwright/Electron
-installation. It imports the prepared ESS file, captures dialog choices and
+installation. It imports the RODA ESS file, captures dialog choices and
 the missing-value editor, and runs six unweighted analyses for result captures.
 See `scripts/manual/capture-notes.json` for captured controls and output.
 Regenerate the HTML after recapturing images so image dimensions stay current.
