@@ -3,8 +3,10 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const chapters = require("./chapters.cjs");
+const productPackage = require("../../package.json");
 const docs = path.resolve(__dirname, "../../docs");
 const escape = text => String(text).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+const productVersion = String(productPackage.version || "").trim();
 let figureNumber = 0;
 
 function figure(name, caption) {
@@ -70,7 +72,7 @@ fs.writeFileSync(path.join(docs, "usermanual.html"), shell(
     "Illustrated user manual",
     "Learn DialogR with screenshots, step-by-step instructions, and real ESS examples. Explore labels and declared missing values without writing analysis commands.",
     `<main id="main" class="wrap">
-        <div class="page-heading"><p class="eyebrow">See it. Choose it. Run it.</p><h1>Your guide to DialogR.</h1><p class="lead">Follow the screenshots, make your selections, and understand the results. No R programming required.</p><p class="small">DialogR 1.0.23 · Actual desktop screenshots · ESS Round 9, Romania · <a href="commands.html">Optional R reference</a></p></div>
+        <div class="page-heading"><p class="eyebrow">See it. Choose it. Run it.</p><h1>Your guide to DialogR.</h1><p class="lead">Follow the screenshots, make your selections, and understand the results. No R programming required.</p><p class="small">DialogR ${escape(productVersion)} · Actual desktop screenshots · ESS Round 9, Romania · <a href="commands.html">Optional R reference</a></p></div>
         <div class="manual-layout"><aside class="manual-nav" aria-label="Manual contents"><div id="search-controls" hidden><label class="search-label" for="manual-search">Find a task or topic</label><input id="manual-search" type="search" placeholder="Try missing values or recode" aria-controls="chapters"></div><strong>In this guide</strong><div class="toc">${navigation}</div></aside><div class="manual-content" id="chapters"><p class="small search-status" role="status" id="search-status"></p>${sections}</div></div>
     </main>`
 ));

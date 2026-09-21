@@ -47,8 +47,8 @@ Regenerate the HTML after recapturing images so image dimensions stay current.
 Use `DIALOGR_MANUAL_HELPERS_ONLY=1 node scripts/manual/capture-screenshots.cjs`
 to capture just the three dialog-workflow illustrations.
 
-The current reference is based on product version 1.0.23. Check these sources
-when behavior changes:
+The current reference displays the product version from `package.json`. Check
+these sources when behavior changes:
 
 - `dialogs/dialogs.json` and `menu/menu.json`: coverage, names, menu paths.
 - `dialogs/r/*/dialog.json` and `actions.js`: controls, defaults, command builders.

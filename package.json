@@ -15,13 +15,16 @@
         "verify:web-deployment": "node scripts/verify-web-deployment.js",
         "verify:production": "node scripts/verify-production.js",
         "verify:production:electron": "node scripts/verify-production.js --electron-only",
-        "verify:production:web": "node scripts/verify-production.js --web-only"
+        "verify:production:web": "node scripts/verify-production.js --web-only",
+        "docs:build": "node scripts/manual/build-html.js",
+        "version:sync": "npm install --package-lock-only --ignore-scripts && npm run docs:build",
+        "version": "npm run docs:build"
     },
     "devDependencies": {
         "@dialogforge/core": "file:../DialogForge/dist/sdk/core"
     },
     "name": "dialogr",
-    "version": "1.0.23",
+    "version": "1.0.24",
     "description": "A dialog-driven desktop application for statistical analysis in R.",
     "author": "Adrian Dusa",
     "contributors": [
