@@ -5,4 +5,8 @@ tests/
 .DS_Store
 library/R/library.data.gz
 library/R/library.js.metadata
+library/R/dialogforge-*-library.data.gz
+library/R/dialogforge-*-library.js.metadata
+library/R/vfs-manifest.json
+library/R/SHA256SUMS
 internal/

@@ -9,6 +9,8 @@ const {
 
 const productRoot = path.resolve(__dirname, "..");
 const libraryDir = path.join(productRoot, "library", "R");
+const forgeRoot = process.env.DIALOGFORGE_ROOT || path.resolve(productRoot, "../DialogForge");
+const { downloadSplitLibrary } = require(path.join(forgeRoot, "scripts/web-package-library-profiles"));
 const assets = [
     "library.data.gz",
     "library.js.metadata"
@@ -208,6 +210,7 @@ const main = async function() {
         touchDownloadedAsset(targetPath, releaseAsset);
     }
 
+    await downloadSplitLibrary(libraryDir, releaseAssets, downloadFile);
     const manifestResult = writeRPackageManifest(libraryDir);
     console.log(
         `Installed package manifest written to ${manifestResult.targetPath}`
