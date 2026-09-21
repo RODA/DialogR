@@ -90,10 +90,10 @@ const assertAutoUpdatePolicy = function(packageJson) {
     if (Object.prototype.hasOwnProperty.call(autoUpdate, "releaseTag")) {
         fail("package.json product.autoUpdate must not pin a platform-specific releaseTag.");
     }
-    if (releaseTags.linuxIntel !== "li"
-        || releaseTags.windowsIntel !== "wi"
-        || releaseTags.macosIntel !== "mi"
-        || releaseTags.macosSilicon !== "ms"
+    if (releaseTags.linuxIntel !== "latest"
+        || releaseTags.windowsIntel !== "latest"
+        || releaseTags.macosIntel !== "latest"
+        || releaseTags.macosSilicon !== "latest"
         || releaseTags.webrVFS !== "web") {
         fail("package.json product.releaseTags must define the DialogR release tags.");
     }
@@ -120,12 +120,14 @@ const assertBuildScriptReleaseTags = function(scripts) {
         "resolveReleaseRepository(packagePath)",
         "DIALOGFORGE_RELEASE_REPOSITORY",
         "DIALOGFORGE_RELEASE_TAG",
+        "DIALOGFORGE_RELEASE_CHANNEL",
+        'forceMacosIntel ? "latest-x64" : "latest-arm64"',
         '...(forceMacosIntel ? ["--arch", "x64"] : [])',
-        "cleanupBuildOutput(dialogForgeRoot, outputDir, platform, forceMacosIntel)",
+        "updateChannel",
         "scripts/build-desktop.js",
         "path.join(productRoot, \"dist\")",
         "builder-effective-config.yaml",
-        "rewriteMacUpdateFeed(dialogForgeRoot, outputDir)",
+        "rewriteMacUpdateFeed(dialogForgeRoot, outputDir, updateChannel)",
         "fileName === stableDmgName",
         "if (entry.isDirectory())"
     ].forEach((expected) => {
@@ -166,7 +168,12 @@ const assertRequiredScripts = function() {
     const required = [
         "start",
         "check",
-        "build"
+        "build",
+        "fetch:intel",
+        "submit",
+        "history",
+        "staple",
+        "publish"
     ];
     const missing = required.filter((scriptName) => {
         return !scripts[scriptName];
@@ -282,14 +289,10 @@ const assertWorkflows = function() {
     if (!releaseText.includes("sign-windows-product.yml")) {
         fail("Windows release request must call the DialogForge signing broker.");
     }
-    if (!linuxText.includes("default: li")
-        || !windowsText.includes("default: wi")
-        || !macosText.includes("default: mi")
-        || !releaseText.includes("default: wi")
-        || !buildText.includes("default: li")
-        || !buildText.includes("default: wi")
-        || !buildText.includes("default: mi")) {
-        fail("GitHub release workflows must default to platform-specific DialogR release tags.");
+    if (![buildText, linuxText, windowsText, macosText, releaseText].every((workflowText) => {
+        return workflowText.includes("default: latest");
+    })) {
+        fail("GitHub release workflows must default to the shared latest release tag.");
     }
 
     if (![buildText, linuxText].every((workflowText) => {
@@ -307,15 +310,17 @@ const assertWorkflows = function() {
         fail("Windows build workflows must preserve electron-updater metadata.");
     }
     if (![buildText, macosText].every((workflowText) => {
-        return workflowText.includes("latest-mac.yml")
+        return workflowText.includes("*-mac.yml")
             && workflowText.includes("*.zip")
             && workflowText.includes("*.zip.blockmap")
             && !workflowText.includes("*.dmg.blockmap")
-            && workflowText.includes("must all exist before release cleanup")
+            && workflowText.includes("must all exist before release upload")
+            && workflowText.includes("*-x64-mac.zip")
+            && workflowText.includes("latest-x64-mac.yml")
             && workflowText.includes("gh release delete-asset")
             && workflowText.includes("assets=(\"${dmgs[@]}\" \"${zips[@]}\" \"${blockmaps[@]}\" \"${latest_files[@]}\")");
     })) {
-        fail("macOS release workflows must validate outputs, clear stale assets, and upload updater metadata.");
+        fail("macOS release workflows must validate and upload architecture-specific updater metadata.");
     }
 };
 

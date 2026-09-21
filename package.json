@@ -16,6 +16,11 @@
         "verify:production": "node scripts/verify-production.js",
         "verify:production:electron": "node scripts/verify-production.js --electron-only",
         "verify:production:web": "node scripts/verify-production.js --web-only",
+        "fetch:intel": "node scripts/fetch-intel-artifacts.js",
+        "submit": "node scripts/macos-notarization.js submit",
+        "history": "node scripts/macos-notarization.js history",
+        "staple": "node scripts/macos-notarization.js staple",
+        "publish": "node scripts/publish-artifacts.js",
         "docs:build": "node scripts/manual/build-html.js",
         "version:sync": "npm install --package-lock-only --ignore-scripts && npm run docs:build",
         "version": "npm run docs:build"
@@ -83,10 +88,10 @@
         "appId": "org.roda.dialogr",
         "defaultRuntimeProvider": "r",
         "releaseTags": {
-            "linuxIntel": "li",
-            "windowsIntel": "wi",
-            "macosIntel": "mi",
-            "macosSilicon": "ms",
+            "linuxIntel": "latest",
+            "windowsIntel": "latest",
+            "macosIntel": "latest",
+            "macosSilicon": "latest",
             "webrVFS": "web"
         },
         "runtimeProviders": [

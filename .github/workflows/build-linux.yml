@@ -16,7 +16,7 @@ on:
       release_tag:
         description: Release tag to upload artifacts to (used when publishing).
         required: false
-        default: li
+        default: latest
         type: string
       release_repository:
         description: Target release repository in owner/repo form (used when publishing).
