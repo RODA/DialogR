@@ -29,7 +29,7 @@
         "@dialogforge/core": "file:../DialogForge/dist/sdk/core"
     },
     "name": "dialogr",
-    "version": "1.0.25",
+    "version": "1.0.26",
     "description": "A dialog-driven desktop application for statistical analysis in R.",
     "author": "Adrian Dusa",
     "contributors": [
