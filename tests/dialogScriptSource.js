@@ -17,9 +17,10 @@ const readDialogScriptSource = function(productRoot, sourceFile, source) {
         return "";
     }
 
-    const relativeSourceFile = sourceFile.startsWith("dialogs/")
-        ? sourceFile.slice("dialogs/".length)
-        : sourceFile;
+    const normalizedSourceFile = sourceFile.replace(/\\/g, "/");
+    const relativeSourceFile = normalizedSourceFile.startsWith("dialogs/")
+        ? normalizedSourceFile.slice("dialogs/".length)
+        : normalizedSourceFile;
 
     return fs.readFileSync(
         path.join(
