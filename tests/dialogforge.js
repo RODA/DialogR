@@ -31,6 +31,7 @@ const dialogForgeModule = function(relativePath) {
             return distModule;
         }
 
+        registerTypeScriptRequireHook();
         return path.join(dialogForgeRoot, "src", relativePath.slice("shared/".length));
     }
 
