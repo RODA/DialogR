@@ -123,7 +123,8 @@ if (result.status !== 0) {
 }
 
 [
-    "scripts/test-r-package-compatibility.js"
+    "scripts/test-r-package-compatibility.js",
+    "scripts/test-dialog-sources.js"
 ].forEach((relativePath) => {
     const verifier = spawnSync(
         process.execPath,

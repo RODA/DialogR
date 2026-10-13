@@ -1,7 +1,12 @@
 node_modules/
 dist/
 build/
-tests/
+tests/*
+!tests/dialog-runtime/
+!tests/dialog-runtime/*.js
+!tests/dialogControls.js
+!tests/dialogScriptSource.js
+!tests/dialogforge.js
 .DS_Store
 library/R/library.data.gz
 library/R/library.js.metadata
