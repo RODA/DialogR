@@ -1,16 +1,18 @@
 # Adding DialogR Dialogs
 
-This document describes how to add a DialogR product dialog. DialogR is a
-DialogForge product repository, so DialogR owns its dialogs, menu entries,
+This document describes how to add a product dialog. The DialogR app is a
+DialogForge product repository, so it owns its dialogs, menu entries,
 capabilities, translations, and product tests.
 
-Do not add DialogR dialogs to the DialogForge shared dialog tree. Start
-DialogForge with this repository selected when you want the development import
-workflow to write DialogR source files.
+Dialogs should therefore be added to the DialogR repository, not to the DialogForge
+shared dialog tree. Start DialogForge with this repository selected when you want
+the development import workflow to write DialogR source files.
+
+Dialogs can be very easily created (including the interactively constructed command) using the [DialogCreator](https://roda.github.io/DialogCreator) app.
 
 ## Source Layout
 
-DialogR dialogs live under:
+In this app, dialogs live under:
 
 ```text
 dialogs/r/<dialog-id>/
