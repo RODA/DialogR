@@ -1,8 +1,7 @@
 # DialogR website
 
 The product website is a static site in `docs/`, following DialogCreator's
-paper, ink, blue, and Inter typography. It requires no build step or third-party
-JavaScript. GitHub Pages publishes `main /docs` at
+paper, ink, blue, and Inter typography. It requires no build step. GitHub Pages publishes `main /docs` at
 <https://roda.github.io/DialogR/>.
 
 - `index.html`: product overview with actual dialog screenshots and declared-data features.
@@ -22,6 +21,18 @@ Preview from the repository root:
 ```sh
 python3 -m http.server 4186 --bind 127.0.0.1 --directory docs
 ```
+
+## Web Analytics
+
+Cloudflare Web Analytics is registered for `roda.github.io`. All four HTML
+pages include its module script before `</body>`; the manual generator preserves
+the same snippet when rebuilding `usermanual.html` and `commands.html`.
+The site token is public and identifies the analytics destination.
+
+To replace the snippet, obtain it from Cloudflare **Web Analytics → roda.github.io
+→ Manage site** and update all four pages plus `scripts/manual/build-html.js`.
+GitHub Pages continues hosting the site; no DNS change is needed. Filter analytics
+by the `/DialogR/` path when viewing this repository's traffic.
 
 ## Updating the manual
 
