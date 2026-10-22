@@ -76,6 +76,18 @@ jobs:
           cache: npm
           cache-dependency-path: DialogForge/package-lock.json
 
+      - name: Set up the qualified native R version
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: false
+
+      - name: Install DialogR runtime packages for rendered acceptance
+        shell: Rscript {0}
+        run: |
+          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          stopifnot(as.character(getRversion()) == "4.6.1")
+
       - name: Install DialogForge dependencies
         working-directory: DialogForge
         run: |
@@ -213,6 +225,18 @@ jobs:
           cache: npm
           cache-dependency-path: DialogForge/package-lock.json
 
+      - name: Set up the qualified native R version
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: false
+
+      - name: Install DialogR runtime packages for rendered acceptance
+        shell: Rscript {0}
+        run: |
+          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          stopifnot(as.character(getRversion()) == "4.6.1")
+
       - name: Install DialogForge dependencies
         working-directory: DialogForge
         shell: bash
@@ -301,6 +325,18 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: DialogForge/package-lock.json
+
+      - name: Set up the qualified native R version
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: false
+
+      - name: Install DialogR runtime packages for rendered acceptance
+        shell: Rscript {0}
+        run: |
+          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          stopifnot(as.character(getRversion()) == "4.6.1")
 
       - name: Install DialogForge dependencies
         working-directory: DialogForge
