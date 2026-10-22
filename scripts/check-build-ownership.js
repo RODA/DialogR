@@ -255,7 +255,9 @@ const assertWorkflows = function() {
     const windowsText = fs.readFileSync(path.join(productRoot, ".github/workflows/build-windows.yml"), "utf8");
     const packagedSmokeCommand = "verify-production-electron.js --product-path ../product "
         + "--output-dir ../product/build/output --target script-editor";
-    const buildSmokeCount = buildText.split(packagedSmokeCommand).length - 1;
+    const installerCommand = "verify-installer-artifact.js ../product ../product/build/output";
+    const buildSmokeCount = buildText.split(packagedSmokeCommand).length - 1
+        + buildText.split(installerCommand).length - 1;
 
     if (
         buildSmokeCount !== 3
