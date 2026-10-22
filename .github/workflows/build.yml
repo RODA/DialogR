@@ -51,6 +51,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   linux:
@@ -440,15 +441,21 @@ jobs:
         working-directory: DialogForge
         run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
+      - name: Retain the qualified pre-migration Intel rollback installer
+        uses: actions/download-artifact@v4
+        with:
+          name: dialogr-macos
+          run-id: '39839439497'
+          github-token: ${{ github.token }}
+          path: rollback-intel
+
       - name: Verify version upgrade and manual rollback
         working-directory: DialogForge
         shell: bash
         run: |
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            xvfb-run -a node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
-          else
-            node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
-          fi
+          node tests/packaging/verify-installer-upgrade-rollback.js \
+            ../product/build/output ../rollback-intel/DialogR_intel.dmg \
+            5977c99409c2cea062f5f4fadff24639d1c09eb91ddaf30e7cb2a64d9ca4965e
 
       - name: Retain installed acceptance evidence
         if: always()
