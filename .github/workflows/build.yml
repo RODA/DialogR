@@ -85,7 +85,9 @@ jobs:
       - name: Install DialogR runtime packages for rendered acceptance
         shell: Rscript {0}
         run: |
-          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          packages <- c("httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics", "knitr")
+          install.packages(packages, repos = c("https://dusadrian.r-universe.dev", "https://cloud.r-project.org"))
+          stopifnot(all(vapply(packages, requireNamespace, logical(1), quietly = TRUE)))
           stopifnot(as.character(getRversion()) == "4.6.1")
 
       - name: Install DialogForge dependencies
@@ -234,7 +236,9 @@ jobs:
       - name: Install DialogR runtime packages for rendered acceptance
         shell: Rscript {0}
         run: |
-          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          packages <- c("httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics", "knitr")
+          install.packages(packages, repos = c("https://dusadrian.r-universe.dev", "https://cloud.r-project.org"))
+          stopifnot(all(vapply(packages, requireNamespace, logical(1), quietly = TRUE)))
           stopifnot(as.character(getRversion()) == "4.6.1")
 
       - name: Install DialogForge dependencies
@@ -335,7 +339,9 @@ jobs:
       - name: Install DialogR runtime packages for rendered acceptance
         shell: Rscript {0}
         run: |
-          install.packages(c("DDIwR", "knitr"), repos = "https://cloud.r-project.org")
+          packages <- c("httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics", "knitr")
+          install.packages(packages, repos = c("https://dusadrian.r-universe.dev", "https://cloud.r-project.org"))
+          stopifnot(all(vapply(packages, requireNamespace, logical(1), quietly = TRUE)))
           stopifnot(as.character(getRversion()) == "4.6.1")
 
       - name: Install DialogForge dependencies
