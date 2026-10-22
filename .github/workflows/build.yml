@@ -115,6 +115,27 @@ jobs:
         working-directory: DialogForge
         run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
+      - name: Verify version upgrade and manual rollback
+        working-directory: DialogForge
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run -a node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          else
+            node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          fi
+
+      - name: Retain installed acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialogr-linux-acceptance
+          path: |
+            product/build/output/*acceptance.json
+            product/build/output/*upgrade.png
+            product/build/output/*rollback.png
+          if-no-files-found: ignore
+
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
@@ -267,6 +288,27 @@ jobs:
         working-directory: DialogForge
         run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
+      - name: Verify version upgrade and manual rollback
+        working-directory: DialogForge
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run -a node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          else
+            node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          fi
+
+      - name: Retain installed acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialogr-windows-acceptance
+          path: |
+            product/build/output/*acceptance.json
+            product/build/output/*upgrade.png
+            product/build/output/*rollback.png
+          if-no-files-found: ignore
+
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -385,6 +427,27 @@ jobs:
       - name: Verify packaged application and actual installer
         working-directory: DialogForge
         run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
+
+      - name: Verify version upgrade and manual rollback
+        working-directory: DialogForge
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run -a node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          else
+            node tests/packaging/verify-installer-upgrade-rollback.js ../product/build/output
+          fi
+
+      - name: Retain installed acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialogr-macos-acceptance
+          path: |
+            product/build/output/*acceptance.json
+            product/build/output/*upgrade.png
+            product/build/output/*rollback.png
+          if-no-files-found: ignore
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
