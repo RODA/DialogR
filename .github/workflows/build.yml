@@ -441,13 +441,10 @@ jobs:
         working-directory: DialogForge
         run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
-      - name: Retain the qualified pre-migration Intel rollback installer
-        uses: actions/download-artifact@v4
-        with:
-          name: dialogr-macos
-          run-id: '39839439497'
-          github-token: ${{ github.token }}
-          path: rollback-intel
+      - name: Download the retained pre-migration Intel rollback installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download iroh-1.1-rollback --repo RODA/DialogR --pattern DialogR_intel.dmg --dir rollback-intel
 
       - name: Verify version upgrade and manual rollback
         working-directory: DialogForge
