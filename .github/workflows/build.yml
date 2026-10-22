@@ -97,15 +97,18 @@ jobs:
         working-directory: product
         run: npm run build
 
-      - name: Verify packaged Script Editor and Live Script
+      - name: Verify packaged application and actual installer
         working-directory: DialogForge
-        run: node scripts/verify-production-electron.js --product-path ../product --output-dir ../product/build/output --target script-editor
+        run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: dialogr-linux
-          path: product/build/output/*.AppImage
+          path: |
+            product/build/output/*.AppImage
+            product/build/output/latest-linux.yml
+            product/build/output/installer-acceptance.json
           if-no-files-found: error
 
       - name: Upload Linux artifact to release
@@ -232,9 +235,9 @@ jobs:
         working-directory: product
         run: npm run build
 
-      - name: Verify packaged Script Editor and Live Script
+      - name: Verify packaged application and actual installer
         working-directory: DialogForge
-        run: node scripts/verify-production-electron.js --product-path ../product --output-dir ../product/build/output --target script-editor
+        run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
@@ -244,6 +247,7 @@ jobs:
             product/build/output/*.exe
             product/build/output/*.exe.blockmap
             product/build/output/latest.yml
+            product/build/output/installer-acceptance.json
           if-no-files-found: error
 
   request-signing:
@@ -336,15 +340,20 @@ jobs:
           codesign --verify --deep --strict --verbose=2 "$app_path"
           codesign --display --verbose=2 "$app_path"
 
-      - name: Verify packaged Script Editor and Live Script
+      - name: Verify packaged application and actual installer
         working-directory: DialogForge
-        run: node scripts/verify-production-electron.js --product-path ../product --output-dir ../product/build/output --target script-editor
+        run: node tests/packaging/verify-installer-artifact.js ../product ../product/build/output
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: dialogr-macos
-          path: product/build/output/*.dmg
+          path: |
+            product/build/output/*.dmg
+            product/build/output/*.zip
+            product/build/output/*.zip.blockmap
+            product/build/output/*-mac.yml
+            product/build/output/installer-acceptance.json
           if-no-files-found: error
 
       - name: Upload macOS artifact to release
