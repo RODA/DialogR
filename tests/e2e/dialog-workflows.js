@@ -70,7 +70,7 @@ async function main() {
             return document.getElementById('consoleStatus')?.textContent.includes(' - failed') ||
                 Array.from(document.querySelectorAll('[data-session-phase="ready"]')).some(el => el.dataset.runtimeBusy !== 'true');
         }, null, { timeout: 120000 });
-        if ((await page.locator('#consoleStatus').textContent()).includes(' - failed')) {
+        if (await page.evaluate(() => document.getElementById('consoleStatus')?.textContent.includes(' - failed'))) {
             throw new Error('Runtime startup failed: ' + await page.locator('body').innerText());
         }
         const run = async code => {
