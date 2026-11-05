@@ -197,7 +197,7 @@ onClick(b_run, () => {
     return;
   }
 
-  if (!getValue(c_rules)) {
+  if ((getValue(c_rules) || []).length === 0) {
     addError(c_rules, 'No recoding rules');
     return;
   }
@@ -213,6 +213,7 @@ onClick(b_run, () => {
 
 onClick(b_reset, () => {
   resetDialog();
+  clearContent(c_rules);
   readSelections();
   old_value = '';
   new_value = '';

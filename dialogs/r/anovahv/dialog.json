@@ -61,7 +61,7 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test auf Varianzhomogenität",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Paarweise Mittelwertvergleiche",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerische Zusammenfassungen"
             },
             "fr_FR": {
                 "messages.noDatasetSelected": "Aucun jeu de données sélectionné",
@@ -81,7 +81,7 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test d’homogénéité des variances",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparaisons deux à deux des moyennes",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Résumés numériques"
             },
             "pl_PL": {
                 "messages.noDatasetSelected": "Nie wybrano zbioru danych",
@@ -101,12 +101,12 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test jednorodności wariancji",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Porównania parami średnich",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Podsumowania numeryczne"
             },
             "ro_RO": {
                 "messages.noDatasetSelected": "Niciun set de date selectat",
-                "messages.noGroupVariableSelected": "Nicio variabilă de grup selectată",
-                "messages.noResponseVariableSelected": "Nicio variabilă răspuns selectată",
+                "messages.noGroupVariableSelected": "Nu a fost selectată nicio variabilă de grup",
+                "messages.noResponseVariableSelected": "Nu a fost selectată nicio variabilă răspuns",
                 "dialog.title": "ANOVA unifactorială",
                 "elements.aa5ecedd-04e2-41e4-ab39-a5c338c1e1de.value": "Set de date",
                 "elements.c4a885cd-c1b8-46be-b00c-d3f6e4d4d2f1.value": "Variabilă răspuns",
@@ -121,7 +121,7 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Test de omogenitate a varianței",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparații perechi ale mediilor",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Sumarizări numerice"
             },
             "el_GR": {
                 "messages.noDatasetSelected": "Δεν επιλέχθηκε σύνολο δεδομένων",
@@ -141,7 +141,7 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Έλεγχος ομοιογένειας διακυμάνσεων",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Ανά ζεύγη συγκρίσεις μέσων όρων",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Αριθμητικές περιλήψεις"
             },
             "es_ES": {
                 "messages.noDatasetSelected": "No se seleccionó ningún conjunto de datos",
@@ -161,7 +161,7 @@
                 "elements.3153d25a-01a9-47fb-adc7-6dc4b3384afa.value": "Prueba de homogeneidad de varianzas",
                 "elements.f81726d5-a5d2-42a8-938d-77705d943935.value": "Comparaciones por pares de medias",
                 "elements.f053981c-91c5-4a96-b2c4-33ae021c3476.value": "bonferroni",
-                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Numerical summaries"
+                "elements.0d7c2bdd-d007-48d8-946a-0ff70ebfa80c.value": "Resúmenes numéricos"
             }
         }
     },
@@ -499,7 +499,7 @@
             "left": 247,
             "top": 159,
             "maxWidth": 200,
-            "lineClamp": 1,
+            "lineClamp": 2,
             "fontColor": "#000000",
             "value": "Homogeneity of variance test",
             "icon": "none",
@@ -510,7 +510,8 @@
             "isVisible": true,
             "elementIds": "",
             "fontSize": 12,
-            "valign": "top"
+            "valign": "middle",
+            "anchorTarget": "519f1cec-a1c9-4ff5-832f-52a9d49aad92"
         },
         {
             "id": "3dd1b312-6976-4b95-9daf-080f4f057769",
@@ -596,7 +597,8 @@
             "rotate": 0,
             "isEnabled": true,
             "isVisible": true,
-            "elementIds": ""
+            "elementIds": "",
+            "fontSize": 12
         }
     ],
     "script": {

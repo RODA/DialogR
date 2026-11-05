@@ -2,12 +2,13 @@
     "id": "f8891653-459a-4136-a62d-7cb36bf85cc5",
     "properties": {
         "name": "NewDialog",
-        "width": "260",
+        "width": "280",
         "title": "Go to...",
-        "height": "200",
+        "height": "210",
         "language": "en_US",
+        "runtimeProvider": "R",
         "fontSize": "12",
-        "runtimeProvider": "R"
+        "dependencies": ""
     },
     "syntax": {
         "command": "",
@@ -17,7 +18,7 @@
         "baseLocale": "en_US",
         "locales": {
             "en_US": {
-                "custom.noVariableSelected": "No variable selected",
+                "messages.noVariableSelected": "No variable selected",
                 "dialog.title": "Go to...",
                 "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Variable",
                 "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Case",
@@ -25,12 +26,52 @@
                 "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Case number:"
             },
             "es_ES": {
-                "custom.noVariableSelected": "No se seleccionó ninguna variable",
+                "messages.noVariableSelected": "No se seleccionó ninguna variable",
                 "dialog.title": "Ir a...",
                 "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Variable",
                 "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Caso",
                 "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Ir",
                 "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Número de caso:"
+            },
+            "de_DE": {
+                "messages.noVariableSelected": "Keine Variable ausgewählt",
+                "dialog.title": "Gehe zu...",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Variable",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Fall",
+                "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Gehe",
+                "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Fallnummer:"
+            },
+            "fr_FR": {
+                "messages.noVariableSelected": "Aucune variable sélectionnée",
+                "dialog.title": "Aller à...",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Variable",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Observation",
+                "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Aller",
+                "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Numéro d’observation :"
+            },
+            "pl_PL": {
+                "messages.noVariableSelected": "Nie wybrano zmiennej",
+                "dialog.title": "Przejdź do...",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Zmienna",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Obserwacja",
+                "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Przejdź",
+                "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Numer obserwacji:"
+            },
+            "ro_RO": {
+                "messages.noVariableSelected": "Nicio variabilă selectată",
+                "dialog.title": "Mergi la...",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Variabilă",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Caz",
+                "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Mergi",
+                "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Numărul cazului:"
+            },
+            "el_GR": {
+                "messages.noVariableSelected": "Δεν επιλέχθηκε μεταβλητή",
+                "dialog.title": "Μετάβαση σε...",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.0": "Μεταβλητή",
+                "elements.c5e3e316-bae4-41dc-956e-c616b04f6062.items.1": "Παρατήρηση",
+                "elements.b90ad467-2450-434a-b1b5-6c7573892c12.label": "Μετάβαση",
+                "elements.e2d831cc-34bc-4c78-a8a1-681a85360d08.value": "Αριθμός παρατήρησης:"
             }
         }
     },
@@ -39,8 +80,8 @@
             "id": "bca9275c-8566-4ed6-a7d0-bdc062d51efa",
             "type": "Container",
             "nameid": "c_variables",
-            "left": 10,
-            "top": 89,
+            "left": 14,
+            "top": 94,
             "width": 130,
             "height": 100,
             "selection": "single",
@@ -61,9 +102,9 @@
             "id": "c5e3e316-bae4-41dc-956e-c616b04f6062",
             "type": "Choice",
             "nameid": "vc_choice",
-            "left": 67,
-            "top": 12,
-            "width": 120,
+            "left": 55,
+            "top": 17,
+            "width": 170,
             "height": 25,
             "items": "Variable,Case",
             "backgroundColor": "#ffffff",
@@ -88,8 +129,8 @@
             "id": "fc64f694-f65d-427a-b7c0-1a335a06911a",
             "type": "Input",
             "nameid": "search",
-            "left": 10,
-            "top": 60,
+            "left": 14,
+            "top": 65,
             "width": 130,
             "value": "",
             "valueType": "String",
@@ -105,9 +146,9 @@
             "nameid": "button1",
             "type": "Button",
             "label": "Go",
-            "left": 186,
-            "top": 167,
-            "width": 60,
+            "left": 184,
+            "top": 172,
+            "width": 80,
             "lineClamp": 1,
             "onClick": "custom",
             "color": "#efefef",
@@ -124,10 +165,10 @@
             "id": "e2d831cc-34bc-4c78-a8a1-681a85360d08",
             "type": "Label",
             "nameid": "label1",
-            "left": 163,
-            "top": 89,
-            "maxWidth": 200,
-            "lineClamp": 1,
+            "left": 184,
+            "top": 91,
+            "maxWidth": 120,
+            "lineClamp": 2,
             "fontColor": "#000000",
             "value": "Case number:",
             "align": "right",
@@ -138,14 +179,17 @@
             "fontSize": 12,
             "icon": "none",
             "iconSize": 0,
-            "valign": "top"
+            "valign": "top",
+            "anchorTarget": "56aa3582-b343-4090-8681-cab4e2d7a8e9",
+            "anchorPosition": "above",
+            "anchorAlign": "end"
         },
         {
             "id": "56aa3582-b343-4090-8681-cab4e2d7a8e9",
             "type": "Input",
             "nameid": "caseno",
-            "left": 186,
-            "top": 112,
+            "left": 204,
+            "top": 117,
             "width": 60,
             "value": "",
             "valueType": "Integer",

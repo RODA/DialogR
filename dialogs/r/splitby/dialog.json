@@ -223,7 +223,7 @@
             "nameid": "b_run",
             "type": "Button",
             "label": "OK",
-            "width": 50,
+            "width": 60,
             "lineClamp": 1,
             "color": "#efefef",
             "fontColor": "#000000",

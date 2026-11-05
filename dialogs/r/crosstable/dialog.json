@@ -96,7 +96,7 @@
             },
             "ro_RO": {
                 "custom.noDatasetSelected": "Niciun set de date selectat",
-                "custom.noVariablesSelected": "Nicio variabilă selectată",
+                "custom.noVariablesSelected": "Nu a fost selectată nicio variabilă",
                 "messages.noDatasetSelected": "Niciun set de date selectat",
                 "messages.noVariablesSelected": "Nu a fost selectată nicio variabilă",
                 "dialog.title": "Tabel de frecvențe",
@@ -113,7 +113,7 @@
             },
             "el_GR": {
                 "custom.noDatasetSelected": "Δεν επιλέχθηκε σύνολο δεδομένων",
-                "custom.noVariablesSelected": "Δεν επιλέχθηκαν μεταβλητές",
+                "custom.noVariablesSelected": "Δεν επιλέχθηκε καμία μεταβλητή",
                 "messages.noDatasetSelected": "Δεν επιλέχθηκε σύνολο δεδομένων",
                 "messages.noVariablesSelected": "Δεν επιλέχθηκε καμία μεταβλητή",
                 "dialog.title": "Πίνακας συχνοτήτων",

@@ -51,7 +51,7 @@
             "de_DE": {
                 "custom.noDatasetSelected": "Kein Datensatz ausgewählt",
                 "custom.noVariableSelected": "Keine Variable ausgewählt",
-                "custom.noSummaryStatisticSelected": "Wählen Sie mindestens eine Kennzahl aus",
+                "custom.noSummaryStatisticSelected": "Wählen Sie mindestens eine Zusammenfassungsstatistik aus",
                 "messages.noDatasetSelected": "Kein Datensatz ausgewählt",
                 "messages.noVariableSelected": "Keine Variable ausgewählt",
                 "messages.selectAtLeastOneSummaryStatistic": "Wählen Sie mindestens eine Zusammenfassungsstatistik aus",
@@ -73,7 +73,7 @@
             "fr_FR": {
                 "custom.noDatasetSelected": "Aucun jeu de données sélectionné",
                 "custom.noVariableSelected": "Aucune variable sélectionnée",
-                "custom.noSummaryStatisticSelected": "Sélectionnez au moins une statistique récapitulative",
+                "custom.noSummaryStatisticSelected": "Sélectionnez au moins une statistique de synthèse",
                 "messages.noDatasetSelected": "Aucun jeu de données sélectionné",
                 "messages.noVariableSelected": "Aucune variable sélectionnée",
                 "messages.selectAtLeastOneSummaryStatistic": "Sélectionnez au moins une statistique de synthèse",
@@ -95,7 +95,7 @@
             "pl_PL": {
                 "custom.noDatasetSelected": "Nie wybrano zbioru danych",
                 "custom.noVariableSelected": "Nie wybrano zmiennej",
-                "custom.noSummaryStatisticSelected": "Wybierz co najmniej jedną statystykę podsumowującą",
+                "custom.noSummaryStatisticSelected": "Wybierz co najmniej jedną statystykę opisową",
                 "messages.noDatasetSelected": "Nie wybrano zbioru danych",
                 "messages.noVariableSelected": "Nie wybrano zmiennej",
                 "messages.selectAtLeastOneSummaryStatistic": "Wybierz co najmniej jedną statystykę opisową",
@@ -115,11 +115,11 @@
                 "elements.dc62f135-764a-42da-9235-ae6145fce0e5.value": "Zakres"
             },
             "ro_RO": {
-                "custom.noDatasetSelected": "Niciun set de date selectat",
-                "custom.noVariableSelected": "Nicio variabilă selectată",
-                "custom.noSummaryStatisticSelected": "Selectează cel puțin o statistică rezumativă",
-                "messages.noDatasetSelected": "Niciun set de date selectat",
-                "messages.noVariableSelected": "Nicio variabilă selectată",
+                "custom.noDatasetSelected": "Nu a fost selectat niciun set de date",
+                "custom.noVariableSelected": "Nu a fost selectată nicio variabilă",
+                "custom.noSummaryStatisticSelected": "Selectați cel puțin o statistică descriptivă",
+                "messages.noDatasetSelected": "Nu a fost selectat niciun set de date",
+                "messages.noVariableSelected": "Nu a fost selectată nicio variabilă",
                 "messages.selectAtLeastOneSummaryStatistic": "Selectați cel puțin o statistică descriptivă",
                 "dialog.title": "Sumarizări numerice",
                 "elements.fd7b5960-a138-472f-b6ca-0855f2302994.value": "Set de date:",
@@ -161,7 +161,7 @@
             "es_ES": {
                 "custom.noDatasetSelected": "No se seleccionó ningún conjunto de datos",
                 "custom.noVariableSelected": "No se seleccionó ninguna variable",
-                "custom.noSummaryStatisticSelected": "Seleccione al menos una estadística de resumen",
+                "custom.noSummaryStatisticSelected": "Seleccione al menos un estadístico de resumen",
                 "messages.noDatasetSelected": "No se seleccionó ningún conjunto de datos",
                 "messages.noVariableSelected": "No se seleccionó ninguna variable",
                 "messages.selectAtLeastOneSummaryStatistic": "Seleccione al menos un estadístico de resumen",
