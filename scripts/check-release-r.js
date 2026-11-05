@@ -36,5 +36,9 @@ function checkReleaseR() {
 module.exports = { checkReleaseR };
 
 if (require.main === module) {
-    checkReleaseR();
+    const rBinary = checkReleaseR();
+    if (process.argv.includes('--github-env')) {
+        if (!process.env.GITHUB_ENV) throw new Error('GITHUB_ENV is required to export the verified R executable.');
+        require('node:fs').appendFileSync(process.env.GITHUB_ENV, `DIALOGFORGE_R_BINARY=${rBinary}\n`);
+    }
 }

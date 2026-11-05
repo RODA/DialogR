@@ -15,7 +15,7 @@ version 0.41.1 or later. CI installs the published GitHub source at commit
 To install the same dependencies locally (a source compiler is required):
 
 ```sh
-Rscript scripts/install-test-r-dependencies.R declared later jsonlite cli rlang
+Rscript scripts/install-test-r-dependencies.R statistics declared later jsonlite cli rlang
 ```
 
 ```sh
@@ -32,6 +32,10 @@ artifact. Run native Electron tests under `xvfb-run -a` on headless Linux.
 Platform packaging jobs set `DIALOGFORGE_DIST_DIR` to `product/dist`, the actual
 build output. The native test launches the R binary belonging to its preflight
 Rscript installation, so a second R installation cannot silently win discovery.
+CI exports that executable for the packaged checks as well. Packaging runs after
+R setup so the artifact contains a cache compiled by the qualified R version.
+Each native application check first exercises uncached startup across the former
+seven-second deadline, using real source compilation and helper negotiation.
 Runtime startup failures are reported immediately rather than as readiness timeouts.
 
 | Layer | What it verifies |

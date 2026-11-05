@@ -41,6 +41,8 @@ async function main() {
             };
             const staged = spawnSync(process.execPath, [path.join(nativeDist, 'scripts/package-product.js'), '--product-path', root, '--stage-only'], { cwd: dialogForgeRoot, env: nativeEnv, stdio: 'inherit' });
             assert.equal(staged.status, 0, 'Stage the exact product under test');
+            const coldStartup = spawnSync(process.execPath, [path.join(dialogForgeRoot, 'scripts/check-native-cold-startup.js')], { cwd: dialogForgeRoot, env: nativeEnv, stdio: 'inherit' });
+            assert.equal(coldStartup.status, 0, 'Uncached native startup must survive the former deadline');
             app = await _electron.launch({ executablePath: require(path.join(dialogForgeRoot, 'node_modules/electron')), args: [...(process.platform === 'win32' ? ['--disable-gpu'] : []), path.join(nativeDist, 'scripts/electron-main.js'), '--product-path', root], cwd: dialogForgeRoot, env: { ...nativeEnv, DIALOGFORGE_TEST_USER_DATA_PATH: profile } });
             app.on('window', candidate => { candidate.on('pageerror', error => errors.push(error.message)); candidate.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); }); });
             page = await findMainWindowPage(app);
