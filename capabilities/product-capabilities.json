@@ -1,5 +1,10 @@
 [
     {
+        "capability": "DialogR.dialog.addvariables",
+        "label": "Add variables",
+        "requiredRuntime": ["commands.visible", "workspace.objects", "tabular.read"]
+    },
+    {
         "capability": "DialogR.dialog.addcases",
         "label": "Add cases",
         "requiredRuntime": ["commands.visible", "workspace.objects", "tabular.read", "dependencies.packages"],

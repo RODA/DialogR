@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "packages": {
     "admisc": {
-      "version": "0.41.2"
+      "version": "0.41.1"
     },
     "base64enc": {
       "version": "0.1-6"

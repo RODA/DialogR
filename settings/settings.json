@@ -13,7 +13,7 @@
     "rPackageRequirements": [
         {
             "name": "admisc",
-            "minimumVersion": "0.41.2"
+            "minimumVersion": "0.41.1"
         },
         {
             "name": "declared",
@@ -58,7 +58,7 @@
             "rPackages": [
                 {
                     "name": "admisc",
-                    "minimumVersion": "0.41.2"
+                    "minimumVersion": "0.41.1"
                 }
             ]
         },

@@ -24,7 +24,8 @@
                         "labelKey": "menu.root.data.merge_files.add_variables",
                         "label": "Add variables",
                         "type": "product-dialog",
-                        "dialog": "addvariables"
+                        "dialog": "addvariables",
+                        "capability": "DialogR.dialog.addvariables"
                     }
                 ]
             },
