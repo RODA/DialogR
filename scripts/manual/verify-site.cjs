@@ -40,9 +40,12 @@ const base = process.env.DIALOGR_SITE_URL || "http://127.0.0.1:4186";
         }
         await page.goto(`${base}/usermanual.html`);
         assert.equal(await page.locator("pre").count(), 0);
-        for (const dialog of require("../../dialogs/dialogs.json")) assert.equal(await page.locator(`#${dialog.id}`).count(), 1);
+        const dialogs = require("../../dialogs/dialogs.json");
+        for (const dialog of dialogs) assert.equal(await page.locator(`#${dialog.id}`).count(), 1);
         await page.locator("#manual-search").fill("declared");
         assert(await page.locator("#declared-values").isVisible());
+        await page.locator("#manual-search").fill("lookup");
+        assert(await page.locator("#addvariables").isVisible());
         await page.locator("#manual-search").fill("zzznomatchingtopic");
         assert.equal(await page.locator("[data-chapter]:visible").count(), 0);
         await page.locator("#manual-search").fill("");
@@ -61,6 +64,19 @@ const base = process.env.DIALOGR_SITE_URL || "http://127.0.0.1:4186";
             await page.locator(`#${id}`).evaluate(element => element.scrollIntoView({ behavior: "instant" }));
             await page.screenshot({ path: `/tmp/dialogr-${id}.png` });
         }
+        for (const id of ["addcases", "addvariables"]) {
+            await page.goto(`${base}/usermanual.html#${id}`);
+            await page.locator(`#${id} [data-enlarge]`).first().click();
+            assert((await page.locator("#enlarged-screenshot").getAttribute("src")).endsWith(id + ".png"));
+            await page.locator("#close-screenshot").click();
+        }
+        await page.goto(`${base}/usermanual.html#merge-files`);
+        const pendingDownload = page.waitForEvent("download");
+        await page.locator('#merge-files a[download][href="examples/respondents.csv"]').click();
+        assert.equal((await pendingDownload).suggestedFilename(), "respondents.csv");
+        await page.goto(`${base}/index.html#merge-files`);
+        assert.equal(await page.locator('#merge-files a[href="usermanual.html#addcases"]').count(), 1);
+        assert.equal(await page.locator('#merge-files a[href="usermanual.html#addvariables"]').count(), 1);
         await page.goto(`${base}/index.html#languages`);
         await page.locator("#languages").evaluate(element => element.scrollIntoView({ behavior: "instant" }));
         await page.screenshot({ path: "/tmp/dialogr-languages.png" });
@@ -69,7 +85,7 @@ const base = process.env.DIALOGR_SITE_URL || "http://127.0.0.1:4186";
         assert(await noJS.locator("#frequencies").isVisible());
         assert.equal(await noJS.locator("[data-enlarge]").first().getAttribute("href"), "images/manual/frequencies.png");
         assert.deepEqual(errors, []);
-        console.log("Verified four pages at desktop/mobile widths, local links, images, all 12 dialogs, search, screenshot viewer, and manual without JavaScript.");
+        console.log(`Verified four pages at desktop/mobile widths, local links, images, all ${dialogs.length} dialogs, merge downloads, search, screenshot viewer, and manual without JavaScript.`);
     } finally {
         await browser.close();
     }

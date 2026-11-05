@@ -11,7 +11,7 @@ paper, ink, blue, and Inter typography. It requires no build step. GitHub Pages 
 - `css/site.css`: shared responsive layout and print rules.
 - `commands.html`: optional command and package reference, separate from the task-based manual.
 - `scripts/site.js`: manual search and screenshot enlargement.
-- `images/manual/`: 25 captures of the actual application, including statistical output,
+- `images/manual/`: 28 captures of the actual application, including statistical output,
   variable pinning and search, and the contextual Send to Script Editor action.
 - `images/dialogr.svg`: the existing product icon.
 - `fonts/`: Inter Regular and Bold with their SIL Open Font License.
@@ -57,6 +57,21 @@ See `scripts/manual/capture-notes.json` for captured controls and output.
 Regenerate the HTML after recapturing images so image dimensions stay current.
 Use `DIALOGR_MANUAL_HELPERS_ONLY=1 node scripts/manual/capture-screenshots.cjs`
 to capture just the three dialog-workflow illustrations.
+
+The merge chapters use the small invented CSV files in `docs/examples/`, not
+ESS respondents. `scripts/manual/capture-merge-dialogs.cjs` opens the current
+native application in an isolated profile, imports these files, captures both
+new dialogs (including row-order matching), executes each merge, and checks the
+resulting data. It uses the matching compiled DialogForge checkout. Run it with:
+
+```sh
+node scripts/manual/capture-merge-dialogs.cjs
+npm run docs:build
+```
+
+Its exact R assertions are recorded in `scripts/manual/merge-capture-notes.json`.
+The capture does not change the existing ESS screenshots. Keep the downloadable
+examples, instructions, assertions, and resulting figures in agreement.
 
 The current reference displays the product version from `package.json`. Check
 these sources when behavior changes:

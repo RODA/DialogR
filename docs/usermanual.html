@@ -17,7 +17,7 @@
         <nav aria-label="Main navigation"><a href="index.html">Overview</a><a href="usermanual.html" aria-current="page">User manual</a><a href="download.html">Get DialogR</a></nav>
     </header>
     <main id="main" class="wrap">
-        <div class="page-heading"><p class="eyebrow">See it. Choose it. Run it.</p><h1>Your guide to DialogR.</h1><p class="lead">Follow the screenshots, make your selections, and understand the results. No R programming required.</p><p class="small">DialogR 1.0.24 · Actual desktop screenshots · ESS Round 9, Romania · <a href="commands.html">Optional R reference</a></p></div>
+        <div class="page-heading"><p class="eyebrow">See it. Choose it. Run it.</p><h1>Your guide to DialogR.</h1><p class="lead">Follow the screenshots, make your selections, and understand the results. No R programming required.</p><p class="small">DialogR 1.0.28 · Actual desktop screenshots · ESS examples and small merge samples · <a href="commands.html">Optional R reference</a></p></div>
         <div class="manual-layout"><aside class="manual-nav" aria-label="Manual contents"><div id="search-controls" hidden><label class="search-label" for="manual-search">Find a task or topic</label><input id="manual-search" type="search" placeholder="Try missing values or recode" aria-controls="chapters"></div><strong>In this guide</strong><div class="toc"><a href="#getting-started" data-chapter-link="getting-started">Your first analysis</a>
 <a href="#from-spss" data-chapter-link="from-spss">Get to know the data editor</a>
 <a href="#finding-variables" data-chapter-link="finding-variables">Find and keep track of variables</a>
@@ -26,6 +26,9 @@
 <a href="#languages" data-chapter-link="languages">Change the interface language</a>
 <a href="#import" data-chapter-link="import">Import data</a>
 <a href="#dialog-reference" data-chapter-link="dialog-reference">Choose a task</a>
+<a href="#merge-files" data-chapter-link="merge-files">Combine two datasets</a>
+<a href="#addcases" data-chapter-link="addcases">Add cases</a>
+<a href="#addvariables" data-chapter-link="addvariables">Add variables</a>
 <a href="#sortby" data-chapter-link="sortby">Sort cases</a>
 <a href="#splitby" data-chapter-link="splitby">Split by groups</a>
 <a href="#select" data-chapter-link="select">Subset cases and variables</a>
@@ -49,7 +52,7 @@
         <figcaption><span>Figure 1</span> ESS political interest: the dataset and variable are selected, with Variable label enabled. Click Run. <a href="images/manual/frequencies.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
 
-    <div class="callout"><p><strong>The dataset used in this guide.</strong> Screenshots use the English-labelled <a href="https://roda.ro/studies/roda-ess9?lang=en"><strong>European Social Survey, Round 9, Romania</strong></a> dataset from the RODA catalogue, imported as <strong>ess</strong>. It contains 1,846 cases and 343 variables. The analysis variables retain their <strong>declared</strong> classes, labels, and missing-value definitions.</p><p>Download <strong>roda-ess9-v1-en.rds</strong> from the catalogue record to follow the examples exactly. The broader <a href="https://ess.sikt.no/">ESS Data Portal</a> also provides ESS data, but another rendition may have different variable names.</p></div><ol class="steps"><li><strong>Start DialogR.</strong> Complete <a href="#packages">desktop setup</a>, or wait for WebR to load.</li><li><strong>Choose File → Import data.</strong> Choose <strong>roda-ess9-v1-en.rds</strong>, enter <strong>ess</strong> in <strong>Assign to</strong>, and click <strong>Import</strong>.</li><li><strong>Open the dataset editor.</strong> Explore the Data and Variables tabs. Keep the labels and missing-value definitions supplied with the file.</li><li><strong>Choose Analyze → Descriptive statistics → Frequency table.</strong> Select ess and <strong>B1_polintr</strong>, “How interested in politics”.</li><li><strong>Select Variable label and click Run.</strong> Leave Show values, Valid frequencies, and Observed only selected. No command needs to be typed.</li></ol>
+    <div class="callout"><p><strong>The dataset used in this guide.</strong> Screenshots use the English-labelled <a href="https://roda.ro/studies/roda-ess9?lang=en"><strong>European Social Survey, Round 9, Romania</strong></a> dataset from the RODA catalogue, imported as <strong>ess</strong>. It contains 1,846 cases and 343 variables. The merge chapters use separate, small invented datasets supplied with this guide. The analysis variables retain their <strong>declared</strong> classes, labels, and missing-value definitions.</p><p>Download <strong>roda-ess9-v1-en.rds</strong> from the catalogue record to follow the examples exactly. The broader <a href="https://ess.sikt.no/">ESS Data Portal</a> also provides ESS data, but another rendition may have different variable names.</p></div><ol class="steps"><li><strong>Start DialogR.</strong> Complete <a href="#packages">desktop setup</a>, or wait for WebR to load.</li><li><strong>Choose File → Import data.</strong> Choose <strong>roda-ess9-v1-en.rds</strong>, enter <strong>ess</strong> in <strong>Assign to</strong>, and click <strong>Import</strong>.</li><li><strong>Open the dataset editor.</strong> Explore the Data and Variables tabs. Keep the labels and missing-value definitions supplied with the file.</li><li><strong>Choose Analyze → Descriptive statistics → Frequency table.</strong> Select ess and <strong>B1_polintr</strong>, “How interested in politics”.</li><li><strong>Select Variable label and click Run.</strong> Leave Show values, Valid frequencies, and Observed only selected. No command needs to be typed.</li></ol>
     <div class="read-result"><h3>What to look for</h3><p>The four valid response categories contain 135, 380, 659, and 665 cases. Seven cases are labelled Refusal and treated as missing for the valid percentages. The overall total is 1,846; the valid total is 1,839. “Not at all interested” therefore represents 36.0% of all cases and 36.2% of valid responses.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 437px">
         <a href="images/manual/frequencies-output.png" data-enlarge aria-label="Enlarge screenshot: Actual DialogR output: refusal remains visible as a distinct category, while valid percentages use only valid responses."><img src="images/manual/frequencies-output.png" width="874" height="480" loading="lazy" alt="Actual DialogR output: refusal remains visible as a distinct category, while valid percentages use only valid responses."></a>
@@ -116,7 +119,7 @@
 
     <div class="callout"><p><strong>Desktop: DialogR is a graphical layer on top of R.</strong> You are responsible for installing R itself and the necessary R packages. Installing DialogR alone does not provide the statistical runtime or the packages that perform its calculations and imports.</p><p><strong>WebR: R and the packages are supplied in the browser, but analysis is slower.</strong> You do not need to install R or its packages on your computer. The same dataset can be used; allow more time for the browser runtime, imports, and analyses.</p></div>
             <h3>Complete desktop setup</h3><ol class="steps"><li>Install <a href="https://cran.r-project.org/">R</a> for your operating system.</li><li>Install the appropriate DialogR release from <a href="download.html">Get DialogR</a> and start the application.</li><li>Confirm that DialogR is using your local R installation in the runtime settings.</li><li>Choose <strong>Packages → Install required R packages</strong>. Keep your internet connection available and wait for installation to finish.</li><li>If a dialog reports an old package, choose <strong>Packages → Update development versions</strong>. Read any installation error before trying again.</li></ol>
-            <h3>What the packages do</h3><div class="table-scroll"><table><thead><tr><th>Package</th><th>What it supplies</th><th>Required version</th></tr></thead><tbody><tr><td>admisc</td><td>Working within datasets and recoding values.</td><td>0.41 or newer</td></tr><tr><td>declared</td><td>Labelled data, missing-value handling, tables, and summaries.</td><td>0.27 or newer</td></tr><tr><td>DDIwR</td><td>Importing data from other statistical software and Excel.</td><td>0.20 or newer</td></tr><tr><td>statistics</td><td>Independent-samples t-tests and one-way ANOVA with variance-homogeneity handling.</td><td>Newer than 0.14</td></tr></tbody></table></div>
+            <h3>What the packages do</h3><div class="table-scroll"><table><thead><tr><th>Package</th><th>What it supplies</th><th>Required version</th></tr></thead><tbody><tr><td>admisc</td><td>Working within datasets, recoding values, and adding cases.</td><td>0.41.1 or newer</td></tr><tr><td>declared</td><td>Labelled data, missing-value handling, tables, and summaries.</td><td>0.27 or newer</td></tr><tr><td>DDIwR</td><td>Importing data from other statistical software and Excel.</td><td>0.20 or newer</td></tr><tr><td>statistics</td><td>Independent-samples t-tests and one-way ANOVA with variance-homogeneity handling.</td><td>Newer than 0.14</td></tr></tbody></table></div>
             <p>The setup workflow also installs supporting packages. They must be installed in the R installation used by DialogR. If Excel import reports a missing readxl package, that import dependency must be installed in the same R library. Further technical information is in the <a href="commands.html#packages">optional package reference</a>.</p>
 
 
@@ -159,8 +162,59 @@
     <p>Find the task you want to carry out, then follow its illustrated instructions. The menu names below match the application.</p>
 
 
-    <div class="task-links"><a href="#sortby">Put cases in order <span>Sort cases →</span></a><a href="#splitby">Analyse groups separately <span>Split by groups →</span></a><a href="#select">Keep selected cases or columns <span>Subset cases and variables →</span></a><a href="#weightby">Use case frequencies <span>Apply frequency weighting →</span></a><a href="#recode">Combine or change values <span>Recode variables →</span></a><a href="#frequencies">Count responses <span>Frequency table →</span></a><a href="#crosstable">Compare two categorical variables <span>Contingency table →</span></a><a href="#summaries">Summarise numeric variables <span>Numerical summaries →</span></a><a href="#onesamplettest">Compare a mean with a value <span>One-sample t-test →</span></a><a href="#independentsamplesttest">Compare two independent groups <span>Independent samples t-test →</span></a><a href="#anovahv">Compare several group means <span>One-way ANOVA →</span></a><a href="#goto">Find a case or variable <span>Go to… →</span></a></div><p><strong>Run</strong> carries out an analysis. <strong>OK</strong> confirms a data-management choice. <strong>Reset</strong> restores dialog options; it does not undo a transformation already carried out.</p>
+    <div class="task-links"><a href="#addcases">Append another batch of cases <span>Add cases →</span></a><a href="#addvariables">Bring in additional columns <span>Add variables →</span></a><a href="#sortby">Put cases in order <span>Sort cases →</span></a><a href="#splitby">Analyse groups separately <span>Split by groups →</span></a><a href="#select">Keep selected cases or columns <span>Subset cases and variables →</span></a><a href="#weightby">Use case frequencies <span>Apply frequency weighting →</span></a><a href="#recode">Combine or change values <span>Recode variables →</span></a><a href="#frequencies">Count responses <span>Frequency table →</span></a><a href="#crosstable">Compare two categorical variables <span>Contingency table →</span></a><a href="#summaries">Summarise numeric variables <span>Numerical summaries →</span></a><a href="#onesamplettest">Compare a mean with a value <span>One-sample t-test →</span></a><a href="#independentsamplesttest">Compare two independent groups <span>Independent samples t-test →</span></a><a href="#anovahv">Compare several group means <span>One-way ANOVA →</span></a><a href="#goto">Find a case or variable <span>Go to… →</span></a></div><p><strong>Run</strong> carries out an analysis. <strong>OK</strong> confirms a data-management choice. <strong>Reset</strong> restores dialog options; it does not undo a transformation already carried out.</p>
 
+
+</section>
+
+<section id="merge-files" data-chapter>
+    <h2>Combine two datasets</h2>
+    <p class="menu-path">Data → Merge Files</p>
+    <p>Choose Add cases to append rows, or Add variables to bring columns together. Both dialogs start with two empty dataset selections: choose a different dataset in each list. The selected dataset is unavailable in the other list.</p>
+
+
+    <h3>Try the small example files</h3><p>These invented data make it easy to see exactly what each merge does. They are separate from the ESS examples elsewhere in this guide. Download the files below, then use <strong>File → Import data</strong> to import each CSV under the indicated dataset name. Keep the first row as variable names and use a comma separator.</p><div class="table-scroll"><table><thead><tr><th>Download</th><th>Import as</th><th>Contents</th></tr></thead><tbody><tr><td><a href="examples/respondents.csv" download>respondents.csv</a></td><td>respondents</td><td>Four respondents: id, age, region</td></tr><tr><td><a href="examples/later.csv" download>later.csv</a></td><td>later</td><td>Two more respondents, with an extra mode variable</td></tr><tr><td><a href="examples/regions.csv" download>regions.csv</a></td><td>regions</td><td>Region codes, names, and an internal note</td></tr><tr><td><a href="examples/notes.csv" download>notes.csv</a></td><td>notes</td><td>Three review entries, for the optional row-order example</td></tr></tbody></table></div><h3>Decide where the result should go</h3><p>By default, either dialog replaces <strong>Dataset 1</strong> with the result. Select <strong>New dataset</strong> and enter a name such as <strong>survey_all</strong> to keep both sources. The new name must not already belong to a dataset. <strong>Run</strong> performs the merge; <strong>Reset</strong> restores the dialog choices but does not undo an executed merge.</p><h3>Check active filters</h3><p>A filter on either source limits which cases enter the merge. Clear the source filters first to combine all cases. Split groups and frequency weights are not applied by these dialogs. When replacing Dataset 1, the merge result replaces its contents, including when a filter was active. Use a new dataset to retain the source for comparison.</p>
+
+
+</section>
+
+<section id="addcases" data-chapter>
+    <h2>Add cases</h2>
+    <p class="menu-path">Data → Merge Files → Add cases</p>
+    <p>Append the cases from Dataset 2 after the cases from Dataset 1. Variables are matched by name, so their column positions need not agree. Cases are appended even when identifiers repeat; this operation does not remove duplicate cases.</p>
+    <figure class="manual-figure" style="--screenshot-width: 600px">
+        <a href="images/manual/addcases.png" data-enlarge aria-label="Enlarge screenshot: Append later to respondents in a new dataset, survey_all. The extra mode variable from Dataset 2 is included in Common."><img src="images/manual/addcases.png" width="1200" height="740" loading="lazy" alt="Append later to respondents in a new dataset, survey_all. The extra mode variable from Dataset 2 is included in Common."></a>
+        <figcaption><span>Figure 9</span> Append later to respondents in a new dataset, survey_all. The extra mode variable from Dataset 2 is included in Common. <a href="images/manual/addcases.png" data-enlarge>Enlarge screenshot</a></figcaption>
+    </figure>
+    <h3>To carry out this example</h3><ol class="steps"><li>Import <strong>respondents.csv</strong> as <strong>respondents</strong> and <strong>later.csv</strong> as <strong>later</strong>, following <a href="#merge-files">the example setup</a>.</li>
+<li>Select <strong>New dataset</strong> and enter <strong>survey_all</strong>. Do this before choosing the datasets to start with only their shared variables in Common.</li>
+<li>Choose <strong>respondents</strong> in <strong>Dataset 1</strong> and <strong>later</strong> in <strong>Dataset 2</strong>. The shared variables id, age, and region appear in <strong>Common</strong>.</li>
+<li>Select <strong>(2) mode</strong> in <strong>Unpaired</strong> and click the right arrow to include it.</li>
+<li>Click <strong>Run</strong>, then open <strong>survey_all</strong> to inspect the six cases.</li></ol>
+    <h3>Common and unpaired variables</h3><p><strong>Common</strong> lists the variables to retain in the result. Variables originally present in only one source can be added from <strong>Unpaired</strong>. The prefix <strong>(1)</strong> means a variable belongs only to Dataset 1; <strong>(2)</strong> means it belongs only to Dataset 2. The prefix stays visible after the variable moves to Common; it is not added to the variable name in the dataset.</p><p>An included unpaired variable receives <strong>NA</strong> for every case from the source where it was absent. To return an optional variable to Unpaired, select it in Common: the button changes to a left arrow. Variables shared by both sources stay included.</p><h3>Keeping Dataset 1’s variables</h3><p>When replacing Dataset 1, all of its variables stay in Common. You may add variables unique to Dataset 2, but cannot remove Dataset 1’s variables. With <strong>New dataset</strong> selected, you can also choose which variables unique to Dataset 1 to include. Choices already made are retained when you switch this option.</p><p>If the sources have no shared variable names, a new dataset starts with an empty Common list. Move at least one unpaired variable into Common before running. Keeping variables from both sources produces columns filled with NA for the cases where each was absent.</p><p>Check that identically named variables mean the same thing and use compatible types and coding. For example, the same response code should not mean different answers in the two files. Add cases uses <strong>admisc 0.41.1 or newer</strong>.</p>
+    <div class="read-result"><h3>What to look for</h3><p>survey_all has six rows and the four variables id, age, region, and mode. The original four respondents come first, with NA in mode; the two later cases follow, with phone and online. Both source datasets remain available because New dataset was selected.</p></div>
+
+</section>
+
+<section id="addvariables" data-chapter>
+    <h2>Add variables</h2>
+    <p class="menu-path">Data → Merge Files → Add variables</p>
+    <p>Bring columns together by matching key values, or by pairing the first row with the first row, the second with the second, and so on. Key matching uses R’s merge(); row-order matching uses cbind(). No additional R package is required.</p>
+    <figure class="manual-figure" style="--screenshot-width: 590px">
+        <a href="images/manual/addvariables.png" data-enlarge aria-label="Enlarge screenshot: Match respondents to the regions lookup using region. Keep all respondents, exclude the lookup’s internal_note, and save survey_named."><img src="images/manual/addvariables.png" width="1180" height="820" loading="lazy" alt="Match respondents to the regions lookup using region. Keep all respondents, exclude the lookup’s internal_note, and save survey_named."></a>
+        <figcaption><span>Figure 10</span> Match respondents to the regions lookup using region. Keep all respondents, exclude the lookup’s internal_note, and save survey_named. <a href="images/manual/addvariables.png" data-enlarge>Enlarge screenshot</a></figcaption>
+    </figure>
+    <h3>To carry out this example</h3><ol class="steps"><li>Import <strong>respondents.csv</strong> as <strong>respondents</strong> and <strong>regions.csv</strong> as <strong>regions</strong>, following <a href="#merge-files">the example setup</a>.</li>
+<li>Choose <strong>respondents</strong> in <strong>Dataset 1</strong> and <strong>regions</strong> in <strong>Dataset 2</strong>. Leave <strong>By key variables</strong> selected.</li>
+<li>Select <strong>region</strong> in <strong>Key variables</strong>.</li>
+<li>Under <strong>Lookup</strong>, select <strong>2</strong>: regions supplies the region names, while the cases from respondents are retained.</li>
+<li>Select <strong>(2) internal_note</strong> in <strong>Excluded variables</strong> to leave that column out of the result.</li>
+<li>Select <strong>New dataset</strong>, enter <strong>survey_named</strong>, and click <strong>Run</strong>.</li></ol>
+    <h3>Select the matching keys</h3><p>The Key variables list contains variable names present in both sources. Select one or several keys directly in this list; selected keys are pinned at the top. With several keys, their values must match together. For example, a household number and a person number may identify a respondent jointly.</p><p>The key names must agree between the sources. If names differ, rename them before using this dialog. Check that the values use the same coding and compatible types. At least one key is required in key mode; datasets without common variable names can still be combined <a href="#merge-by-row-order">by row order</a>.</p><h3>Choose a lookup, if needed</h3><p>A lookup supplies information for matching cases in the other dataset. The two checkboxes exclude one another; clearing both keeps only matched cases.</p><div class="table-scroll"><table><thead><tr><th>Lookup choice</th><th>Cases retained</th><th>Required unique keys</th></tr></thead><tbody><tr><td>Neither selected</td><td>Only matches between the sources</td><td>No uniqueness check</td></tr><tr><td>1</td><td>All cases from Dataset 2, with information from Dataset 1</td><td>Dataset 1</td></tr><tr><td>2</td><td>All cases from Dataset 1, with information from Dataset 2</td><td>Dataset 2</td></tr></tbody></table></div><p>A case without a lookup match receives NA in the added columns. Unused lookup rows do not create extra cases. The lookup must have one row per key, or per combination of keys; repeated lookup keys stop the operation before the result is assigned.</p><p>Without a lookup, repeated keys can produce several matches. If a key occurs twice in each source, it produces four result rows. Missing key values can match one another too, so inspect missing identifiers before merging. Key matching sorts the result by the selected keys; it does not preserve the original case order, and the sources need not be sorted in advance.</p><h3>Exclude columns directly</h3><p>The Excluded variables list contains variables from both sources, prefixed <strong>(1)</strong> and <strong>(2)</strong>. Select the columns to leave out; selected exclusions are pinned at the top. Click a selected item again to keep it. Selected keys cannot be excluded, and an excluded variable cannot be chosen as a key until its exclusion is cleared.</p><p>For key matching, a non-key name retained from both sources normally becomes two columns with <strong>.x</strong> and <strong>.y</strong> suffixes. Exclude one copy if you only want one of them.</p><h3 id="merge-by-row-order">Match by row order</h3><p>Choose <strong>By row order</strong> only when the first case in one file belongs with the first case in the other. No key is used or checked. Key and lookup controls are disabled, while exclusions remain available. The result keeps the longer source’s number of rows; missing rows in the shorter source are filled with NA rather than recycled. Both columns are retained if they have the same name, which may leave repeated names in this mode.</p><p>To try it, import <a href="examples/notes.csv" download>notes.csv</a> as <strong>notes</strong>. Select respondents and notes, choose By row order, and save a new dataset named <strong>survey_notes</strong>. Its fourth case has NA in reviewed because notes contains only three entries.</p><figure class="manual-figure" style="--screenshot-width: 590px">
+        <a href="images/manual/addvariables-order.png" data-enlarge aria-label="Enlarge screenshot: By row order pairs the four respondents with three notes and fills the last review entry with NA."><img src="images/manual/addvariables-order.png" width="1180" height="820" loading="lazy" alt="By row order pairs the four respondents with three notes and fills the last review entry with NA."></a>
+        <figcaption><span>Figure 11</span> By row order pairs the four respondents with three notes and fills the last review entry with NA. <a href="images/manual/addvariables-order.png" data-enlarge>Enlarge screenshot</a></figcaption>
+    </figure>
+    <div class="read-result"><h3>What to look for</h3><p>survey_named has four cases. The two respondents in region 1 receive North, the respondent in region 2 receives South, and the respondent in region 4 receives NA because that code has no lookup entry. The unused lookup code 3 adds no case. internal_note is absent, and both source datasets are unchanged.</p></div>
 
 </section>
 
@@ -170,7 +224,7 @@
     <p>Put respondents in order by one or more variables. The example sorts by age and saves the ordered cases into a separate dataset.</p>
     <figure class="manual-figure" style="--screenshot-width: 370px">
         <a href="images/manual/sortby.png" data-enlarge aria-label="Enlarge screenshot: F3_agea (age) is in the sorting list. The new dataset is named ess_sorted."><img src="images/manual/sortby.png" width="740" height="650" loading="lazy" alt="F3_agea (age) is in the sorting list. The new dataset is named ess_sorted."></a>
-        <figcaption><span>Figure 9</span> F3_agea (age) is in the sorting list. The new dataset is named ess_sorted. <a href="images/manual/sortby.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 12</span> F3_agea (age) is in the sorting list. The new dataset is named ess_sorted. <a href="images/manual/sortby.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Select <strong>F3_agea</strong> and click the arrow to move it into Sort cases by.</li>
@@ -187,7 +241,7 @@
     <p>Repeat a supported analysis separately for each group. The example produces political-interest tables by the gender categories recorded in the ESS dataset.</p>
     <figure class="manual-figure" style="--screenshot-width: 362px">
         <a href="images/manual/splitby.png" data-enlarge aria-label="Enlarge screenshot: F2_gndr (Gender) has been moved into Split by."><img src="images/manual/splitby.png" width="724" height="650" loading="lazy" alt="F2_gndr (Gender) has been moved into Split by."></a>
-        <figcaption><span>Figure 10</span> F2_gndr (Gender) has been moved into Split by. <a href="images/manual/splitby.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 13</span> F2_gndr (Gender) has been moved into Split by. <a href="images/manual/splitby.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Move <strong>F2_gndr</strong> into Split by using the arrow.</li>
@@ -204,7 +258,7 @@
     <p>Keep respondents who meet a condition, keep selected columns, or create a smaller dataset. This example follows the teaching material by selecting respondents labelled Female.</p>
     <figure class="manual-figure" style="--screenshot-width: 430px">
         <a href="images/manual/select.png" data-enlarge aria-label="Enlarge screenshot: The condition uses the declared value label Female. New dataset creates essf and preserves the original ess."><img src="images/manual/select.png" width="860" height="670" loading="lazy" alt="The condition uses the declared value label Female. New dataset creates essf and preserves the original ess."></a>
-        <figcaption><span>Figure 11</span> The condition uses the declared value label Female. New dataset creates essf and preserves the original ess. <a href="images/manual/select.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 14</span> The condition uses the declared value label Female. New dataset creates essf and preserves the original ess. <a href="images/manual/select.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong> and leave all variables selected.</li>
 <li>Choose <strong>New dataset</strong> and enter <strong>essf</strong>.</li>
@@ -221,7 +275,7 @@
     <p>Use a frequency variable when cases represent different numbers of occurrences. The supplied ESS teaching dataset includes a variable named fweight, labelled Frequency weight.</p>
     <figure class="manual-figure" style="--screenshot-width: 360px">
         <a href="images/manual/weightby.png" data-enlarge aria-label="Enlarge screenshot: The selected weight is fweight from the RODA ESS dataset."><img src="images/manual/weightby.png" width="720" height="650" loading="lazy" alt="The selected weight is fweight from the RODA ESS dataset."></a>
-        <figcaption><span>Figure 12</span> The selected weight is fweight from the RODA ESS dataset. <a href="images/manual/weightby.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 15</span> The selected weight is fweight from the RODA ESS dataset. <a href="images/manual/weightby.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Move <strong>fweight</strong> into Weight cases by using the arrow.</li>
@@ -238,7 +292,7 @@
     <p>Turn values into categories while retaining the original variable. Following the teaching example, group age into under 45 and 45 or older.</p>
     <figure class="manual-figure" style="--screenshot-width: 575px">
         <a href="images/manual/recode.png" data-enlarge aria-label="Enlarge screenshot: F3_agea is recoded into agerec: ages through 44 become 1, and ages from 45 upward become 2."><img src="images/manual/recode.png" width="1150" height="740" loading="lazy" alt="F3_agea is recoded into agerec: ages through 44 become 1, and ages from 45 upward become 2."></a>
-        <figcaption><span>Figure 13</span> F3_agea is recoded into agerec: ages through 44 become 1, and ages from 45 upward become 2. <a href="images/manual/recode.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 16</span> F3_agea is recoded into agerec: ages through 44 become 1, and ages from 45 upward become 2. <a href="images/manual/recode.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong> and <strong>F3_agea</strong>.</li>
 <li>Select <strong>recode into new variable</strong> and enter <strong>agerec</strong>.</li>
@@ -256,7 +310,7 @@
     <p>Count the cases in each category of a variable. Start here when you want to understand how responses are distributed.</p>
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/frequencies.png" data-enlarge aria-label="Enlarge screenshot: B1_polintr is selected with Variable label enabled. The other checked options show values, valid percentages, and observed categories."><img src="images/manual/frequencies.png" width="680" height="520" loading="lazy" alt="B1_polintr is selected with Variable label enabled. The other checked options show values, valid percentages, and observed categories."></a>
-        <figcaption><span>Figure 14</span> B1_polintr is selected with Variable label enabled. The other checked options show values, valid percentages, and observed categories. <a href="images/manual/frequencies.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 17</span> B1_polintr is selected with Variable label enabled. The other checked options show values, valid percentages, and observed categories. <a href="images/manual/frequencies.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong> in Dataset.</li>
 <li>Select <strong>B1_polintr</strong> (How interested in politics).</li>
@@ -266,7 +320,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The label identifies the question above the table. Read fre as the count, per as the percentage of all cases, and vld as the percentage of valid responses. The four substantive categories total 1,839 cases; the seven refusals are shown separately and excluded from vld.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 437px">
         <a href="images/manual/frequencies-output.png" data-enlarge aria-label="Enlarge screenshot: The output retains the Refusal label and separates it from the valid responses."><img src="images/manual/frequencies-output.png" width="874" height="480" loading="lazy" alt="The output retains the Refusal label and separates it from the valid responses."></a>
-        <figcaption><span>Figure 15</span> The output retains the Refusal label and separates it from the valid responses. <a href="images/manual/frequencies-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 18</span> The output retains the Refusal label and separates it from the valid responses. <a href="images/manual/frequencies-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>For “Not at all interested”, 665 out of 1,846 cases gives 36.0%; 665 out of 1,839 valid responses gives 36.2%. The missing definition explains the difference. Filters, grouping, and frequency weights also affect the table.</p>
 </section>
 
@@ -276,7 +330,7 @@
     <p>Compare political interest across the gender categories recorded in the ESS dataset. Both variables carry their declared value labels.</p>
     <figure class="manual-figure" style="--screenshot-width: 490px">
         <a href="images/manual/crosstable.png" data-enlarge aria-label="Enlarge screenshot: B1_polintr supplies rows; F2_gndr supplies columns."><img src="images/manual/crosstable.png" width="980" height="550" loading="lazy" alt="B1_polintr supplies rows; F2_gndr supplies columns."></a>
-        <figcaption><span>Figure 16</span> B1_polintr supplies rows; F2_gndr supplies columns. <a href="images/manual/crosstable.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 19</span> B1_polintr supplies rows; F2_gndr supplies columns. <a href="images/manual/crosstable.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Choose <strong>B1_polintr</strong> for Rows and <strong>F2_gndr</strong> for Columns.</li>
@@ -286,7 +340,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The displayed table includes 1,839 valid cases: 649 Male and 1,190 Female. Seven political-interest refusals are excluded. Counts describe this unweighted dataset; compare column proportions when the group sizes differ.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 406px">
         <a href="images/manual/crosstable-output.png" data-enlarge aria-label="Enlarge screenshot: Political interest by gender, retaining the original value labels and excluding declared missing responses."><img src="images/manual/crosstable-output.png" width="812" height="280" loading="lazy" alt="Political interest by gender, retaining the original value labels and excluding declared missing responses."></a>
-        <figcaption><span>Figure 17</span> Political interest by gender, retaining the original value labels and excluding declared missing responses. <a href="images/manual/crosstable-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 20</span> Political interest by gender, retaining the original value labels and excluding declared missing responses. <a href="images/manual/crosstable-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>Filters, split groups, and frequency weights apply. Weighted counts do not turn an ordinary chi-squared test into a complex-survey test.</p>
 </section>
 
@@ -296,7 +350,7 @@
     <p>Describe the centre and spread of a numeric variable. Trust in the legal system is particularly useful here: its valid scale runs from 0 to 10, with separate declared missing codes.</p>
     <figure class="manual-figure" style="--screenshot-width: 363px">
         <a href="images/manual/summaries.png" data-enlarge aria-label="Enlarge screenshot: B7_trstlgl (Trust in the legal system) is selected with Summary."><img src="images/manual/summaries.png" width="726" height="620" loading="lazy" alt="B7_trstlgl (Trust in the legal system) is selected with Summary."></a>
-        <figcaption><span>Figure 18</span> B7_trstlgl (Trust in the legal system) is selected with Summary. <a href="images/manual/summaries.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 21</span> B7_trstlgl (Trust in the legal system) is selected with Summary. <a href="images/manual/summaries.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong> and <strong>B7_trstlgl</strong>.</li>
 <li>Choose <strong>Summary</strong> for an overview, or select individual measures such as Mean, Median, and Standard deviation.</li>
@@ -306,7 +360,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The mean is 4.132 and the median is 4. The valid scores range from 0 to 10; the 82 declared missing responses are excluded. Refusal 77, Don’t know 88, and No answer 99 do not inflate the mean.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 390px">
         <a href="images/manual/summaries-output.png" data-enlarge aria-label="Enlarge screenshot: Actual summary of trust in the legal system: the values stay within the valid 0–10 scale."><img src="images/manual/summaries-output.png" width="780" height="120" loading="lazy" alt="Actual summary of trust in the legal system: the values stay within the valid 0–10 scale."></a>
-        <figcaption><span>Figure 19</span> Actual summary of trust in the legal system: the values stay within the valid 0–10 scale. <a href="images/manual/summaries-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 22</span> Actual summary of trust in the legal system: the values stay within the valid 0–10 scale. <a href="images/manual/summaries-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>Filters and split groups apply. Supported measures use frequency weights, but range is unweighted. If a multiple-variable analysis reports that a grouping or weight variable is missing, analyse variables individually or consult the <a href="commands.html#summaries">technical reference</a>.</p>
 </section>
 
@@ -316,7 +370,7 @@
     <p>Compare a numeric mean with a specified value. This illustrative example tests the respondent age variable against 50 years.</p>
     <figure class="manual-figure" style="--screenshot-width: 360px">
         <a href="images/manual/onesamplettest.png" data-enlarge aria-label="Enlarge screenshot: F3_agea is selected, with a hypothesised mean of 50 and a 95% confidence level."><img src="images/manual/onesamplettest.png" width="720" height="650" loading="lazy" alt="F3_agea is selected, with a hypothesised mean of 50 and a 95% confidence level."></a>
-        <figcaption><span>Figure 20</span> F3_agea is selected, with a hypothesised mean of 50 and a 95% confidence level. <a href="images/manual/onesamplettest.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 23</span> F3_agea is selected, with a hypothesised mean of 50 and a 95% confidence level. <a href="images/manual/onesamplettest.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong> and <strong>F3_agea</strong>.</li>
 <li>Enter <strong>50</strong> under Null hypothesis.</li>
@@ -326,7 +380,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The estimated mean is 49.60 years, with a 95% confidence interval from 48.76 to 50.44. The p-value is 0.3544. In this ordinary unweighted test, the data do not give evidence of a difference from 50 at the 5% level; this is not proof that the mean equals 50.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 421px">
         <a href="images/manual/onesamplettest-output.png" data-enlarge aria-label="Enlarge screenshot: Actual one-sample output for age, tested against 50 years."><img src="images/manual/onesamplettest-output.png" width="842" height="440" loading="lazy" alt="Actual one-sample output for age, tested against 50 years."></a>
-        <figcaption><span>Figure 21</span> Actual one-sample output for age, tested against 50 years. <a href="images/manual/onesamplettest-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 24</span> Actual one-sample output for age, tested against 50 years. <a href="images/manual/onesamplettest-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>An active filter applies. Split groups and frequency weights do not apply to this dialog.</p>
 </section>
 
@@ -336,7 +390,7 @@
     <p>Compare respondent age between the two observed gender categories in this ESS dataset. This is an illustration of the dialog, not a substantive population claim.</p>
     <figure class="manual-figure" style="--screenshot-width: 471px">
         <a href="images/manual/independentsamplesttest.png" data-enlarge aria-label="Enlarge screenshot: F3_agea is the test variable and F2_gndr the grouping variable."><img src="images/manual/independentsamplesttest.png" width="942" height="660" loading="lazy" alt="F3_agea is the test variable and F2_gndr the grouping variable."></a>
-        <figcaption><span>Figure 22</span> F3_agea is the test variable and F2_gndr the grouping variable. <a href="images/manual/independentsamplesttest.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 25</span> F3_agea is the test variable and F2_gndr the grouping variable. <a href="images/manual/independentsamplesttest.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Choose <strong>F3_agea</strong> under Test variable and <strong>F2_gndr</strong> under Group variable.</li>
@@ -346,7 +400,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The displayed means are 47.87 for Male and 50.55 for Female. The confidence interval describes the first group’s mean minus the second: about −4.40 to −0.95 years. The reported p-value is 0.002415. These are ordinary unweighted comparisons of the supplied cases, not a full ESS survey-design analysis.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 811px">
         <a href="images/manual/independentsamplesttest-output.png" data-enlarge aria-label="Enlarge screenshot: Actual output: the variance-homogeneity procedure selected Welch’s two-sample t-test."><img src="images/manual/independentsamplesttest-output.png" width="1622" height="520" loading="lazy" alt="Actual output: the variance-homogeneity procedure selected Welch’s two-sample t-test."></a>
-        <figcaption><span>Figure 23</span> Actual output: the variance-homogeneity procedure selected Welch’s two-sample t-test. <a href="images/manual/independentsamplesttest-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 26</span> Actual output: the variance-homogeneity procedure selected Welch’s two-sample t-test. <a href="images/manual/independentsamplesttest-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>The active filter applies. Split groups and frequency weighting do not apply to this dialog.</p>
 </section>
 
@@ -356,7 +410,7 @@
     <p>Compare age across respondents’ descriptions of their residential area. The ESS variable F14_domicil distinguishes a big city, suburbs, towns, villages, and countryside homes.</p>
     <figure class="manual-figure" style="--screenshot-width: 471px">
         <a href="images/manual/anovahv.png" data-enlarge aria-label="Enlarge screenshot: F3_agea is the response and F14_domicil supplies the groups."><img src="images/manual/anovahv.png" width="942" height="660" loading="lazy" alt="F3_agea is the response and F14_domicil supplies the groups."></a>
-        <figcaption><span>Figure 24</span> F3_agea is the response and F14_domicil supplies the groups. <a href="images/manual/anovahv.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 27</span> F3_agea is the response and F14_domicil supplies the groups. <a href="images/manual/anovahv.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Select <strong>ess</strong>.</li>
 <li>Choose <strong>F3_agea</strong> as Response variable and <strong>F14_domicil</strong> as Group variable.</li>
@@ -367,7 +421,7 @@
     <div class="read-result"><h3>What to look for</h3><p>The output shows the overall test and the mean, standard deviation, and sample size for each residential category. The countryside-home category has only 10 valid cases, much fewer than the others. The overall p-value does not identify which pairs differ; use the appropriate pairwise procedure for that question.</p></div>
     <figure class="manual-figure" style="--screenshot-width: 499px">
         <a href="images/manual/anovahv-output.png" data-enlarge aria-label="Enlarge screenshot: Actual ANOVA and group summaries for age by residential area."><img src="images/manual/anovahv-output.png" width="998" height="760" loading="lazy" alt="Actual ANOVA and group summaries for age by residential area."></a>
-        <figcaption><span>Figure 25</span> Actual ANOVA and group summaries for age by residential area. <a href="images/manual/anovahv-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 28</span> Actual ANOVA and group summaries for age by residential area. <a href="images/manual/anovahv-output.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure><p>Active filters and split groups apply. Frequency weighting does not.</p>
 </section>
 
@@ -377,7 +431,7 @@
     <p>Jump to a column or row in the active dataset without scrolling through the whole table.</p>
     <figure class="manual-figure" style="--screenshot-width: 260px">
         <a href="images/manual/goto.png" data-enlarge aria-label="Enlarge screenshot: Choose Variable to find a column, or Case to enter a row number."><img src="images/manual/goto.png" width="520" height="400" loading="lazy" alt="Choose Variable to find a column, or Case to enter a row number."></a>
-        <figcaption><span>Figure 26</span> Choose Variable to find a column, or Case to enter a row number. <a href="images/manual/goto.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 29</span> Choose Variable to find a column, or Case to enter a row number. <a href="images/manual/goto.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Open the dataset editor’s Go to dialog.</li>
 <li>Choose <strong>Variable</strong>, type part of a variable name in the search field, and select the matching variable. Or choose <strong>Case</strong> and enter a row number, starting from 1.</li>
@@ -393,7 +447,7 @@
     <p>These settings stay with the selected dataset. They can explain why a result differs from a table you produced earlier.</p>
 
 
-    <ul><li><strong>Filter:</strong> analyse only cases that meet a condition while retaining the original data.</li><li><strong>Split groups:</strong> repeat a supported analysis separately for each group.</li><li><strong>Frequency weight:</strong> let a row represent several occurrences in supported procedures.</li></ul><div class="table-scroll"><table><thead><tr><th>Procedure</th><th>Filter</th><th>Split groups</th><th>Frequency weight</th></tr></thead><tbody><tr><td>Frequency and contingency tables</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Numerical summaries</td><td>Yes</td><td>Yes</td><td>Supported measures</td></tr><tr><td>One-sample and independent-samples t-tests</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>One-way ANOVA</td><td>Yes</td><td>Yes</td><td>No</td></tr></tbody></table></div><h3>Return to all cases without grouping or weights</h3><ol class="steps"><li>In <strong>Subset cases and variables</strong>, select ess, choose <strong>All cases</strong>, and click <strong>OK</strong>.</li><li>In <strong>Split by groups</strong>, select the dataset and click <strong>Reset</strong>.</li><li>In <strong>Apply frequency weighting</strong>, select the dataset and click <strong>Reset</strong>.</li></ol><p>Removing a filter does not restore previously deleted cases. Recoding and sorting act on the underlying dataset rather than only the filtered view. Create a new subset first when a transformation should affect selected cases alone.</p>
+    <ul><li><strong>Filter:</strong> analyse only cases that meet a condition while retaining the original data.</li><li><strong>Split groups:</strong> repeat a supported analysis separately for each group.</li><li><strong>Frequency weight:</strong> let a row represent several occurrences in supported procedures.</li></ul><div class="table-scroll"><table><thead><tr><th>Procedure</th><th>Filter</th><th>Split groups</th><th>Frequency weight</th></tr></thead><tbody><tr><td>Add cases and Add variables</td><td>Yes, for each source</td><td>No</td><td>No</td></tr><tr><td>Frequency and contingency tables</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Numerical summaries</td><td>Yes</td><td>Yes</td><td>Supported measures</td></tr><tr><td>One-sample and independent-samples t-tests</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>One-way ANOVA</td><td>Yes</td><td>Yes</td><td>No</td></tr></tbody></table></div><h3>Return to all cases without grouping or weights</h3><ol class="steps"><li>In <strong>Subset cases and variables</strong>, select ess, choose <strong>All cases</strong>, and click <strong>OK</strong>.</li><li>In <strong>Split by groups</strong>, select the dataset and click <strong>Reset</strong>.</li><li>In <strong>Apply frequency weighting</strong>, select the dataset and click <strong>Reset</strong>.</li></ol><p>Removing a filter does not restore previously deleted cases. Recoding and sorting act on the underlying dataset rather than only the filtered view. Create a new subset first when a transformation should affect selected cases alone.</p>
 
 
 </section>
@@ -404,7 +458,7 @@
     <p>Like SPSS’s Paste command to syntax workflow, DialogR lets you keep the command built from your dialog choices. You do not need to type it yourself.</p>
     <figure class="manual-figure" style="--screenshot-width: 340px">
         <a href="images/manual/send-to-syntax.png" data-enlarge aria-label="Enlarge screenshot: Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor."><img src="images/manual/send-to-syntax.png" width="680" height="520" loading="lazy" alt="Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor."></a>
-        <figcaption><span>Figure 27</span> Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor. <a href="images/manual/send-to-syntax.png" data-enlarge>Enlarge screenshot</a></figcaption>
+        <figcaption><span>Figure 30</span> Hover at the top centre of the dialog to reveal the contextual menu. The right-hand action sends the command to the Script Editor. <a href="images/manual/send-to-syntax.png" data-enlarge>Enlarge screenshot</a></figcaption>
     </figure>
     <h3>To carry out this example</h3><ol class="steps"><li>Choose your dataset, variables, and options in the analysis dialog.</li>
 <li>Move the mouse over the <strong>middle of the top edge</strong> of the dialog. A small contextual menu appears.</li>
