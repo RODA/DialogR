@@ -1,5 +1,20 @@
 [
     {
+        "id": "addcases",
+        "label": "Add cases",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/addcases/",
+        "sourceFile": "r/addcases/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            {
+                "name": "admisc",
+                "minimumVersion": "0.41.2"
+            }
+        ]
+    },
+    {
         "id": "weightby",
         "label": "Apply frequency weighting",
         "owner": "products/DialogR",

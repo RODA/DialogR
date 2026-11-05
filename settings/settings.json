@@ -13,7 +13,7 @@
     "rPackageRequirements": [
         {
             "name": "admisc",
-            "minimumVersion": "0.41"
+            "minimumVersion": "0.41.2"
         },
         {
             "name": "declared",
@@ -54,6 +54,14 @@
         ]
     },
     "dialogRuntimeRequirements": {
+        "addcases": {
+            "rPackages": [
+                {
+                    "name": "admisc",
+                    "minimumVersion": "0.41.2"
+                }
+            ]
+        },
         "frequencies": {
             "rPackages": [
                 {

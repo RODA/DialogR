@@ -1,5 +1,11 @@
 [
     {
+        "capability": "DialogR.dialog.addcases",
+        "label": "Add cases",
+        "requiredRuntime": ["commands.visible", "workspace.objects", "tabular.read", "dependencies.packages"],
+        "rPackages": ["admisc"]
+    },
+    {
         "capability": "DialogR.dialog.select",
         "label": "Subset cases and variables",
         "requiredRuntime": ["commands.invisible", "workspace.objects", "workspace.activeDataset", "tabular.read"]

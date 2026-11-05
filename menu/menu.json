@@ -6,6 +6,29 @@
         "type": "submenu",
         "items": [
             {
+                "id": "DataMergeFiles",
+                "labelKey": "menu.root.data.merge_files",
+                "label": "Merge Files",
+                "type": "submenu",
+                "items": [
+                    {
+                        "id": "DialogRAddCases",
+                        "labelKey": "menu.root.data.merge_files.add_cases",
+                        "label": "Add cases",
+                        "type": "product-dialog",
+                        "dialog": "addcases",
+                        "capability": "DialogR.dialog.addcases"
+                    },
+                    {
+                        "id": "DialogRAddVariables",
+                        "labelKey": "menu.root.data.merge_files.add_variables",
+                        "label": "Add variables",
+                        "type": "product-dialog",
+                        "dialog": "addvariables"
+                    }
+                ]
+            },
+            {
                 "id": "DialogRSortCases",
                 "labelKey": "menu.root.data.sortby",
                 "label": "Sort cases",
