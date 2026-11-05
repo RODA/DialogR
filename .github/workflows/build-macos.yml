@@ -104,7 +104,7 @@ jobs:
 
       - name: Install native dialog test dependencies
         working-directory: product
-        run: Rscript scripts/install-test-r-dependencies.R declared later jsonlite cli rlang
+        run: Rscript scripts/install-test-r-dependencies.R statistics declared later jsonlite cli rlang
 
       - name: Verify native dialog data workflows
         working-directory: product

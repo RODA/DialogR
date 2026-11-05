@@ -11,6 +11,23 @@ if (packageVersion("admisc") != "0.41.1" ||
 }
 
 packages <- commandArgs(trailingOnly = TRUE)
+if (is.element("statistics", packages)) {
+    install.packages("statistics", repos = c(
+        "https://dusadrian.r-universe.dev",
+        "https://cloud.r-project.org"
+    ))
+    packages <- setdiff(packages, "statistics")
+
+    if (!requireNamespace("statistics", quietly = TRUE) ||
+        packageVersion("statistics") <= "0.14") {
+        stop("The packaged menu tests require statistics newer than 0.14.")
+    }
+}
 if (length(packages)) {
     install.packages(packages, repos = "https://cloud.r-project.org")
+}
+
+missing <- packages[!vapply(packages, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing)) {
+    stop("Test dependencies were not installed: ", paste(missing, collapse = ", "))
 }
