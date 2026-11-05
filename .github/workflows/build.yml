@@ -302,27 +302,19 @@ jobs:
     if: ${{ inputs.publish_release && (inputs.platform == 'all' || inputs.platform == 'windows') }}
     needs: windows
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
-      - name: Request DialogForge Windows signing and release upload
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Sign and verify Windows release upload
         env:
           GH_TOKEN: ${{ secrets.DIALOGFORGE_SIGNING_TOKEN }}
+          PRODUCT_REF: ${{ github.sha }}
           RELEASE_TAG: ${{ inputs.windows_release_tag }}
           RELEASE_REPOSITORY: ${{ inputs.release_repository }}
           OVERWRITE_RELEASE_ASSETS: ${{ inputs.overwrite_release_assets }}
-        run: |
-          set -euo pipefail
-          if [ -z "${GH_TOKEN:-}" ]; then
-            echo "DIALOGFORGE_SIGNING_TOKEN is required to request the private DialogForge signing broker."
-            exit 1
-          fi
-
-          gh workflow run sign-windows-product.yml \
-            --repo dusadrian/DialogForge \
-            --field product_repository=RODA/DialogR \
-            --field product_ref="${{ github.sha }}" \
-            --field release_tag="$RELEASE_TAG" \
-            --field release_repository="$RELEASE_REPOSITORY" \
-            --field overwrite_release_assets="$OVERWRITE_RELEASE_ASSETS"
+        run: bash scripts/publish-windows-via-broker.sh
 
   macos:
     if: ${{ inputs.platform == 'all' || inputs.platform == 'macos' }}

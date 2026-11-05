@@ -285,11 +285,11 @@ const assertWorkflows = function() {
     }
 
     const releaseText = fs.readFileSync(releaseWorkflow, "utf8");
-    if (!releaseText.includes("DIALOGFORGE_SIGNING_TOKEN")) {
-        fail("Windows release request must require DIALOGFORGE_SIGNING_TOKEN.");
-    }
-    if (!releaseText.includes("sign-windows-product.yml")) {
-        fail("Windows release request must call the DialogForge signing broker.");
+    if (![buildText, windowsText, releaseText].every((workflowText) => {
+        return workflowText.includes("DIALOGFORGE_SIGNING_TOKEN")
+            && workflowText.includes("bash scripts/publish-windows-via-broker.sh");
+    })) {
+        fail("Windows release workflows must use the shared signing and publication check.");
     }
     if (![buildText, linuxText, windowsText, macosText, releaseText].every((workflowText) => {
         return workflowText.includes("default: latest");
