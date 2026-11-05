@@ -11,8 +11,10 @@ function checkReleaseR() {
         }
         cat("Native test dependency: admisc", as.character(packageVersion("admisc")), "\\n")
     `;
-    const result = spawnSync(process.env.RSCRIPT || 'Rscript', ['--vanilla', '-e', code], {
-        stdio: 'inherit',
+    // Stdin avoids Windows command-line quoting of a multiline R expression.
+    const result = spawnSync(process.env.RSCRIPT || 'Rscript', ['--vanilla', '-'], {
+        input: code,
+        stdio: ['pipe', 'inherit', 'inherit'],
         timeout: 30000
     });
 
@@ -20,7 +22,8 @@ function checkReleaseR() {
         throw result.error;
     }
     if (result.status !== 0) {
-        throw new Error('Native R release dependency check failed.');
+        throw new Error('Native R release dependency check failed (exit ' + result.status
+            + ', signal ' + (result.signal || 'none') + ').');
     }
 }
 

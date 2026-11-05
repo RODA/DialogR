@@ -30,9 +30,15 @@ async function main() {
     try {
         if (host === 'native') {
             require('../../scripts/check-release-r').checkReleaseR();
-            const staged = spawnSync(process.execPath, [path.join(dialogForgeRoot, 'dist/scripts/package-product.js'), '--product-path', root, '--stage-only'], { cwd: dialogForgeRoot, stdio: 'inherit' });
+            const nativeDist = path.resolve(process.env.DIALOGFORGE_DIST_DIR || path.join(dialogForgeRoot, 'dist'));
+            const nativeEnv = {
+                ...process.env,
+                DIALOGFORGE_SOURCE_ROOT: dialogForgeRoot,
+                DIALOGFORGE_DIST_DIR: nativeDist
+            };
+            const staged = spawnSync(process.execPath, [path.join(nativeDist, 'scripts/package-product.js'), '--product-path', root, '--stage-only'], { cwd: dialogForgeRoot, env: nativeEnv, stdio: 'inherit' });
             assert.equal(staged.status, 0, 'Stage the exact product under test');
-            app = await _electron.launch({ executablePath: require(path.join(dialogForgeRoot, 'node_modules/electron')), args: [...(process.platform === 'win32' ? ['--disable-gpu'] : []), path.join(dialogForgeRoot, 'dist/scripts/electron-main.js'), '--product-path', root], cwd: dialogForgeRoot, env: { ...process.env, DIALOGFORGE_TEST_USER_DATA_PATH: profile } });
+            app = await _electron.launch({ executablePath: require(path.join(dialogForgeRoot, 'node_modules/electron')), args: [...(process.platform === 'win32' ? ['--disable-gpu'] : []), path.join(nativeDist, 'scripts/electron-main.js'), '--product-path', root], cwd: dialogForgeRoot, env: { ...nativeEnv, DIALOGFORGE_TEST_USER_DATA_PATH: profile } });
             app.on('window', candidate => { candidate.on('pageerror', error => errors.push(error.message)); candidate.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); }); });
             page = await findMainWindowPage(app);
         } else {

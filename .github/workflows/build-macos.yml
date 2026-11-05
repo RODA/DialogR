@@ -108,6 +108,9 @@ jobs:
 
       - name: Verify native dialog data workflows
         working-directory: product
+        env:
+          DIALOGFORGE_SOURCE_ROOT: ${{ github.workspace }}/DialogForge
+          DIALOGFORGE_DIST_DIR: ${{ github.workspace }}/product/dist
         run: npm run test:dialogs:native
 
       - name: Verify packaged application, menus, console, help and Script Editor
