@@ -29,6 +29,10 @@ renderer controls/geometry. The second also compiles the native host, builds the
 production WebR site, and exercises the actual native R and WebR applications.
 Use `--apps` without `--web-build` only when testing a deliberately prebuilt web
 artifact. Run native Electron tests under `xvfb-run -a` on headless Linux.
+Platform packaging jobs set `DIALOGFORGE_DIST_DIR` to `product/dist`, the actual
+build output. The native test launches the R binary belonging to its preflight
+Rscript installation, so a second R installation cannot silently win discovery.
+Runtime startup failures are reported immediately rather than as readiness timeouts.
 
 | Layer | What it verifies |
 | --- | --- |
