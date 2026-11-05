@@ -29,10 +29,13 @@ async function main() {
     let app, browser, server, page;
     try {
         if (host === 'native') {
-            require('../../scripts/check-release-r').checkReleaseR();
+            const rBinary = require('../../scripts/check-release-r').checkReleaseR();
             const nativeDist = path.resolve(process.env.DIALOGFORGE_DIST_DIR || path.join(dialogForgeRoot, 'dist'));
+            report.nativeDist = nativeDist;
+            report.rBinary = rBinary;
             const nativeEnv = {
                 ...process.env,
+                DIALOGFORGE_R_BINARY: rBinary,
                 DIALOGFORGE_SOURCE_ROOT: dialogForgeRoot,
                 DIALOGFORGE_DIST_DIR: nativeDist
             };
@@ -63,7 +66,13 @@ async function main() {
         }
         page.setDefaultTimeout(30000);
         await page.waitForFunction(() => window.monaco?.editor?.getEditors?.().some(editor => editor.getDomNode()?.closest('#consoleTerminal')), null, { timeout: 120000 });
-        await page.waitForFunction(() => Array.from(document.querySelectorAll('[data-session-phase="ready"]')).some(el => el.dataset.runtimeBusy !== 'true'), null, { timeout: 120000 });
+        await page.waitForFunction(() => {
+            return document.getElementById('consoleStatus')?.textContent.includes(' - failed') ||
+                Array.from(document.querySelectorAll('[data-session-phase="ready"]')).some(el => el.dataset.runtimeBusy !== 'true');
+        }, null, { timeout: 120000 });
+        if ((await page.locator('#consoleStatus').textContent()).includes(' - failed')) {
+            throw new Error('Runtime startup failed: ' + await page.locator('body').innerText());
+        }
         const run = async code => {
             await page.waitForFunction(() => {
                 const input = document.getElementById('visibleCommandInput');
