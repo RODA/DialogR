@@ -37,7 +37,7 @@ try {
     }
     run('Actual R merge semantics', process.execPath, ['tests/rendered/merges.js']);
     run('Original defect is detected', process.execPath, ['tests/rendered/regression-detection.js']);
-    for (const script of ['check-dialog-label-parity.js','rendered-canonical-controls.js','rendered-canonical-venn.js']) run('Shared renderer: '+script,process.execPath,['scripts/'+script],dialogForgeRoot);
+    for (const script of ['check-dialog-label-parity.js','rendered-canonical-controls.js']) run('Shared renderer: '+script,process.execPath,['scripts/'+script],dialogForgeRoot);
     run('Shared renderer: attachments and invalid layouts', process.execPath, [
         'scripts/rendered-element-anchoring-acceptance.js',
         '--report', path.join(output, 'attachments.json')

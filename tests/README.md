@@ -37,7 +37,7 @@ artifact. Run native Electron tests under `xvfb-run -a` on headless Linux.
 | Recode interactions | Named radio-group callbacks, input-driven rules, add/remove, exact command submission and Reset clearing rules |
 | Rendered merge workflows + R | Both lookup directions, inner merge, exclusions/key protection, duplicate-key rejection before assignment, row-order padding in either direction, empty datasets, a source named `rows`, output validation, Add cases schema/NA behavior and bidirectional transfers |
 | Negative controls | Compile-only mutations restore the lost radio group and unintended selection events; tests must fail for the expected reason. Production files are never mutated |
-| Shared renderer | Actual canonical controls, raw/cached schemas, named radio-group events, restoration, search, Choice identities, validation, attachments, typography, labels and Venn |
+| Shared renderer | Actual canonical controls, raw/cached schemas, named radio-group events, restoration, search, Choice identities, validation, attachments, typography and labels |
 | Native R / WebR application | Real menus, dialogs, Run, package loading, dataset bindings, and R assertions of exact data for Recode and both merge dialogs; inputs and output are synthetic |
 
 Reports and screenshots go to `artifacts/dialog-release/`; these files are ignored
@@ -51,6 +51,8 @@ isolated profiles; the native cleanup helper only stops the launched process
 and its descendants, and does not inspect closed application windows.
 
 The new CI workflow runs the rendered/R gate and actual Linux native/WebR flows.
+The DialogQCA-specific Venn integration check stays outside the DialogR gate;
+running this product's tests requires only DialogR and DialogForge checkouts.
 The platform build workflows also run native dialog workflows, then all existing
 packaged production smoke targets (menus, package readiness, console, help and
 Script Editor/Live Script), before artifact/release upload. These jobs must use

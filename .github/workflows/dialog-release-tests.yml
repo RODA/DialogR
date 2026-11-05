@@ -77,6 +77,9 @@ jobs:
         working-directory: DialogForge
       - run: npm run build
         working-directory: DialogForge
+      - name: Prepare and check the product SDK
+        run: npm run check
+        working-directory: product
       - run: npm run build:web
         working-directory: product
       - name: Exercise normal native R application
