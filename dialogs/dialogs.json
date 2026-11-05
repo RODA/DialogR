@@ -10,9 +10,18 @@
         "rPackages": [
             {
                 "name": "admisc",
-                "minimumVersion": "0.41.2"
+                "minimumVersion": "0.41.1"
             }
         ]
+    },
+    {
+        "id": "addvariables",
+        "label": "Add variables",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/addvariables/",
+        "sourceFile": "r/addvariables/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
     },
     {
         "id": "weightby",
