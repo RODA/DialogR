@@ -43,7 +43,9 @@ try {
         '--report', path.join(output, 'attachments.json')
     ], dialogForgeRoot);
     if (args.has('--apps')) {
-        run('Compile shared native host', process.execPath, ['node_modules/typescript/bin/tsc','-p','tsconfig.json'], dialogForgeRoot);
+        run('Build shared native host', process.execPath, ['scripts/build-desktop.js', '--out-dir',
+            path.resolve(process.env.DIALOGFORGE_DIST_DIR || path.join(dialogForgeRoot, 'dist'))
+        ], dialogForgeRoot);
         if (args.has('--web-build')) run('Build WebR product', process.execPath, ['scripts/build-web.js','--out-dir',path.join(root,'dist/web'),root],dialogForgeRoot);
         run('Native R application',process.execPath,['tests/e2e/dialog-workflows.js']);
         run('WebR application',process.execPath,['tests/e2e/dialog-workflows.js','--web']);
