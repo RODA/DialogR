@@ -255,7 +255,11 @@ const assertWorkflows = function() {
     const windowsText = fs.readFileSync(path.join(productRoot, ".github/workflows/build-windows.yml"), "utf8");
     const packagedSmokeCommand = "run: node scripts/verify-production-electron.js --product-path ../product "
         + "--output-dir ../product/build/output";
-    const fullSmokeCount = (text) => text.split(/\r?\n/).filter(line => line.trim() === packagedSmokeCommand).length;
+    const smokeCommands = new Set([
+        packagedSmokeCommand,
+        packagedSmokeCommand.replace("run: node ", "run: xvfb-run -a node ")
+    ]);
+    const fullSmokeCount = (text) => text.split(/\r?\n/).filter(line => smokeCommands.has(line.trim())).length;
 
     if (fullSmokeCount(buildText) !== 3
         || fullSmokeCount(linuxText) !== 1
