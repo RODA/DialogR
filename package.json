@@ -23,7 +23,13 @@
         "publish": "node scripts/publish-artifacts.js",
         "docs:build": "node scripts/manual/build-html.js",
         "version:sync": "npm install --package-lock-only --ignore-scripts && npm run docs:build",
-        "version": "npm run docs:build"
+        "version": "npm run docs:build",
+        "test:dialogs:rendered": "node tests/rendered/dialogs.js",
+        "test:dialogs:merges": "node tests/rendered/merges.js",
+        "test:dialogs:regressions": "node tests/rendered/regression-detection.js",
+        "test:dialogs:native": "node tests/e2e/dialog-workflows.js",
+        "test:dialogs:webr": "node tests/e2e/dialog-workflows.js --web",
+        "test:release": "node scripts/test-release.js"
     },
     "devDependencies": {
         "@dialogforge/core": "file:../DialogForge/dist/sdk/core"
@@ -43,7 +49,7 @@
         "mac": {
             "artifactName": "${productName}-${version}-${arch}-mac.${ext}",
             "extendInfo": {
-                "NSHumanReadableCopyright": "© 2025-2026 Adrian Dusa — Academic Non-Commercial License (see LICENSE file for details)."
+                "NSHumanReadableCopyright": "\u00a9 2025-2026 Adrian Dusa \u2014 Academic Non-Commercial License (see LICENSE file for details)."
             },
             "target": [
                 {

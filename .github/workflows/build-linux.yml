@@ -76,9 +76,30 @@ jobs:
         working-directory: product
         run: npm run build
 
-      - name: Verify packaged Script Editor and Live Script
+      # Match the immutable native helpers in DialogForge/vendor/r-runtime/native.
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: true
+
+      - name: Install native dialog test dependencies
+        working-directory: product
+        run: Rscript scripts/install-test-r-dependencies.R declared later jsonlite cli rlang
+
+      - name: Verify native dialog data workflows
+        working-directory: product
+        run: xvfb-run -a npm run test:dialogs:native
+
+      - name: Verify packaged application, menus, console, help and Script Editor
         working-directory: DialogForge
-        run: node scripts/verify-production-electron.js --product-path ../product --output-dir ../product/build/output --target script-editor
+        run: node scripts/verify-production-electron.js --product-path ../product --output-dir ../product/build/output
+
+      - name: Retain native dialog test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialog-workflows-${{ runner.os }}
+          path: product/artifacts/dialog-release/
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4

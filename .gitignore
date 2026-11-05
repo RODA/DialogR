@@ -15,3 +15,9 @@ library/R/dialogforge-*-library.js.metadata
 library/R/vfs-manifest.json
 library/R/SHA256SUMS
 internal/
+artifacts/
+!tests/rendered/
+!tests/rendered/*.js
+!tests/e2e/
+!tests/e2e/*.js
+!tests/README.md

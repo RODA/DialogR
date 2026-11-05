@@ -253,17 +253,15 @@ const assertWorkflows = function() {
     const macosText = fs.readFileSync(macosWorkflow, "utf8");
     const linuxText = fs.readFileSync(path.join(productRoot, ".github/workflows/build-linux.yml"), "utf8");
     const windowsText = fs.readFileSync(path.join(productRoot, ".github/workflows/build-windows.yml"), "utf8");
-    const packagedSmokeCommand = "verify-production-electron.js --product-path ../product "
-        + "--output-dir ../product/build/output --target script-editor";
-    const buildSmokeCount = buildText.split(packagedSmokeCommand).length - 1;
+    const packagedSmokeCommand = "run: node scripts/verify-production-electron.js --product-path ../product "
+        + "--output-dir ../product/build/output";
+    const fullSmokeCount = (text) => text.split(/\r?\n/).filter(line => line.trim() === packagedSmokeCommand).length;
 
-    if (
-        buildSmokeCount !== 3
-        || !linuxText.includes(packagedSmokeCommand)
-        || !windowsText.includes(packagedSmokeCommand)
-        || !macosText.includes(packagedSmokeCommand)
-    ) {
-        fail("Every GitHub build lane must exercise Live Script from the packaged application.");
+    if (fullSmokeCount(buildText) !== 3
+        || fullSmokeCount(linuxText) !== 1
+        || fullSmokeCount(windowsText) !== 1
+        || fullSmokeCount(macosText) !== 1) {
+        fail("Every GitHub build lane must exercise all packaged production targets, including Live Script.");
     }
     [buildText, macosText].forEach((workflowText) => {
         if (!workflowText.includes("runs-on: macos-15-intel")

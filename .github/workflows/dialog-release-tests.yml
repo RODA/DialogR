@@ -1,0 +1,93 @@
+name: Dialog release tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rendered-and-r:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: product
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ vars.DIALOGFORGE_REPOSITORY || 'dusadrian/DialogForge' }}
+          ref: ${{ vars.DIALOGFORGE_REF || 'main' }}
+          path: DialogForge
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: DialogForge/package-lock.json
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: true
+      - name: Install R test dependency
+        working-directory: product
+        run: Rscript scripts/install-test-r-dependencies.R
+      - run: npm ci
+        working-directory: DialogForge
+      - run: npx playwright install --with-deps chromium firefox webkit
+        working-directory: DialogForge
+      - name: Test scripts, all rendered dialogs and actual R results
+        working-directory: product
+        run: npm run test:release
+      - name: Retain reports and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialog-release-rendered
+          path: product/artifacts/dialog-release/
+
+  application-workflows:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: product
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ vars.DIALOGFORGE_REPOSITORY || 'dusadrian/DialogForge' }}
+          ref: ${{ vars.DIALOGFORGE_REF || 'main' }}
+          path: DialogForge
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: DialogForge/package-lock.json
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6.1'
+          use-public-rspm: true
+      - name: Install native R dialog dependencies
+        working-directory: product
+        run: Rscript scripts/install-test-r-dependencies.R declared later jsonlite cli rlang
+      - run: npm ci
+        working-directory: DialogForge
+      - run: npx playwright install --with-deps chromium
+        working-directory: DialogForge
+      - run: npm run build
+        working-directory: DialogForge
+      - run: npm run build:web
+        working-directory: product
+      - name: Exercise normal native R application
+        working-directory: product
+        run: xvfb-run -a npm run test:dialogs:native
+      - name: Exercise production WebR application
+        working-directory: product
+        run: npm run test:dialogs:webr
+      - name: Retain reports and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dialog-release-applications
+          path: product/artifacts/dialog-release/
