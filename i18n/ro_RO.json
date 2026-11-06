@@ -363,5 +363,7 @@
   "Data editor: {name}": "Editor de date: {name}",
   "Spreadsheet view": "Vizualizare foaie de calcul",
   "WebR uses the browser virtual working directory {path}. Browser directory mounting is not available from this menu yet.": "WebR folosește directorul de lucru virtual al browserului {path}. Montarea directoarelor din browser nu este încă disponibilă din acest meniu.",
-  "No dataset selected": "Nu este selectat niciun set de date"
+  "No dataset selected": "Nu este selectat niciun set de date",
+  "menu.root.analyze.correlate": "Corelații",
+  "menu.root.analyze.correlate.bivariate": "Bivariate"
 }

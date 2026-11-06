@@ -364,5 +364,7 @@
   "Data editor: {name}": "Éditeur de données : {name}",
   "Spreadsheet view": "Vue feuille de calcul",
   "WebR uses the browser virtual working directory {path}. Browser directory mounting is not available from this menu yet.": "WebR utilise le répertoire de travail virtuel du navigateur {path}. Le montage de répertoires du navigateur n’est pas encore disponible depuis ce menu.",
-  "No dataset selected": "Aucun jeu de données sélectionné"
+  "No dataset selected": "Aucun jeu de données sélectionné",
+  "menu.root.analyze.correlate": "Corrélation",
+  "menu.root.analyze.correlate.bivariate": "Bivariée"
 }

@@ -148,6 +148,22 @@
                         "capability": "DialogR.dialog.anovahv"
                     }
                 ]
+            },
+            {
+                "id": "AnalyzeCorrelate",
+                "labelKey": "menu.root.analyze.correlate",
+                "label": "Correlate",
+                "type": "submenu",
+                "items": [
+                    {
+                        "id": "DialogRBivariate",
+                        "labelKey": "menu.root.analyze.correlate.bivariate",
+                        "label": "Bivariate",
+                        "type": "product-dialog",
+                        "dialog": "bivariate",
+                        "capability": "DialogR.dialog.bivariate"
+                    }
+                ]
             }
         ]
     },

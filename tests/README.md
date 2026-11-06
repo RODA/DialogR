@@ -44,6 +44,7 @@ Runtime startup failures are reported immediately rather than as readiness timeo
 | Rendered dialogs | Every registered dialog and locale, real custom actions, dataset population, Reset, empty workspaces, refresh after dataset removal; renderer/console errors fail |
 | Recode interactions | Named radio-group callbacks, input-driven rules, add/remove, exact command submission and Reset clearing rules |
 | Rendered merge workflows + R | Both lookup directions, inner merge, exclusions/key protection, duplicate-key rejection before assignment, row-order padding in either direction, empty datasets, a source named `rows`, output validation, Add cases schema/NA behavior and bidirectional transfers |
+| Bivariate correlation + R | All three methods and alternatives, complete pairs and declared missing values, tied ranks, confidence validation, quoted names, numeric-only selection, Reset and workspace removal on all three browsers |
 | Negative controls | Compile-only mutations restore the lost radio group and unintended selection events; tests must fail for the expected reason. Production files are never mutated |
 | Shared renderer | Actual canonical controls, raw/cached schemas, named radio-group events, restoration, search, Choice identities, validation, attachments, typography and labels |
 | Native R / WebR application | Real menus, dialogs, Run, package loading, dataset bindings, and R assertions of exact data for Recode and both merge dialogs; inputs and output are synthetic |

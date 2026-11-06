@@ -358,5 +358,7 @@
   "Data editor: {name}": "Επεξεργαστής δεδομένων: {name}",
   "Spreadsheet view": "Προβολή υπολογιστικού φύλλου",
   "WebR uses the browser virtual working directory {path}. Browser directory mounting is not available from this menu yet.": "Το WebR χρησιμοποιεί τον εικονικό κατάλογο εργασίας του προγράμματος περιήγησης {path}. Η προσάρτηση καταλόγου από το πρόγραμμα περιήγησης δεν είναι ακόμη διαθέσιμη από αυτό το μενού.",
-  "No dataset selected": "Δεν έχει επιλεγεί σύνολο δεδομένων"
+  "No dataset selected": "Δεν έχει επιλεγεί σύνολο δεδομένων",
+  "menu.root.analyze.correlate": "Συσχέτιση",
+  "menu.root.analyze.correlate.bivariate": "Διμεταβλητή"
 }

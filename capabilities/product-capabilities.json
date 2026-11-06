@@ -78,6 +78,12 @@
         "rPackages": ["statistics"]
     },
     {
+        "capability": "DialogR.dialog.bivariate",
+        "label": "Bivariate correlation",
+        "requiredRuntime": ["commands.visible", "workspace.objects", "tabular.read", "dependencies.packages"],
+        "rPackages": ["admisc"]
+    },
+    {
         "capability": "DialogR.packages.required",
         "label": "Required DialogR package management",
         "requiredRuntime": ["commands.visible", "dependencies.packages"],

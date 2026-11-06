@@ -34,6 +34,7 @@ try {
     run('Product type and script checks', process.execPath, ['scripts/check-product.js']);
     for (const browser of ['chromium','firefox','webkit']) {
         run('Rendered dialogs: '+browser, process.execPath, ['tests/rendered/dialogs.js'], root, { ...process.env, DIALOGR_TEST_BROWSER: browser });
+        run('Bivariate correlation: '+browser, process.execPath, ['tests/rendered/bivariate.js'], root, { ...process.env, DIALOGR_TEST_BROWSER: browser });
     }
     run('Actual R merge semantics', process.execPath, ['tests/rendered/merges.js']);
     run('Original defect is detected', process.execPath, ['tests/rendered/regression-detection.js']);

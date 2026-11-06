@@ -180,5 +180,19 @@
         "sourceFile": "r/select/dialog.json",
         "status": "source-imported",
         "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime."
+    },
+    {
+        "id": "bivariate",
+        "label": "Bivariate correlation",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/bivariate/",
+        "sourceFile": "r/bivariate/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            {
+                "name": "admisc"
+            }
+        ]
     }
 ]
