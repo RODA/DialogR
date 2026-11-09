@@ -33,7 +33,8 @@ const setDialogControlSelected = function(model, name, selected) {
 };
 
 const readDialogControls = function(source) {
-    return (source.elements || []).map((element, index) => ({
+    const elements = source.elements || [];
+    const controls = elements.map((element, index) => ({
         id: element.id,
         name: element.nameid || element.name || element.id || "control_" + index,
         type: element.type,
@@ -43,6 +44,14 @@ const readDialogControls = function(source) {
         isEnabled: element.isEnabled,
         isVisible: element.isVisible
     }));
+    const radioGroups = new Set(elements
+        .filter(element => element.type === "Radio")
+        .map(element => element.group || element.radioGroup)
+        .filter(Boolean));
+    for (const name of radioGroups) {
+        controls.push({ name });
+    }
+    return controls;
 };
 
 module.exports = {

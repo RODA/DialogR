@@ -79,6 +79,26 @@ async function main() {
             encoding: 'utf8', input: 'x <- readRDS(' + JSON.stringify(typed) + '); stopifnot(identical(x, data.frame(id=1:3, answer=c("yes","no","yes"))))'
         });
         assert.equal(verify.status, 0, verify.stderr);
+
+        const sasPath = path.join(directory, 'paired.sas7bcat');
+        fs.writeFileSync(sasPath, 'previous catalog');
+        const sasDestination = {
+            fileName: 'paired.sas7bdat',
+            extension: 'sas7bdat',
+            workingDirectory: directory
+        };
+        replacement = 0;
+        const previousConfirmations = confirmations;
+        const paired = await host.call('prepareExportFile', {
+            ...sasDestination, optionalCompanionExtension: 'sas7bcat'
+        });
+        assert.equal(paired.value.canceled, true, 'An existing companion requires overwrite confirmation');
+        assert.equal(confirmations, previousConfirmations + 1);
+        const standalone = await host.call('prepareExportFile', sasDestination);
+        assert.equal(standalone.value.canceled, false, 'Omitting the companion skips its overwrite confirmation');
+        assert.equal(confirmations, previousConfirmations + 1);
+        await host.call('cancelExportFile', { ticket: standalone.value.ticket });
+
         await h.page.screenshot({ path: path.join(__dirname, '../../artifacts/export-dialog/destination.png'), clip: { x: 0, y: 0, width: 525, height: 375 } });
         await h.assertClean();
         console.log('Rendered Browse, cancellation, typed paths, working-directory export and overwrite handling passed with native R output.');

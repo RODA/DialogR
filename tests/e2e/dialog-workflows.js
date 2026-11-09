@@ -161,25 +161,75 @@ async function main() {
         await submit(dialog, 'addcases');
         await expectR('stopifnot(nrow(first)==6, identical(names(first),c("id","age","group")), all(is.na(first$age[4:6])), identical(second$bonus,c(100,200,400)))', 'Add cases retains first schema and pads absent columns');
         if (host === 'webr') {
-            await expectR('stopifnot(packageVersion("declared") >= "0.28", packageVersion("DDIwR") >= "0.23"); dir.create("export-check"); setwd("export-check"); export_fixture <- data.frame(id=1:3, answer=declared::declared(c(1,9,2), label="Answer", labels=c(Yes=1,Missing=9,No=2), na_values=9))', 'Updated VFS packages load and the export fixture is ready');
+            await expectR('stopifnot(packageVersion("declared") >= "0.28", packageVersion("DDIwR") >= "0.24"); dir.create("export-check"); setwd("export-check"); export_fixture <- data.frame(id=1:3, answer=declared::declared(c(1,9,2), label="Answer", labels=c(Yes=1,Missing=9,No=2), na_values=9))', 'Updated VFS packages load and the export fixture is ready');
             const cases = [
                 { format: 'R (.rds)', files: ['data.rds'], verify: 'stopifnot(identical(readRDS("data.rds"), export_fixture))' },
-                { format: 'SPSS (.sav / .zsav)', files: ['data.zsav'], select: ['compression', 'ZSAV'] },
+                { format: 'SPSS (.sav / .zsav)', files: ['data.zsav'], toggle: 'spss_zsav' },
+                { format: 'Stata (.dta)', files: ['data.dta'], command: 'convert(export_fixture, to = "data.dta")' },
                 { format: 'Stata (.dta)', files: ['data.dta'], select: ['version', '13'] },
-                { format: 'SAS (.sas7bdat)', files: ['data.sas7bdat', 'data.sas7bcat'], checkbox: 'catalog' },
-                { format: 'SAS Transport (.xpt)', files: ['data.xpt'], select: ['xpt_version', '8'] },
+                {
+                    format: 'Stata (.dta)', files: ['data.dta'],
+                    setup: 'attr(export_fixture, "stata_metadata") <- list(version=13L)',
+                    command: 'convert(export_fixture, to = "data.dta", version = 14)',
+                    verify: 'stopifnot(attr(DDIwR::convert("data.dta", declared=FALSE), "stata_metadata")$version == 14)',
+                    label: 'Stata 14 overrides an imported Stata 13 version'
+                },
+                {
+                    format: 'SAS (.sas7bdat)', files: ['data.sas7bdat', 'data.sas7bcat'],
+                    command: 'convert(export_fixture, to = "data.sas7bdat")',
+                    verify: 'stopifnot(all(c("Yes", "No") %in% names(attr(convert("data.sas7bdat", recode=FALSE)$answer, "labels"))))'
+                },
+                {
+                    format: 'SAS (.sas7bdat)', files: ['data.sas7bdat'], toggle: 'catalog',
+                    setup: 'catalog_before <- tools::md5sum("data.sas7bcat")',
+                    command: 'convert(export_fixture, to = "data.sas7bdat", catalog = NULL)',
+                    verify: 'stopifnot(identical(tools::md5sum("data.sas7bcat"), catalog_before), is.null(attr(convert("data.sas7bdat", catalog=NULL)$answer, "labels")))',
+                    label: 'SAS catalog opt-out leaves the earlier catalog untouched and downloads only the dataset'
+                },
+                {
+                    format: 'SAS (.sas7bdat)', files: ['data.sas7bdat', 'data.sas7bcat'],
+                    label: 'Replacing a SAS export downloads the newly written catalog'
+                },
+                {
+                    format: 'SAS Transport (.xpt)', files: ['data.xpt', 'data.sas'],
+                    select: ['xpt_version', '8']
+                },
+                {
+                    format: 'SAS Transport (.xpt)', files: ['data.xpt'], toggle: 'xpt_setup',
+                    setup: 'writeLines("earlier script", "data.sas")',
+                    command: 'convert(export_fixture, to = "data.xpt", setup = FALSE)',
+                    verify: 'stopifnot(identical(readLines("data.sas"), "earlier script"))',
+                    label: 'XPT setup opt-out leaves the earlier script untouched and downloads only the dataset'
+                },
                 { format: 'Excel (.xlsx)', files: ['data.xlsx'] },
-                { format: 'DDI (.xml)', files: ['data.xml', 'data.csv'], select: ['ddi_data', 'Separate CSV'] }
+                { format: 'DDI (.xml)', files: ['data.xml', 'data.csv'], toggle: 'ddi_csv' },
+                {
+                    format: 'SAS Transport (.xpt)', files: ['data.xpt'],
+                    setup: 'stopifnot(file.exists("data.sas")); export_fixture$answer <- c(1,9,2)',
+                    command: 'convert(export_fixture, to = "data.xpt")',
+                    label: 'Unlabelled XPT exports without downloading the previous SAS script'
+                },
+                {
+                    format: 'SAS (.sas7bdat)', files: ['data.sas7bdat'],
+                    label: 'Unlabelled SAS exports without downloading the previous catalog'
+                }
             ];
             for (const test of cases) {
+                if (test.setup) {
+                    await run(test.setup);
+                }
                 dialog = await open('exportdata');
                 await choose(dialog.frame, 'c_datasets', 'export_fixture');
                 await control(dialog.frame, 'format').locator('select').selectOption(test.format);
                 if (test.select) {
                     await control(dialog.frame, test.select[0]).locator('select').selectOption(test.select[1]);
                 }
-                if (test.checkbox) {
-                    await click(dialog.frame, test.checkbox);
+                if (test.toggle) {
+                    await click(dialog.frame, test.toggle);
+                }
+                if (test.command) {
+                    await page.waitForFunction(command => document.getElementById('command')?.textContent.trim() === command,
+                        test.command, { timeout: 5000 });
                 }
                 const downloads = [];
                 const collect = download => downloads.push(download);
@@ -192,13 +242,20 @@ async function main() {
                     }
                     assert.deepEqual(downloads.map(download => download.suggestedFilename()).sort(), test.files.slice().sort());
                     for (const download of downloads) {
-                        assert.ok(fs.statSync(await download.path()).size > 0, download.suggestedFilename());
+                        const file = await download.path();
+                        const name = download.suggestedFilename();
+                        assert.ok(fs.statSync(file).size > 0, name);
+                        if (name === 'data.sas') {
+                            assert.match(fs.readFileSync(file, 'utf8'), /PROC FORMAT/i);
+                            assert.match(fs.readFileSync(file, 'utf8'), /Yes/);
+                        }
                     }
                 } finally {
                     page.off('download', collect);
                 }
                 const verify = test.verify || `stopifnot(identical(as.numeric(DDIwR::convert(${JSON.stringify(test.files[0])}, declared=FALSE, recode=FALSE)$id), c(1,2,3)))`;
-                await expectR(`stopifnot(all(file.exists(c(${test.files.map(name => JSON.stringify(name)).join(', ')})))); ${verify}`, `${test.format} downloads and round trips from the R working directory`);
+                const runtimeFiles = test.files.map(name => JSON.stringify(name));
+                await expectR(`stopifnot(all(file.exists(c(${runtimeFiles.join(', ')})))); ${verify}`, test.label || `${test.format} downloads and round trips from the R working directory`);
             }
 
             // Stand in for the OS picker and verify the real app writes through its handle.

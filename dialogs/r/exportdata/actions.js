@@ -9,10 +9,23 @@ const formats = {
 };
 let busy = false;
 let browseToken = '';
+let versionDefault = null;
+let versionRequest = 0;
+let versionDefaultReady = Promise.resolve();
 const isSPSS = () => getValue(format) === 'SPSS (.sav / .zsav)';
-const extension = () => isSPSS() && getValue(compression) === 'ZSAV'
+const extension = () => isSPSS() && isChecked(spss_zsav)
     ? 'zsav' : formats[getValue(format)] || 'sav';
 const rString = value => JSON.stringify(String(value));
+const rName = name => {
+    const reserved = ['if', 'else', 'repeat', 'while', 'function', 'for', 'in',
+        'next', 'break', 'TRUE', 'FALSE', 'NULL', 'Inf', 'NaN', 'NA',
+        'NA_integer_', 'NA_real_', 'NA_complex_', 'NA_character_'];
+    if (/^(?:[A-Za-z]|\.(?![0-9]))[A-Za-z0-9._]*$/.test(name) && !reserved.includes(name)) {
+        return name;
+    }
+    return '`' + name.replace(/\\/g, '\\\\').replace(/`/g, '\\`')
+        .replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t') + '`';
+};
 const fileName = () => String(getValue(filename) || '').trim();
 const validFileName = () => {
     const name = fileName().split(/[\\/]/).pop();
@@ -21,19 +34,23 @@ const validFileName = () => {
         && name.toLowerCase().endsWith('.' + extension());
 };
 const wantsCatalog = () => extension() === 'sas7bdat' && isChecked(catalog);
-const wantsCSV = () => extension() === 'xml' && getValue(ddi_data) === 'Separate CSV';
+const wantsSetup = () => extension() === 'xpt' && isChecked(xpt_setup);
+const wantsCSV = () => extension() === 'xml' && isChecked(ddi_csv);
 // Format panes share coordinates, not controls, so each retains its choices.
 const panes = {
-    spss: [compression, label_compression, spss_recode, label_spss_recode],
+    spss: [label_compression, spss_none, label_spss_none, spss_byte, label_spss_byte,
+        spss_zsav, label_spss_zsav, spss_recode, label_spss_recode],
     stata: [version, label_version, chartonum, label_chartonum,
         stata_recode, label_stata_recode, stata_harmonize, label_stata_harmonize],
     sas: [catalog, label_catalog, sas_recode, label_sas_recode,
         sas_harmonize, label_sas_harmonize],
     xpt: [xpt_version, label_xpt_version, xpt_recode, label_xpt_recode,
-        xpt_harmonize, label_xpt_harmonize],
-    r: [r_compression, label_r_compression],
+        xpt_harmonize, label_xpt_harmonize, xpt_setup, label_xpt_setup],
+    r: [label_r_compression, r_none, label_r_none, r_gzip, label_r_gzip,
+        r_bzip2, label_r_bzip2, r_xz, label_r_xz],
     excel: [],
-    ddi: [ddi_data, label_ddi_data]
+    ddi: [label_ddi_data, ddi_none, label_ddi_none, ddi_embedded,
+        label_ddi_embedded, ddi_csv, label_ddi_csv]
 };
 const activePane = () => isSPSS() ? 'spss'
     : extension() === 'dta' ? 'stata' : extension() === 'xpt' ? 'xpt'
@@ -52,30 +69,39 @@ const buildCommand = (path = fileName()) => {
     if (!dataset || !validFileName()) {
         return '';
     }
-    // Resolve names literally, including spaces, quotes and backticks.
-    const datasetExpression = 'get(' + rString(dataset) + ', envir = .GlobalEnv)';
+    const datasetExpression = rName(dataset);
     if (extension() === 'rds') {
-        const compression = String(getValue(r_compression)).toLowerCase();
-        return 'saveRDS(' + datasetExpression + ', file = ' + rString(path)
-            + ', compress = ' + (compression === 'none' ? 'FALSE' : rString(compression)) + ')';
+        const args = [datasetExpression, 'file = ' + rString(path)];
+        if (isChecked(r_none)) {
+            args.push('compress = FALSE');
+        } else if (isChecked(r_bzip2)) {
+            args.push('compress = "bzip2"');
+        } else if (isChecked(r_xz)) {
+            args.push('compress = "xz"');
+        }
+        return 'saveRDS(' + args.join(', ') + ')';
     }
     const args = [datasetExpression, 'to = ' + rString(path)];
     if (extension() === 'xlsx') {
-        return 'DDIwR::convert(' + args.join(', ') + ')';
+        return 'convert(' + args.join(', ') + ')';
     }
     if (extension() === 'xml') {
-        args.push('file_name = ' + rString(dataset));
-        args.push('embed = ' + (getValue(ddi_data) === 'Embedded' ? 'TRUE' : 'FALSE'));
-        if (getValue(ddi_data) === 'None') {
+        if (!isChecked(ddi_embedded)) {
+            args.push('embed = FALSE');
+        }
+        if (isChecked(ddi_none)) {
             args.push('csv = FALSE');
         }
-        return 'DDIwR::convert(' + args.join(', ') + ')';
+        return 'convert(' + args.join(', ') + ')';
     }
-    if (isSPSS()) {
-        args.push('compress = ' + rString(String(getValue(compression)).toLowerCase()));
+    if (isSPSS() && isChecked(spss_none)) {
+        args.push('compress = "none"');
     }
     if (extension() === 'dta') {
-        args.push('version = ' + Number(getValue(version)));
+        const selectedVersion = Number(getValue(version));
+        if (selectedVersion !== versionDefault) {
+            args.push('version = ' + selectedVersion);
+        }
         if (isChecked(chartonum)) {
             args.push('chartonum = TRUE');
         }
@@ -86,25 +112,19 @@ const buildCommand = (path = fileName()) => {
     if (!isSPSS() && isChecked(recodeControl()) && !isChecked(harmonizeControls[activePane()][0])) {
         args.push('harmonize = FALSE');
     }
-    if (wantsCatalog()) {
-        args.push('catalog_to = ' + rString(path.replace(/\.sas7bdat$/i, '.sas7bcat')));
+    if (extension() === 'sas7bdat' && !wantsCatalog()) {
+        args.push('catalog = NULL');
     }
     if (extension() === 'xpt') {
-        args.push('version = ' + Number(getValue(xpt_version)));
-        // DDIwR writes a label setup script beside its input. Stage that input
-        // so a transport-only export cannot write an unsolicited file in HOME.
-        const datasetExpression = args[0];
-        args[0] = '.source';
-        return 'local({\n' +
-            '    .directory <- tempfile("dialogr-export-")\n' +
-            '    dir.create(.directory)\n' +
-            '    on.exit(unlink(.directory, recursive = TRUE))\n' +
-            '    .source <- file.path(.directory, "data.rds")\n' +
-            '    saveRDS(' + datasetExpression + ', .source)\n' +
-            '    DDIwR::convert(' + args.join(', ') + ')\n' +
-            '})';
+        const selectedVersion = Number(getValue(xpt_version));
+        if (selectedVersion !== versionDefault) {
+            args.push('version = ' + selectedVersion);
+        }
+        if (!wantsSetup()) {
+            args.push('setup = FALSE');
+        }
     }
-    return 'DDIwR::convert(' + args.join(', ') + ')';
+    return 'convert(' + args.join(', ') + ')';
 };
 const refresh = () => {
     const active = activePane();
@@ -117,21 +137,38 @@ const refresh = () => {
     }
     updateSyntax(buildCommand());
 };
+const refreshVersionDefault = () => {
+    const dataset = getSelected(c_datasets)[0];
+    const format = extension();
+    const request = ++versionRequest;
+    versionDefault = null;
+    refresh();
+    versionDefaultReady = dataset && (format === 'dta' || format === 'xpt')
+        ? callExternal('DialogR.exportDefaultVersion', { dataset, format }).then(value => {
+            if (request === versionRequest) {
+                versionDefault = value;
+                updateSyntax(buildCommand());
+            }
+        }, () => {
+            // Keep the selected version explicit if the runtime cannot read its default.
+        })
+        : Promise.resolve();
+};
 const binding = bindObjects({ dialog: 'exportdata', datasets: c_datasets });
 enableSearch(c_datasets);
 onChange(c_datasets, () => {
     clearError(c_datasets);
-    refresh();
+    refreshVersionDefault();
 });
 const refreshFileName = () => {
     const name = fileName().replace(/\.(sav|zsav|dta|sas7bdat|xpt|rds|xlsx|xml)$/i, '') || 'data';
     setValue(filename, name + '.' + extension());
     clearError(filename);
-    refresh();
+    refreshVersionDefault();
 };
 onChange(format, refreshFileName);
-onChange(compression, refreshFileName);
-[version, xpt_version, r_compression, ddi_data, chartonum, catalog,
+onChange(spss_compression, refreshFileName);
+[version, xpt_version, r_compression, ddi_data, chartonum, catalog, xpt_setup,
     spss_recode, stata_recode, sas_recode, xpt_recode,
     stata_harmonize, sas_harmonize, xpt_harmonize].forEach(control => onChange(control, refresh));
 onInput(filename, refresh);
@@ -144,9 +181,10 @@ onClick(b_reset, async () => {
         return;
     }
     resetDialog();
+    setValue(version, '14');
     browseToken = '';
     await binding.refresh();
-    refresh();
+    refreshVersionDefault();
 });
 onClick(b_browse, async () => {
     if (busy) {
@@ -201,28 +239,36 @@ onClick(b_run, async () => {
     enable(b_browse, false);
     let destination;
     try {
+        await versionDefaultReady;
         // Snapshot the destination and options before preparing the export.
         const outputExtension = extension();
         const command = buildCommand('__EXPORT__.' + outputExtension);
-        const catalogRequested = wantsCatalog();
-        const csvRequested = wantsCSV();
+        const companionExtensions = wantsCSV() ? ['csv'] : [];
+        const setupRequested = wantsSetup();
+        const optionalCompanionExtension = setupRequested ? 'sas' : wantsCatalog() ? 'sas7bcat' : '';
+        // DDIwR can overwrite the setup script in place.
+        const optionalCompanionQuery = setupRequested
+            ? 'if (DDIwR::hasLabels(' + rName(getSelected(c_datasets)[0]) + ')) "yes" else "no"'
+            : '';
         destination = await callExternal('prepareExportFile', {
             fileName: fileName(),
             browseToken,
             extension: outputExtension,
             workingDirectory: await getWorkingDirectory(),
-            companionExtensions: catalogRequested ? ['sas7bcat'] : csvRequested ? ['csv'] : []
+            companionExtensions,
+            optionalCompanionExtension,
+            optionalCompanionQuery
         });
         if (!destination || destination.canceled) {
             return;
         }
         const actualCommand = command
-            .replace(rString('__EXPORT__.' + outputExtension), rString(destination.filePath))
-            .replace(rString('__EXPORT__.sas7bcat'), rString(destination.companionPaths[0] || ''));
+            .replace(rString('__EXPORT__.' + outputExtension), () => rString(destination.filePath));
         const result = await run(actualCommand, {
             close: false,
             dependencies: outputExtension === 'xlsx' ? ['DDIwR', 'writexl'] : ['DDIwR'],
-            rPackageRequirements: catalogRequested ? [{ name: 'DDIwR', minimumVersion: '0.22.1' }] : []
+            rPackageRequirements: ['sas7bdat', 'xpt'].includes(outputExtension)
+                ? [{ name: 'DDIwR', minimumVersion: '0.24' }] : []
         });
         if (result && result.ok) {
             await callExternal('finishExportFile', { ticket: destination.ticket });
@@ -243,4 +289,5 @@ onClick(b_run, async () => {
         enable(b_browse, true);
     }
 });
-refresh();
+setValue(version, '14');
+refreshVersionDefault();

@@ -4,6 +4,7 @@ import {
     type ProductContribution,
     type ProductContributionContext
 } from "@dialogforge/core";
+import { createExportDefaultsHost } from "../external/r/exportDefaults";
 
 
 const consoleStateChipMutationCalls = [
@@ -58,8 +59,8 @@ export const productContribution:
             PRODUCT_CONTRIBUTION_CONTRACT_VERSION,
         consoleStateChipMutationCalls,
         readConsoleStateChips,
-        createDialogExternalCallHosts: function() {
-            return {};
+        createDialogExternalCallHosts: function(context) {
+            return { DialogR: createExportDefaultsHost(context) };
         }
     };
 
