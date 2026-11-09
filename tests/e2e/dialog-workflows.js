@@ -161,6 +161,18 @@ async function main() {
         await submit(dialog, 'addcases');
         await expectR('stopifnot(nrow(first)==6, identical(names(first),c("id","age","group")), all(is.na(first$age[4:6])), identical(second$bonus,c(100,200,400)))', 'Add cases retains first schema and pads absent columns');
         if (host === 'webr') {
+            const { unzipSync } = require(path.join(dialogForgeRoot, 'node_modules/fflate'));
+            const checkArchive = (bytes, expectedNames) => {
+                const files = unzipSync(bytes);
+                assert.deepEqual(Object.keys(files).sort(), [...expectedNames].sort());
+                for (const file of Object.values(files)) assert.ok(file.byteLength > 0);
+                if (files['data.sas']) {
+                    const script = Buffer.from(files['data.sas']).toString('utf8');
+                    assert.match(script, /^libname datadir "\.";\r?$/im);
+                    assert.match(script, /PROC FORMAT/i);
+                }
+                return files;
+            };
             await expectR('stopifnot(packageVersion("declared") >= "0.28", packageVersion("DDIwR") >= "0.24"); dir.create("export-check"); setwd("export-check"); export_fixture <- data.frame(id=1:3, answer=declared::declared(c(1,9,2), label="Answer", labels=c(Yes=1,Missing=9,No=2), na_values=9))', 'Updated VFS packages load and the export fixture is ready');
             const cases = [
                 { format: 'R (.rds)', files: ['data.rds'], verify: 'stopifnot(identical(readRDS("data.rds"), export_fixture))' },
@@ -195,6 +207,13 @@ async function main() {
                     select: ['xpt_version', '8']
                 },
                 {
+                    format: 'SAS Transport (.xpt)', files: ['data.xpt', 'data.sas'],
+                    dataset: 'LF', setup: 'data(LF, package = "QCA")',
+                    command: 'convert(LF, to = "data.xpt")',
+                    verify: 'stopifnot(nrow(convert("data.xpt", declared=FALSE, recode=FALSE)) == nrow(LF))',
+                    label: 'QCA LF exports as a local ZIP with its transport data and setup script'
+                },
+                {
                     format: 'SAS Transport (.xpt)', files: ['data.xpt'], toggle: 'xpt_setup',
                     setup: 'writeLines("earlier script", "data.sas")',
                     command: 'convert(export_fixture, to = "data.xpt", setup = FALSE)',
@@ -219,7 +238,7 @@ async function main() {
                     await run(test.setup);
                 }
                 dialog = await open('exportdata');
-                await choose(dialog.frame, 'c_datasets', 'export_fixture');
+                await choose(dialog.frame, 'c_datasets', test.dataset || 'export_fixture');
                 await control(dialog.frame, 'format').locator('select').selectOption(test.format);
                 if (test.select) {
                     await control(dialog.frame, test.select[0]).locator('select').selectOption(test.select[1]);
@@ -236,18 +255,20 @@ async function main() {
                 page.on('download', collect);
                 try {
                     await submit(dialog, 'exportdata');
+                    const archive = test.files.length > 1;
+                    const name = archive ? test.files[0].replace(/\.[^.]+$/, '.zip') : test.files[0];
                     const end = Date.now() + 5000;
-                    while (downloads.length < test.files.length && Date.now() < end) {
+                    while (!downloads.length && Date.now() < end) {
                         await new Promise(resolve => setTimeout(resolve, 50));
                     }
-                    assert.deepEqual(downloads.map(download => download.suggestedFilename()).sort(), test.files.slice().sort());
-                    for (const download of downloads) {
-                        const file = await download.path();
-                        const name = download.suggestedFilename();
-                        assert.ok(fs.statSync(file).size > 0, name);
-                        if (name === 'data.sas') {
-                            assert.match(fs.readFileSync(file, 'utf8'), /PROC FORMAT/i);
-                            assert.match(fs.readFileSync(file, 'utf8'), /Yes/);
+                    assert.deepEqual(downloads.map(download => download.suggestedFilename()), [name]);
+                    const bytes = fs.readFileSync(await downloads[0].path());
+                    assert.ok(bytes.byteLength > 0, name);
+                    if (archive) {
+                        const files = checkArchive(bytes, test.files);
+                        if (test.dataset === 'LF') {
+                            assert.match(Buffer.from(files['data.sas']).toString('utf8'), /Undeveloped/);
+                            await page.getByText(test.command, { exact: true }).last().waitFor();
                         }
                     }
                 } finally {
@@ -271,7 +292,10 @@ async function main() {
                         name: picker.name,
                         async createWritable() {
                             return {
-                                async write(bytes) { picker.bytes = bytes.byteLength; },
+                                async write(bytes) {
+                                    picker.bytes = bytes.byteLength;
+                                    if (picker.name.endsWith('.zip')) picker.archive = Array.from(bytes);
+                                },
                                 async close() { picker.closed = true; }
                             };
                         }
@@ -281,7 +305,7 @@ async function main() {
             const waitForDestination = name => page.waitForFunction(name => {
                 const frame = document.querySelector('.dialogforge-web-dialog-layer[data-dialog-id="exportdata"] iframe');
                 const field = frame?.contentDocument?.querySelector('[data-control-name="filename"] textarea, [data-control-name="filename"] input');
-                return field?.value.endsWith('/' + name);
+                return field?.value === name;
             }, name, { timeout: 5000 });
             dialog = await open('exportdata');
             await choose(dialog.frame, 'c_datasets', 'export_fixture');
@@ -299,6 +323,22 @@ async function main() {
             assert.deepEqual(picker.calls, [{ suggestedName: 'data.rds', activated: true }, { suggestedName: 'data.rds', activated: true }]);
             assert.ok(picker.bytes > 0 && picker.closed);
             await expectR('stopifnot(identical(readRDS("browser-picked.rds"), export_fixture))', 'Browse cancels cleanly and Export writes the selected browser file');
+
+            await page.evaluate(() => {
+                window.exportPicker.name = 'My SAS export.zip';
+                window.exportPicker.closed = false;
+            });
+            dialog = await open('exportdata');
+            await choose(dialog.frame, 'c_datasets', 'LF');
+            await control(dialog.frame, 'format').locator('select').selectOption('SAS Transport (.xpt)');
+            await click(dialog.frame, 'b_browse');
+            await page.waitForFunction(() => window.exportPicker.calls.length === 3);
+            await submit(dialog, 'exportdata');
+            const zipPicker = await page.evaluate(() => window.exportPicker);
+            assert.deepEqual(zipPicker.calls.at(-1), { suggestedName: 'data.zip', activated: true });
+            assert.ok(zipPicker.closed);
+            checkArchive(Uint8Array.from(zipPicker.archive), ['data.xpt', 'data.sas']);
+            report.cases.push({ name: 'Browse writes the ZIP to the chosen local file handle', status: 'passed' });
 
             await page.evaluate(() => {
                 window.exportPicker.name = 'browser-abandoned.rds';

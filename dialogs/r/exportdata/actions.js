@@ -36,6 +36,8 @@ const validFileName = () => {
 const wantsCatalog = () => extension() === 'sas7bdat' && isChecked(catalog);
 const wantsSetup = () => extension() === 'xpt' && isChecked(xpt_setup);
 const wantsCSV = () => extension() === 'xml' && isChecked(ddi_csv);
+const companionExtensions = () => wantsCSV() ? ['csv'] : [];
+const optionalCompanionExtension = () => wantsSetup() ? 'sas' : wantsCatalog() ? 'sas7bcat' : '';
 // Format panes share coordinates, not controls, so each retains its choices.
 const panes = {
     spss: [label_compression, spss_none, label_spss_none, spss_byte, label_spss_byte,
@@ -201,7 +203,8 @@ onClick(b_browse, async () => {
         const selected = await callExternal('selectExportFile', {
             fileName: absolute ? name : String(workingDirectory).replace(/[\\/]$/, '') + '/' + name,
             extension: extension(),
-            companionExtensions: []
+            companionExtensions: companionExtensions(),
+            optionalCompanionExtension: optionalCompanionExtension()
         });
         if (selected && !selected.canceled) {
             setValue(filename, selected.filePath);
@@ -243,9 +246,9 @@ onClick(b_run, async () => {
         // Snapshot the destination and options before preparing the export.
         const outputExtension = extension();
         const command = buildCommand('__EXPORT__.' + outputExtension);
-        const companionExtensions = wantsCSV() ? ['csv'] : [];
+        const companions = companionExtensions();
         const setupRequested = wantsSetup();
-        const optionalCompanionExtension = setupRequested ? 'sas' : wantsCatalog() ? 'sas7bcat' : '';
+        const optionalExtension = optionalCompanionExtension();
         // DDIwR can overwrite the setup script in place.
         const optionalCompanionQuery = setupRequested
             ? 'if (DDIwR::hasLabels(' + rName(getSelected(c_datasets)[0]) + ')) "yes" else "no"'
@@ -255,15 +258,15 @@ onClick(b_run, async () => {
             browseToken,
             extension: outputExtension,
             workingDirectory: await getWorkingDirectory(),
-            companionExtensions,
-            optionalCompanionExtension,
+            companionExtensions: companions,
+            optionalCompanionExtension: optionalExtension,
             optionalCompanionQuery
         });
         if (!destination || destination.canceled) {
             return;
         }
         const actualCommand = command
-            .replace(rString('__EXPORT__.' + outputExtension), () => rString(destination.filePath));
+            .replace(rString('__EXPORT__.' + outputExtension), () => rString(destination.commandPath || destination.filePath));
         const result = await run(actualCommand, {
             close: false,
             dependencies: outputExtension === 'xlsx' ? ['DDIwR', 'writexl'] : ['DDIwR'],
