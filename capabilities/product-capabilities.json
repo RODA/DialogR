@@ -88,5 +88,18 @@
         "label": "Required DialogR package management",
         "requiredRuntime": ["commands.visible", "dependencies.packages"],
         "rPackages": ["httpgd", "jsonlite", "askpass", "later", "digest", "admisc", "declared", "DDIwR", "statistics"]
+    },
+    {
+        "capability": "DialogR.dialog.exportdata",
+        "label": "Export data",
+        "requiredRuntime": [
+            "commands.visible",
+            "workspace.objects",
+            "tabular.read",
+            "dependencies.packages"
+        ],
+        "rPackages": [
+            "DDIwR"
+        ]
     }
 ]

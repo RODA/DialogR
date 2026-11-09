@@ -194,5 +194,20 @@
                 "name": "admisc"
             }
         ]
+    },
+    {
+        "id": "exportdata",
+        "label": "Export data",
+        "owner": "products/DialogR",
+        "targetHome": "products/DialogR/dialogs/r/exportdata/",
+        "sourceFile": "r/exportdata/dialog.json",
+        "status": "source-imported",
+        "replacement": "Run through the DialogCreator-compatible DialogForge dialog runtime.",
+        "rPackages": [
+            {
+                "name": "DDIwR",
+                "minimumVersion": "0.22.2"
+            }
+        ]
     }
 ]

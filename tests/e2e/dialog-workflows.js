@@ -160,6 +160,108 @@ async function main() {
         await choose(dialog.frame, 'dataset1', 'first'); await choose(dialog.frame, 'dataset2', 'second');
         await submit(dialog, 'addcases');
         await expectR('stopifnot(nrow(first)==6, identical(names(first),c("id","age","group")), all(is.na(first$age[4:6])), identical(second$bonus,c(100,200,400)))', 'Add cases retains first schema and pads absent columns');
+        if (host === 'webr') {
+            await expectR('stopifnot(packageVersion("declared") >= "0.28", packageVersion("DDIwR") >= "0.23"); dir.create("export-check"); setwd("export-check"); export_fixture <- data.frame(id=1:3, answer=declared::declared(c(1,9,2), label="Answer", labels=c(Yes=1,Missing=9,No=2), na_values=9))', 'Updated VFS packages load and the export fixture is ready');
+            const cases = [
+                { format: 'R (.rds)', files: ['data.rds'], verify: 'stopifnot(identical(readRDS("data.rds"), export_fixture))' },
+                { format: 'SPSS (.sav / .zsav)', files: ['data.zsav'], select: ['compression', 'ZSAV'] },
+                { format: 'Stata (.dta)', files: ['data.dta'], select: ['version', '13'] },
+                { format: 'SAS (.sas7bdat)', files: ['data.sas7bdat', 'data.sas7bcat'], checkbox: 'catalog' },
+                { format: 'SAS Transport (.xpt)', files: ['data.xpt'], select: ['xpt_version', '8'] },
+                { format: 'Excel (.xlsx)', files: ['data.xlsx'] },
+                { format: 'DDI (.xml)', files: ['data.xml', 'data.csv'], select: ['ddi_data', 'Separate CSV'] }
+            ];
+            for (const test of cases) {
+                dialog = await open('exportdata');
+                await choose(dialog.frame, 'c_datasets', 'export_fixture');
+                await control(dialog.frame, 'format').locator('select').selectOption(test.format);
+                if (test.select) {
+                    await control(dialog.frame, test.select[0]).locator('select').selectOption(test.select[1]);
+                }
+                if (test.checkbox) {
+                    await click(dialog.frame, test.checkbox);
+                }
+                const downloads = [];
+                const collect = download => downloads.push(download);
+                page.on('download', collect);
+                try {
+                    await submit(dialog, 'exportdata');
+                    const end = Date.now() + 5000;
+                    while (downloads.length < test.files.length && Date.now() < end) {
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                    }
+                    assert.deepEqual(downloads.map(download => download.suggestedFilename()).sort(), test.files.slice().sort());
+                    for (const download of downloads) {
+                        assert.ok(fs.statSync(await download.path()).size > 0, download.suggestedFilename());
+                    }
+                } finally {
+                    page.off('download', collect);
+                }
+                const verify = test.verify || `stopifnot(identical(as.numeric(DDIwR::convert(${JSON.stringify(test.files[0])}, declared=FALSE, recode=FALSE)$id), c(1,2,3)))`;
+                await expectR(`stopifnot(all(file.exists(c(${test.files.map(name => JSON.stringify(name)).join(', ')})))); ${verify}`, `${test.format} downloads and round trips from the R working directory`);
+            }
+
+            // Stand in for the OS picker and verify the real app writes through its handle.
+            await page.evaluate(() => {
+                window.exportPicker = { cancel: true, calls: [], bytes: 0, closed: false, name: 'browser-picked.rds' };
+                window.showSaveFilePicker = async options => {
+                    const picker = window.exportPicker;
+                    picker.calls.push({ suggestedName: options.suggestedName, activated: navigator.userActivation.isActive });
+                    if (picker.cancel) {
+                        throw new DOMException('Canceled', 'AbortError');
+                    }
+                    return {
+                        name: picker.name,
+                        async createWritable() {
+                            return {
+                                async write(bytes) { picker.bytes = bytes.byteLength; },
+                                async close() { picker.closed = true; }
+                            };
+                        }
+                    };
+                };
+            });
+            const waitForDestination = name => page.waitForFunction(name => {
+                const frame = document.querySelector('.dialogforge-web-dialog-layer[data-dialog-id="exportdata"] iframe');
+                const field = frame?.contentDocument?.querySelector('[data-control-name="filename"] textarea, [data-control-name="filename"] input');
+                return field?.value.endsWith('/' + name);
+            }, name, { timeout: 5000 });
+            dialog = await open('exportdata');
+            await choose(dialog.frame, 'c_datasets', 'export_fixture');
+            await control(dialog.frame, 'format').locator('select').selectOption('R (.rds)');
+            const destination = control(dialog.frame, 'filename').locator('input,textarea');
+            await click(dialog.frame, 'b_browse');
+            await page.waitForFunction(() => window.exportPicker.calls.length === 1);
+            assert.equal(await destination.inputValue(), 'data.rds');
+            await page.evaluate(() => { window.exportPicker.cancel = false; });
+            await click(dialog.frame, 'b_browse');
+            await waitForDestination('browser-picked.rds');
+            assert.equal(await page.evaluate(() => window.exportPicker.bytes), 0);
+            await submit(dialog, 'exportdata');
+            const picker = await page.evaluate(() => window.exportPicker);
+            assert.deepEqual(picker.calls, [{ suggestedName: 'data.rds', activated: true }, { suggestedName: 'data.rds', activated: true }]);
+            assert.ok(picker.bytes > 0 && picker.closed);
+            await expectR('stopifnot(identical(readRDS("browser-picked.rds"), export_fixture))', 'Browse cancels cleanly and Export writes the selected browser file');
+
+            await page.evaluate(() => {
+                window.exportPicker.name = 'browser-abandoned.rds';
+                window.exportPicker.bytes = 0;
+            });
+            dialog = await open('exportdata');
+            await control(dialog.frame, 'format').locator('select').selectOption('R (.rds)');
+            await click(dialog.frame, 'b_browse');
+            await waitForDestination('browser-abandoned.rds');
+            await dialog.close();
+            dialog = await open('exportdata');
+            await choose(dialog.frame, 'c_datasets', 'export_fixture');
+            await control(dialog.frame, 'format').locator('select').selectOption('R (.rds)');
+            await fill(dialog.frame, 'filename', 'browser-abandoned.rds');
+            const downloaded = page.waitForEvent('download');
+            await submit(dialog, 'exportdata');
+            assert.equal((await downloaded).suggestedFilename(), 'browser-abandoned.rds');
+            assert.equal(await page.evaluate(() => window.exportPicker.bytes), 0);
+            await expectR('stopifnot(identical(readRDS("browser-abandoned.rds"), export_fixture))', 'A later export cannot reuse an abandoned Browse destination');
+        }
         assert.deepEqual(errors, [], 'Application must not emit renderer errors');
         await page.screenshot({ path: path.join(output, 'completed.png') });
         report.status = 'passed';

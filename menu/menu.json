@@ -1,5 +1,21 @@
 [
     {
+        "id": "File",
+        "labelKey": "menu.root.file",
+        "label": "File",
+        "type": "submenu",
+        "items": [
+            {
+                "id": "DialogRExportData",
+                "labelKey": "menu.root.file.exportdata",
+                "label": "Export data…",
+                "type": "product-dialog",
+                "dialog": "exportdata",
+                "capability": "DialogR.dialog.exportdata"
+            }
+        ]
+    },
+    {
         "id": "Data",
         "labelKey": "menu.root.data",
         "label": "Data",
@@ -14,7 +30,7 @@
                     {
                         "id": "DialogRAddCases",
                         "labelKey": "menu.root.data.merge_files.add_cases",
-                        "label": "Add cases",
+                        "label": "Add cases…",
                         "type": "product-dialog",
                         "dialog": "addcases",
                         "capability": "DialogR.dialog.addcases"
@@ -22,7 +38,7 @@
                     {
                         "id": "DialogRAddVariables",
                         "labelKey": "menu.root.data.merge_files.add_variables",
-                        "label": "Add variables",
+                        "label": "Add variables…",
                         "type": "product-dialog",
                         "dialog": "addvariables",
                         "capability": "DialogR.dialog.addvariables"
@@ -32,7 +48,7 @@
             {
                 "id": "DialogRSortCases",
                 "labelKey": "menu.root.data.sortby",
-                "label": "Sort cases",
+                "label": "Sort cases…",
                 "type": "product-dialog",
                 "dialog": "sortby",
                 "capability": "DialogR.dialog.sortby"
@@ -40,7 +56,7 @@
             {
                 "id": "DialogRSplitBy",
                 "labelKey": "menu.root.data.splitby",
-                "label": "Split by groups",
+                "label": "Split by groups…",
                 "type": "product-dialog",
                 "dialog": "splitby",
                 "capability": "DialogR.dialog.splitby"
@@ -48,7 +64,7 @@
             {
                 "id": "DialogRSelect",
                 "labelKey": "menu.root.data.select",
-                "label": "Subset cases and variables",
+                "label": "Subset cases and variables…",
                 "type": "product-dialog",
                 "dialog": "select",
                 "capability": "DialogR.dialog.select"
@@ -56,7 +72,7 @@
             {
                 "id": "DialogRWeightBy",
                 "labelKey": "menu.root.data.weightby",
-                "label": "Apply frequency weighting",
+                "label": "Apply frequency weighting…",
                 "type": "product-dialog",
                 "dialog": "weightby",
                 "capability": "DialogR.dialog.weightby"
@@ -72,7 +88,7 @@
             {
                 "id": "DialogRRecode",
                 "labelKey": "menu.root.data.recode",
-                "label": "Recode variables",
+                "label": "Recode variables…",
                 "type": "product-dialog",
                 "dialog": "recode",
                 "capability": "DialogR.dialog.recode"
@@ -94,7 +110,7 @@
                     {
                         "id": "DialogRFrequencies",
                         "labelKey": "menu.root.analyze.descriptive_statistics.frequencies",
-                        "label": "Frequency table",
+                        "label": "Frequency table…",
                         "type": "product-dialog",
                         "dialog": "frequencies",
                         "capability": "DialogR.dialog.frequencies"
@@ -102,7 +118,7 @@
                     {
                         "id": "DialogRCrosstable",
                         "labelKey": "menu.root.analyze.descriptive_statistics.crosstable",
-                        "label": "Contingency table",
+                        "label": "Contingency table…",
                         "type": "product-dialog",
                         "dialog": "crosstable",
                         "capability": "DialogR.dialog.crosstable"
@@ -110,7 +126,7 @@
                     {
                         "id": "DialogRSummaries",
                         "labelKey": "menu.root.analyze.descriptive_statistics.summaries",
-                        "label": "Numerical summaries",
+                        "label": "Numerical summaries…",
                         "type": "product-dialog",
                         "dialog": "summaries",
                         "capability": "DialogR.dialog.summaries"
@@ -126,7 +142,7 @@
                     {
                         "id": "DialogROneSampleTTest",
                         "labelKey": "menu.root.analyze.compare_means_and_proportions.onesamplettest",
-                        "label": "One-sample t-test",
+                        "label": "One-sample t-test…",
                         "type": "product-dialog",
                         "dialog": "onesamplettest",
                         "capability": "DialogR.dialog.onesamplettest"
@@ -134,7 +150,7 @@
                     {
                         "id": "DialogRIndependentSamplesTTest",
                         "labelKey": "menu.root.analyze.compare_means_and_proportions.independentsamplesttest",
-                        "label": "Independent samples t-test",
+                        "label": "Independent samples t-test…",
                         "type": "product-dialog",
                         "dialog": "independentsamplesttest",
                         "capability": "DialogR.dialog.independentsamplesttest"
@@ -142,7 +158,7 @@
                     {
                         "id": "DialogROneWayANOVA",
                         "labelKey": "menu.root.analyze.compare_means_and_proportions.anovahv",
-                        "label": "One-way ANOVA",
+                        "label": "One-way ANOVA…",
                         "type": "product-dialog",
                         "dialog": "anovahv",
                         "capability": "DialogR.dialog.anovahv"
@@ -158,7 +174,7 @@
                     {
                         "id": "DialogRBivariate",
                         "labelKey": "menu.root.analyze.correlate.bivariate",
-                        "label": "Bivariate",
+                        "label": "Bivariate…",
                         "type": "product-dialog",
                         "dialog": "bivariate",
                         "capability": "DialogR.dialog.bivariate"
