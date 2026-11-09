@@ -16,7 +16,16 @@ for (const entry of JSON.parse(fs.readFileSync(path.join(root,'dialogs/dialogs.j
     inputs.push('dialogs/'+entry.sourceFile, 'dialogs/'+path.dirname(entry.sourceFile)+'/actions.js');
 }
 const fingerprints = Object.fromEntries(inputs.map(file => [file, createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex')]));
-for (const file of ['src/dialog-runtime/renderer/modules/dialogCanonicalControlAdapter.ts','src/dialog-runtime/renderer/library/customJSRuntime.ts','vendor/dialogcreator-renderer-0.1.0.tgz']) {
+const forgeManifest = JSON.parse(fs.readFileSync(path.join(dialogForgeRoot, 'package.json'), 'utf8'));
+const rendererDependency = forgeManifest.dependencies?.['@dialogcreator/renderer'];
+if (typeof rendererDependency !== 'string' || !rendererDependency.startsWith('file:') || !rendererDependency.endsWith('.tgz')) {
+    throw new Error('DialogForge must declare @dialogcreator/renderer as a local tarball.');
+}
+for (const file of [
+    'src/dialog-runtime/renderer/modules/dialogCanonicalControlAdapter.ts',
+    'src/dialog-runtime/renderer/library/customJSRuntime.ts',
+    rendererDependency.slice('file:'.length)
+]) {
     fingerprints['DialogForge/'+file] = createHash('sha256').update(fs.readFileSync(path.join(dialogForgeRoot,file))).digest('hex');
 }
 const report = { status: 'running', startedAt: new Date().toISOString(), appWorkflowsRequested: args.has('--apps'), fingerprints, checks: [] };
