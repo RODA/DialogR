@@ -24,9 +24,23 @@ fi
 
 run_url="https://github.com/$broker/actions/runs/$run_id"
 echo "Waiting for signed Windows publication: $run_url"
+poll_stderr=$(mktemp)
+trap 'rm -f "$poll_stderr"' EXIT
+visibility_retries=4
 for ((attempt = 0; attempt < 120; attempt++)); do
-  result=$(gh api "repos/$broker/actions/runs/$run_id" \
-    --jq 'if .status == "completed" then .conclusion else "pending" end')
+  if result=$(gh api "repos/$broker/actions/runs/$run_id" \
+    --jq 'if .status == "completed" then .conclusion else "pending" end' 2>"$poll_stderr"); then
+    visibility_retries=0
+  elif (( visibility_retries > 0 )) && grep -Eq '^gh: .* \(HTTP 404\)$' "$poll_stderr"; then
+    visibility_retries=$((visibility_retries - 1))
+    echo "Signing run $run_id is not visible yet. Retrying in 15 seconds." >&2
+    sleep 15
+    continue
+  else
+    cat "$poll_stderr" >&2
+    exit 1
+  fi
+  cat "$poll_stderr" >&2
   case "$result" in
     success)
       echo "Windows release upload verified: $run_url"
