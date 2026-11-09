@@ -7,6 +7,24 @@ with the package versions declared in the dialog manifests (`admisc` 0.41.1 is
 needed by the merge checks). Missing dependencies fail the tests; they are not
 silently skipped.
 
+Run rendered checks through one command:
+
+```sh
+npm run test:dialogs:rendered
+npm run test:dialogs:rendered -- --list
+npm run test:dialogs:rendered -- bivariate
+npm run test:dialogs:rendered -- bivariate merges
+```
+
+The runner discovers `tests/rendered/*.test.js`. Adding a suite requires no
+entry in `package.json` or the release runner. Helpers do not use that suffix.
+The `dialogs` suite provides startup, Reset, and empty-workspace coverage for
+every registered dialog; add focused suites only for behavior that needs them.
+Suite names are filenames without `.test.js`. Unknown names fail the command.
+The default browser is Chromium; set `DIALOGR_TEST_BROWSER` to `firefox` or
+`webkit` to select another. Release checks discover the same suites and run
+each on all three browsers, with a separate timeout and report entry per suite.
+
 Native CI uses R 4.6.1 to match the qualified native helpers pinned in
 DialogForge. Update that version with the helper pins when changing R versions.
 The native/R checks fail immediately if `admisc` does not export `addCases` at

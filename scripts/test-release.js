@@ -4,6 +4,7 @@ const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const { createHash } = require('node:crypto');
 const { dialogForgeRoot } = require('../tests/dialogforge');
+const { discoverRenderedTests } = require('./test-rendered-dialogs');
 const root = path.resolve(__dirname, '..');
 const args = new Set(process.argv.slice(2));
 for (const arg of args) if (!['--apps', '--web-build'].includes(arg)) throw new Error('Unknown release test option: ' + arg);
@@ -16,7 +17,16 @@ for (const entry of JSON.parse(fs.readFileSync(path.join(root,'dialogs/dialogs.j
     inputs.push('dialogs/'+entry.sourceFile, 'dialogs/'+path.dirname(entry.sourceFile)+'/actions.js');
 }
 const fingerprints = Object.fromEntries(inputs.map(file => [file, createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex')]));
-for (const file of ['src/dialog-runtime/renderer/modules/dialogCanonicalControlAdapter.ts','src/dialog-runtime/renderer/library/customJSRuntime.ts','vendor/dialogcreator-renderer-0.1.0.tgz']) {
+const forgeManifest = JSON.parse(fs.readFileSync(path.join(dialogForgeRoot, 'package.json'), 'utf8'));
+const rendererDependency = forgeManifest.dependencies?.['@dialogcreator/renderer'];
+if (typeof rendererDependency !== 'string' || !rendererDependency.startsWith('file:') || !rendererDependency.endsWith('.tgz')) {
+    throw new Error('DialogForge must declare @dialogcreator/renderer as a local tarball.');
+}
+for (const file of [
+    'src/dialog-runtime/renderer/modules/dialogCanonicalControlAdapter.ts',
+    'src/dialog-runtime/renderer/library/customJSRuntime.ts',
+    rendererDependency.slice('file:'.length)
+]) {
     fingerprints['DialogForge/'+file] = createHash('sha256').update(fs.readFileSync(path.join(dialogForgeRoot,file))).digest('hex');
 }
 const report = { status: 'running', startedAt: new Date().toISOString(), appWorkflowsRequested: args.has('--apps'), fingerprints, checks: [] };
@@ -33,10 +43,10 @@ try {
     run('Product source and compatibility', process.execPath, ['scripts/check-build-ownership.js']);
     run('Product type and script checks', process.execPath, ['scripts/check-product.js']);
     for (const browser of ['chromium','firefox','webkit']) {
-        run('Rendered dialogs: '+browser, process.execPath, ['tests/rendered/dialogs.js'], root, { ...process.env, DIALOGR_TEST_BROWSER: browser });
-        run('Bivariate correlation: '+browser, process.execPath, ['tests/rendered/bivariate.js'], root, { ...process.env, DIALOGR_TEST_BROWSER: browser });
+        for (const test of discoverRenderedTests()) {
+            run('Rendered '+test.name+': '+browser, process.execPath, [test.file], root, { ...process.env, DIALOGR_TEST_BROWSER: browser });
+        }
     }
-    run('Actual R merge semantics', process.execPath, ['tests/rendered/merges.js']);
     run('Original defect is detected', process.execPath, ['tests/rendered/regression-detection.js']);
     for (const script of ['check-dialog-label-parity.js','rendered-canonical-controls.js']) run('Shared renderer: '+script,process.execPath,['scripts/'+script],dialogForgeRoot);
     run('Shared renderer: attachments and invalid layouts', process.execPath, [

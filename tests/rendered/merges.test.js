@@ -9,10 +9,11 @@ const extras = {
 };
 async function main() {
     require('../../scripts/check-release-r').checkReleaseR();
-    const h = await createHarness(process.env.DIALOGR_TEST_BROWSER || 'chromium');
-    const output = path.join(root, process.env.DIALOGR_TEST_SELECTION_REGRESSION ? 'artifacts/dialog-release/selection-regression' : 'artifacts/dialog-release/merges'); fs.mkdirSync(output, { recursive: true });
+    const browser = process.env.DIALOGR_TEST_BROWSER || 'chromium';
+    const h = await createHarness(browser);
+    const output = path.join(root, 'artifacts/dialog-release', process.env.DIALOGR_TEST_SELECTION_REGRESSION ? 'selection-regression' : 'merges/' + browser); fs.mkdirSync(output, { recursive: true });
     fs.rmSync(path.join(output, 'failure.png'), { force: true });
-    const report = { status: 'running', cases: [] };
+    const report = { browser, status: 'running', cases: [] };
     async function start(id = 'addvariables', x = 'first', y = 'second') {
         await h.load(id, 'en_US', extras);
         assert.equal(await h.control('dataset1').locator('.active').count(), 0);
